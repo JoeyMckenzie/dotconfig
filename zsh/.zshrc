@@ -99,6 +99,9 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 # Spin for Laravel
 export PATH="$HOME/.spin/bin:$PATH"
 
+# Zoxide
+eval "$(zoxide init zsh)"
+
 
 #####################
 ####  Languages  ####
