@@ -1,0 +1,14 @@
+*
+!.gitignore
+!tmux/
+!tmux/**
+!nvim/
+!nvim/**
+!zsh/
+!zsh/**
+zsh/.zcompdump*
+zsh/.zshenv
+zsh/.zshenv
+zsh/.zsh_history
+!ghostty/
+!ghostty/**
