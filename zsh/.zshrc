@@ -1,4 +1,4 @@
-
+k
 ###############################################################
 ###############################################################
 ####                                                       ####
@@ -76,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
 # Opencode
-export PATH="/Users/jmckenzie/.opencode/bin:$PATH"
+export PATH="$HOME/.opencode/bin:$PATH"
 
 
 #################
@@ -102,33 +102,33 @@ export PATH="$HOME/.spin/bin:$PATH"
 #####################
 
 # OCaml & Opam
-[[ ! -r /Users/jmckenzie/.opam/opam-init/init.zsh ]] || source /Users/jmckenzie/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/Users/jmckenzie/.bun/_bun" ] && source "/Users/jmckenzie/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Go
-export PATH="/Users/jmckenzie/go/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 # Herd
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 
-export PATH="/Users/jmckenzie/Library/Application Support/Herd/bin/":$PATH
-export NVM_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/nvm"
-export HERD_PHP_81_INI_SCAN_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/php/81/"
-export HERD_PHP_82_INI_SCAN_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/php/82/"
-export HERD_PHP_83_INI_SCAN_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/php/83/"
-export HERD_PHP_84_INI_SCAN_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/php/84/"
-export HERD_PHP_85_INI_SCAN_DIR="/Users/jmckenzie/Library/Application Support/Herd/config/php/85/"
+export PATH="$HOME/Library/Application Support/Herd/bin/":$PATH
+export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+export HERD_PHP_81_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/81/"
+export HERD_PHP_82_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/82/"
+export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
+export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
+export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
 
 # MySQL
 export PATH="/Users/Shared/Herd/services/mysql/8.4.2/bin:$PATH"
 
 # Composer
-export PATH="/Users/jmckenzie/.composer/vendor/bin:$PATH"
+export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
