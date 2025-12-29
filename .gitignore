@@ -22,3 +22,5 @@ zsh/.zsh_history
 !nushell/**
 nushell/env.nu
 nushell/history.txt
+
+/.worktrees
