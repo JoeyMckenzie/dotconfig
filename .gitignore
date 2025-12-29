@@ -23,4 +23,7 @@ zsh/.zsh_history
 nushell/env.nu
 nushell/history.txt
 
+!starship/
+!starship/**
+
 /.worktrees

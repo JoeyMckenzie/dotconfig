@@ -104,6 +104,9 @@ export PATH="$HOME/.spin/bin:$PATH"
 # Zoxide
 eval "$(zoxide init zsh)"
 
+# Starship
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+
 
 #####################
 ####  Languages  ####
