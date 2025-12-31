@@ -1,0 +1,4 @@
+[defaults]
+team = "Fundraising"
+cycle = "current"
+assignee = "me"

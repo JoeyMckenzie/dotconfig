@@ -26,4 +26,7 @@ nushell/history.txt
 !starship/
 !starship/**
 
+!ortholinear/
+!ortholinear/**
+
 /.worktrees
