@@ -176,4 +176,5 @@ alias cvim='clear && nvim .'
 alias lzd='lazydocker'
 alias ls='eza'
 alias cat='bat'
+alias nv='nvim .'
 
