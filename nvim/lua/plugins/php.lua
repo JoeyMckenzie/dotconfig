@@ -4,6 +4,23 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        intelephense = {
+          settings = {
+            intelephense = {
+              files = {
+                maxSize = 5000000, -- increase for large vendor files
+              },
+              environment = {
+                includePaths = {
+                  "vendor",
+                  "_ide_helper.php",
+                  "_ide_helper_models.php",
+                  ".phpstorm.meta.php",
+                },
+              },
+            },
+          },
+        },
         phpactor = {
           -- phpactor handles composer.json nicely
           filetypes = { "php", "json" },

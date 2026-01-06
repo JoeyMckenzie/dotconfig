@@ -1,7 +1,7 @@
 ###############################################################
 ###############################################################
 ####                                                       ####
-####   ____ ___  _   _ _____ ___ ____    _____    _ ___    ####
+####    ____ ___  _   _ _____ ___ ____    _____    _ ___   ####
 ####   / ___/ _ \| \ | |  ___|_ _/ ___|  |___ / _ / |/ /_  ####
 ####  | |  | | | |  \| | |_   | | |  _     |_ \| | | '_ \  ####
 ####  | |__| |_| | |\  |  _|  | | |_| |   ___)  _| | (_) | ####
@@ -169,7 +169,7 @@ export PATH="$HOME/.luarocks/bin:$PATH"
 alias pa="php artisan"
 alias hpa="herd php artisan"
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
-alias sa="sail artisan"
+alias sa="./vendor/bin/sail"
 
 alias wip='git commit -am "chore: wip" && git push'
 alias yeet='git commit -am "chore: wip" --no-verify && git push --no-verify'
