@@ -87,3 +87,24 @@ end
 vim.keymap.set("n", "<C-e>", function()
   toggle_telescope(harpoon:list())
 end, { desc = "Open harpoon window" })
+
+--
+-- PHP doc tag highlighting
+--
+vim.api.nvim_create_augroup("PHPDocTags", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "PHPDocTags",
+  pattern = "php",
+  callback = function()
+    -- Define a blueish highlight group for PHP doc tags
+    vim.api.nvim_set_hl(0, "PHPDocTag", { fg = "#7aa2f7", bold = true })
+
+    -- Use matchadd with higher priority to overlay the pattern on top of Treesitter highlighting
+    -- Note: longer patterns like property-read and property-write must come before property to avoid partial matches
+    vim.fn.matchadd(
+      "PHPDocTag",
+      "@\\(property-read\\|property-write\\|var\\|param\\|return\\|throws\\|deprecated\\|see\\|link\\|example\\|since\\|version\\|author\\|todo\\|fixme\\|note\\|warning\\|psalm\\|template\\|implements\\|extends\\|readonly\\|internal\\|package\\|suppress\\|noinspection\\|use\\|property\\|method\\|mixin\\|requires\\|copyright\\)",
+      30
+    )
+  end,
+})
