@@ -9,6 +9,14 @@ return {
         ".phpstan.cache/",
         "^storage/framework/",
         "^bootstrap/cache/",
+        "%.worktrees/",
+      },
+    },
+    pickers = {
+      lsp_references = {
+        file_ignore_patterns = {
+          "%.worktrees/",
+        },
       },
     },
   },
