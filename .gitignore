@@ -38,4 +38,7 @@ nushell/history.txt
 !worktrunk/
 !worktrunk/**
 
+!lazygit/
+!lazygit/**
+
 /.worktrees

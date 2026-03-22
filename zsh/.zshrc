@@ -120,6 +120,13 @@ function y() {
 
 eval "$(atuin init zsh)"
 
+# Mise 
+
+eval "$($HOME/.local/bin/mise activate zsh)"
+
+# Mise 
+eval "$($HOME/.local/bin/mise activate zsh)"
+
 # Zellij
 eval "$(zellij setup --generate-auto-start zsh)"
 
@@ -127,6 +134,12 @@ eval "$(zellij setup --generate-auto-start zsh)"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Worktrunk completions
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# Bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# Worktrunk completetions
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
 #####################
