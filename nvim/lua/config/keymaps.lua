@@ -23,3 +23,7 @@ vim.keymap.set("n", "<leader>fr", function()
     default_text = word,
   })
 end, { desc = "Find type references" })
+
+vim.keymap.set("n", "<leader>uc", function()
+  require("render-markdown").toggle()
+end, { desc = "Toggle render-markdown" })

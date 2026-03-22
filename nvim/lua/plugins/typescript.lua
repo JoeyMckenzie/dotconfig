@@ -4,12 +4,12 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
+        typescript = { "prettier", "oxfmt" },
+        typescriptreact = { "prettier", "oxfmt" },
+        javascript = { "prettier", "oxfmt" },
+        javascriptreact = { "prettier", "oxfmt" },
         svelte = { "prettier" },
-        json = { "prettier" },
+        json = { "prettier", "oxfmt" },
         css = { "prettier" },
         html = { "prettier" },
       },
@@ -21,10 +21,10 @@ return {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
-        typescript = { "eslint" },
-        typescriptreact = { "eslint" },
-        javascript = { "eslint" },
-        javascriptreact = { "eslint" },
+        typescript = { "eslint", "oxlint" },
+        typescriptreact = { "eslint", "oxlint" },
+        javascript = { "eslint", "oxlint" },
+        javascriptreact = { "eslint", "oxlint" },
         svelte = { "eslint" },
       },
     },
@@ -38,6 +38,22 @@ return {
         svelte = {},
       },
     },
+  },
+
+  -- Neotest with Vitest
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "marilari88/neotest-vitest",
+    },
+    opts = function(_, opts)
+      opts.adapters = opts.adapters or {}
+      table.insert(opts.adapters, require("neotest-vitest"))
+    end,
   },
 
   -- Treesitter parsers

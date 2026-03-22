@@ -120,14 +120,14 @@ function y() {
 
 eval "$(atuin init zsh)"
 
-# Mise 
-
-eval "$($HOME/.local/bin/mise activate zsh)"
-
 # Zellij
-
 eval "$(zellij setup --generate-auto-start zsh)"
 
+# Bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# Worktrunk completions
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
 #####################
 ####  Languages  ####
@@ -165,6 +165,8 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 # Lua
 export PATH="$HOME/.luarocks/bin:$PATH"
 
+# Mise (after Herd so mise's _.path takes priority)
+eval "$($HOME/.local/bin/mise activate zsh)"
 
 ###################
 ####  Aliases  ####
@@ -187,8 +189,9 @@ alias lg='lazygit'
 alias cvim='clear && nvim .'
 
 alias lzd='lazydocker'
-alias ls='eza'
+alias ls='eza --tree --level=2 --icons --git --git-ignore'
 alias cat='bat'
 alias nv='clear && nvim .'
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
+alias tt="taskwarrior-tui"

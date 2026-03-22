@@ -56,7 +56,7 @@ return {
           name = "Listen for Xdebug",
           port = 9003,
           pathMappings = {
-            -- Adjust if using Docker/Sail: ["/var/www/html"] = "${workspaceFolder}"
+            ["${workspaceFolder}"] = "${workspaceFolder}",
           },
         },
         {
