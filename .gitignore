@@ -35,4 +35,10 @@ nushell/history.txt
 !opencode/
 !opencode/**
 
+!worktrunk/
+!worktrunk/**
+
+!lazygit/
+!lazygit/**
+
 /.worktrees
