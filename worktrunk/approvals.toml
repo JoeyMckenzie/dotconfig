@@ -1,0 +1,13 @@
+[projects."github.com/JoeyMckenzie/laravel-official-react-starter-kit"]
+approved-commands = [
+    """
+cp {{ primary_worktree_path }}/.env {{ worktree_path }}/.env
+sed -i '' 's|^APP_URL=.*|APP_URL=https://{{ branch | sanitize }}.test|' {{ worktree_path }}/.env
+""",
+    "composer install --no-interaction --quiet",
+    "npm install",
+    "touch database/database.sqlite && php artisan migrate:fresh --seed --no-interaction",
+    "php artisan storage:link --no-interaction",
+    "npm run build",
+    "herd link {{ branch | sanitize }} --secure",
+]

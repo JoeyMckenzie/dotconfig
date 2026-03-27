@@ -14,6 +14,7 @@ zsh/.zcompdump*
 zsh/.zshenv
 zsh/.zshenv
 zsh/.zsh_history
+zsh/.zsh_sessions
 
 !ghostty/
 !ghostty/**
