@@ -73,7 +73,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        php = { "pint", "php_cs_fixer", "mago" },
+        php = { "pint", "php_cs_fixer", "mago", stop_after_first = true },
         blade = { "prettier", "blade-formatter" },
       },
       formatters = {
@@ -96,14 +96,14 @@ return {
     lazy = true,
     dependencies = {
       "olimorris/neotest-phpunit",
+      "V13Axel/neotest-pest",
     },
-    config = function()
-      require("neotest").setup({
-        adapters = {
-          require("neotest-phpunit"),
-        },
-      })
-    end,
+    opts = {
+      adapters = {
+        ["neotest-phpunit"] = {},
+        ["neotest-pest"] = {},
+      },
+    },
   },
   {
     "adalessa/laravel.nvim",

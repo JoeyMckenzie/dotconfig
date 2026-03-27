@@ -7,22 +7,6 @@ require("config.lazy")
 vim.opt.swapfile = false
 
 --
--- codecompanion.nvim
---
-require("codecompanion").setup({
-  extensions = {
-    mcphub = {
-      callback = "mcphub.extensions.codecompanion",
-      opts = {
-        make_vars = true,
-        make_slash_commands = true,
-        show_result_in_chat = true,
-      },
-    },
-  },
-})
-
---
 -- comment.nvim
 --
 require("Comment").setup()
