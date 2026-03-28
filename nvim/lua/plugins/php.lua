@@ -1,29 +1,34 @@
 return {
-  -- Run both intelephense and phpactor
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        intelephense = {
-          settings = {
-            intelephense = {
-              files = {
-                maxSize = 5000000, -- increase for large vendor files
-              },
-              environment = {
-                includePaths = {
-                  "vendor",
-                  "_ide_helper.php",
-                  "_ide_helper_models.php",
-                  ".phpstorm.meta.php",
-                },
-              },
-            },
+        -- intelephense = {
+        --   settings = {
+        --     intelephense = {
+        --       files = {
+        --         maxSize = 5000000, -- increase for large vendor files
+        --       },
+        --       environment = {
+        --         includePaths = {
+        --           "vendor",
+        --           "_ide_helper.php",
+        --           "_ide_helper_models.php",
+        --           ".phpstorm.meta.php",
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
+        phpantom = {
+          cmd = { "phpantom_lsp" },
+          fileypes = {
+            "php",
           },
-        },
-        phpactor = {
-          -- phpactor handles composer.json nicely
-          filetypes = { "php", "json" },
+          root_markers = {
+            "composer.json",
+            ".git",
+          },
         },
       },
     },
