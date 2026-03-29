@@ -121,10 +121,6 @@ function y() {
 eval "$(atuin init zsh)"
 
 # Mise 
-
-eval "$($HOME/.local/bin/mise activate zsh)"
-
-# Mise 
 eval "$($HOME/.local/bin/mise activate zsh)"
 
 # Zellij

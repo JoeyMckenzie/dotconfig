@@ -38,6 +38,8 @@ nushell/history.txt
 
 !worktrunk/
 !worktrunk/**
+worktrunk/approvals.toml
+worktrunk/approvals.toml.lock
 
 !lazygit/
 !lazygit/**
