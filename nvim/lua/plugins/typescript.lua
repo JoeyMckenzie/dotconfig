@@ -21,10 +21,10 @@ return {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
-        typescript = { "eslint", "oxlint" },
-        typescriptreact = { "eslint", "oxlint" },
-        javascript = { "eslint", "oxlint" },
-        javascriptreact = { "eslint", "oxlint" },
+        typescript = { "eslint", "oxlint", stop_after_first = true },
+        typescriptreact = { "eslint", "oxlint", stop_after_first = true },
+        javascript = { "eslint", "oxlint", stop_after_first = true },
+        javascriptreact = { "eslint", "oxlint", stop_after_first = true },
         svelte = { "eslint" },
       },
     },
