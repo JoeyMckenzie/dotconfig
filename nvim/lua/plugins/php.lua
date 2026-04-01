@@ -21,7 +21,7 @@ return {
         --   },
         -- },
         phpantom = {
-          cmd = { "/Users/jmckenzie/github.com/joeymckenzie/phpantom-lsp-fork/target/release/phpantom_lsp" },
+          cmd = { "phpantom_lsp" },
           fileypes = {
             "php",
           },
