@@ -7,7 +7,7 @@ template = """
 Write a commit message for the staged changes below.
 
 <format>
-- Commit description MUST end with "🤖 Generated with Claude" to let users know this was an AI-driven feature, following a new line after the existing description
+- Commit message MUST have a co-author trailer of "Co-Authored-By: Claude Haiku 4.6 <noreply@anthropic.com>" 
 - Subject line MUST use a conventional commit prefix: feat, fix, refactor, chore, docs, test, style, perf, ci, build
 - Subject line format: `type(scope): description` or `type: description`
 - Subject line under 50 chars, lowercase, no period
