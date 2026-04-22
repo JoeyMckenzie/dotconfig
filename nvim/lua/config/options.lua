@@ -3,3 +3,6 @@
 -- Add any additional options here
 
 vim.g.lazyvim_php_lsp = "phpantom"
+
+-- Workaround for NeoVim 0.11.3 inlay hint rendering bug
+vim.lsp.inlay_hint.enable(false)

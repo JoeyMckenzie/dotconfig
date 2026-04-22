@@ -138,6 +138,9 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 # Worktrunk completetions
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
+# Churn
+export PATH="$HOME/.churn/bin:$PATH"
+
 #####################
 ####  Languages  ####
 #####################

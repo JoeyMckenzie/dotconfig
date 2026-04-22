@@ -21,10 +21,10 @@ return {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
-        typescript = { "eslint", "oxlint", stop_after_first = true },
-        typescriptreact = { "eslint", "oxlint", stop_after_first = true },
-        javascript = { "eslint", "oxlint", stop_after_first = true },
-        javascriptreact = { "eslint", "oxlint", stop_after_first = true },
+        typescript = { "eslint" },
+        typescriptreact = { "eslint" },
+        javascript = { "eslint" },
+        javascriptreact = { "eslint" },
         svelte = { "eslint" },
       },
     },
@@ -68,5 +68,15 @@ return {
         "html",
       },
     },
+  },
+
+  -- Show package versions and available upgrades in package.json
+  {
+    "vuki656/package-info.nvim",
+    dependencies = "MunifTanjim/nui.nvim",
+    event = "BufRead package.json",
+    config = function()
+      require("package-info").setup()
+    end,
   },
 }
