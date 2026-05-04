@@ -15,6 +15,14 @@
     '';
   };
 
+  languages.javascript = {
+    enable = true;
+    package = pkgs.nodejs_22;
+    npm.enable = true;
+    pnpm.enable = true;
+    bun.enable = true;
+  };
+
   services.postgres = {
     enable = true;
     package = pkgs.postgresql_16;
@@ -54,6 +62,7 @@
     echo "── shared infra (~/.config/devenv) ──"
     echo "  https://*.test:8443       (Caddy + internal CA)"
     echo "  php       8.4              (redis, intl, imagick)"
+    echo "  node      22               (npm, pnpm, bun)"
     echo "  postgres  127.0.0.1:5432  (per-project roles via register-project)"
     echo "  redis     127.0.0.1:6379  (64 DBs)"
     echo "  mailpit   smtp:1025       ui:http://127.0.0.1:8025"
