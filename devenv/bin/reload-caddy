@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Reloads Caddy via its admin API if available. No-op if Caddy isn't running
+# (e.g. shared infra not started yet) so this is safe to call from anywhere.
+set -euo pipefail
+
+if curl -sf http://127.0.0.1:2019/config/ >/dev/null 2>&1; then
+    caddy reload \
+        --config "$HOME/.config/devenv/Caddyfile" \
+        --adapter caddyfile
+fi

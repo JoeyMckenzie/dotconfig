@@ -71,7 +71,7 @@ source $ZSH/oh-my-zsh.sh
 eval $(thefuck --alias)
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
-
+eval "$(direnv hook zsh)"
 
 ################
 ####  Apps  ####
@@ -201,7 +201,7 @@ alias lg='lazygit'
 alias cvim='clear && nvim .'
 
 alias lzd='lazydocker'
-alias ls='eza --tree --level=2 --icons --git --git-ignore'
+alias ls='eza --icons --git --git-ignore'
 alias cat='bat'
 alias nv='clear && nvim .'
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# usage: register-project <slug>
+# idempotent: creates Postgres role <slug>/<slug> with CREATEDB
+# and template DB <slug>_main owned by that role.
+set -euo pipefail
+
+slug="${1:?usage: register-project <slug>}"
+
+# Validate slug — only lowercase letters, digits, underscores. Avoids SQL injection
+# and stops weird DB names from creeping in.
+if ! [[ "$slug" =~ ^[a-z][a-z0-9_]*$ ]]; then
+    echo "register-project: slug '$slug' must match ^[a-z][a-z0-9_]*$" >&2
+    exit 1
+fi
+
+psql -h 127.0.0.1 -U "$USER" -d postgres <<SQL
+DO \$\$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${slug}') THEN
+    CREATE ROLE "${slug}" WITH LOGIN PASSWORD '${slug}' CREATEDB;
+  END IF;
+END \$\$;
+SELECT 'CREATE DATABASE "${slug}_main" OWNER "${slug}"'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${slug}_main')\gexec
+SQL

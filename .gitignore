@@ -44,4 +44,12 @@ worktrunk/approvals.toml.lock
 !lazygit/
 !lazygit/**
 
+!devenv/
+!devenv/**
+devenv/.devenv/
+devenv/.direnv/
+devenv/.devenv.flake.nix
+devenv/sites/*.caddy
+!devenv/sites/example.caddy
+
 /.worktrees
