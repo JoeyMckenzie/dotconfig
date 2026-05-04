@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # Reloads Caddy via its admin API if available. No-op if Caddy isn't running
 # (e.g. shared infra not started yet) so this is safe to call from anywhere.
+#
+# Posts the Caddyfile directly to /load instead of shelling out to `caddy
+# reload`, so this works in contexts where the `caddy` binary isn't on PATH
+# (e.g. worktrunk hooks running outside the devenv shell).
 set -euo pipefail
 
 if curl -sf http://127.0.0.1:2019/config/ >/dev/null 2>&1; then
-    caddy reload \
-        --config "$HOME/.config/devenv/Caddyfile" \
-        --adapter caddyfile
+    curl -fsS -X POST 'http://127.0.0.1:2019/load' \
+        -H 'Content-Type: text/caddyfile' \
+        --data-binary @"$HOME/.config/devenv/Caddyfile"
 fi

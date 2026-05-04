@@ -2,6 +2,8 @@
 {
   imports = [ ./tools.nix ];
 
+  claude.code.enable = true;
+
   packages = with pkgs; [ postgresql_16 redis dnsmasq caddy ];
 
   languages.php = {
