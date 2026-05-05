@@ -25,10 +25,21 @@
     bun.enable = true;
   };
 
+  languages.go.enable = true;
+
   services.postgres = {
     enable = true;
     package = pkgs.postgresql_16;
     listen_addresses = "127.0.0.1";
+  };
+
+  services.mysql = {
+    enable = true;
+    package = pkgs.mysql84;
+    settings.mysqld = {
+      port = 3306;
+      bind-address = "127.0.0.1";
+    };
   };
 
   services.redis = {
@@ -65,7 +76,9 @@
     echo "  https://*.test:8443       (Caddy + internal CA)"
     echo "  php       8.4              (redis, intl, imagick)"
     echo "  node      22               (npm, pnpm, bun)"
+    echo "  go        latest"
     echo "  postgres  127.0.0.1:5432  (per-project roles via register-project)"
+    echo "  mysql     127.0.0.1:3306  (mysql 8.4)"
     echo "  redis     127.0.0.1:6379  (64 DBs)"
     echo "  mailpit   smtp:1025       ui:http://127.0.0.1:8025"
     echo "  helpers   register-project | write-site | reload-caddy"

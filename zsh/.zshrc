@@ -71,6 +71,7 @@ source $ZSH/oh-my-zsh.sh
 eval $(thefuck --alias)
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
 
 ################
 ####  Apps  ####
