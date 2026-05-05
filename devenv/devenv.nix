@@ -9,7 +9,7 @@
   languages.php = {
     enable = true;
     version = "8.4";
-    extensions = [ "redis" "intl" "imagick" ];
+    extensions = [ "redis" "intl" "imagick" "pdo_mysql" "pdo_pgsql" "pdo_sqlite" ];
     ini = ''
       memory_limit = 512M
       upload_max_filesize = 100M

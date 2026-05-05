@@ -1,12 +1,15 @@
 { pkgs, lib, ... }:
 
 # Project-level devenv.nix template. Copy to a new Laravel project's repo
-# root and update the `slug` binding below. Pairs with the shared infra at
-# ~/.config/devenv (Postgres, Redis, Caddy on *.test:8443, Mailpit, dnsmasq).
+# root and update the `slug` and `dbDriver` bindings below. Pairs with the
+# shared infra at ~/.config/devenv (Postgres, MySQL, Redis, Caddy on
+# *.test:8443, Mailpit, dnsmasq).
 #
 # First-time setup for a new project:
-#   1. cd ~/.config/devenv && register-project <slug>
-#        creates Postgres role <slug>/<slug> and template DB <slug>_main
+#   1. cd ~/.config/devenv && register-project <slug>              # postgres (default)
+#      cd ~/.config/devenv && register-project <slug> --db mysql   # mysql
+#      cd ~/.config/devenv && register-project <slug> --db sqlite  # sqlite (no-op)
+#      cd ~/.config/devenv && register-project <slug> --db both    # both servers
 #   2. (per worktree, optional) write-site <slug> <short> <app_port> <vite_port>
 #        then reload-caddy   — exposes https://<slug>-<short>.test:8443
 #
@@ -16,8 +19,9 @@
 #   ./php.local.ini    untracked per-developer overrides
 
 let
-  # ── change this when copying for a new project ──
+  # ── change these when copying for a new project ──
   slug = "myapp";
+  dbDriver = "pgsql"; # "pgsql", "mysql", or "sqlite"
 
   rawName = builtins.baseNameOf (toString ./.);
   shortName = lib.removePrefix "${slug}-" rawName;
@@ -36,6 +40,62 @@ let
   hostname = "${slug}-${shortName}.test";
 
   toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
+
+  sqlitePath = "${toString ./.}/database/database.sqlite";
+
+  phpDbExtensions =
+    if dbDriver == "pgsql" then [ "pdo_pgsql" "pgsql" ]
+    else if dbDriver == "mysql" then [ "pdo_mysql" "mysqli" ]
+    else [ "pdo_sqlite" ];
+
+  dbEnv =
+    if dbDriver == "pgsql" then {
+      DB_CONNECTION = "pgsql";
+      DB_HOST = "127.0.0.1";
+      DB_PORT = "5432";
+      DB_DATABASE = dbName;
+      DB_USERNAME = slug;
+      DB_PASSWORD = slug;
+    }
+    else if dbDriver == "mysql" then {
+      DB_CONNECTION = "mysql";
+      DB_HOST = "127.0.0.1";
+      DB_PORT = "3306";
+      DB_DATABASE = dbName;
+      DB_USERNAME = slug;
+      DB_PASSWORD = slug;
+    }
+    else {
+      DB_CONNECTION = "sqlite";
+      DB_DATABASE = sqlitePath;
+    };
+
+  dbBootstrap =
+    if dbDriver == "pgsql" then ''
+      if PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d postgres -c '\q' &>/dev/null; then
+        if ! PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d ${dbName} -c '\q' &>/dev/null; then
+          echo "Cloning ${slug}_main → ${dbName}…"
+          PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d postgres -c \
+            "SELECT pg_terminate_backend(pid) FROM pg_stat_activity \
+             WHERE datname='${slug}_main' AND pid <> pg_backend_pid();" >/dev/null
+          PGPASSWORD=${slug} createdb -h 127.0.0.1 -U ${slug} -T ${slug}_main ${dbName}
+        fi
+      else
+        echo "⚠ shared Postgres not reachable — run \`devenv up\` from ~/.config/devenv first"
+      fi
+    ''
+    else if dbDriver == "mysql" then ''
+      if MYSQL_PWD=${slug} mysql -h 127.0.0.1 -u ${slug} -e 'select 1' &>/dev/null; then
+        MYSQL_PWD=${slug} mysql -h 127.0.0.1 -u ${slug} \
+          -e 'CREATE DATABASE IF NOT EXISTS `${dbName}`'
+      else
+        echo "⚠ shared MySQL not reachable — run \`devenv up\` from ~/.config/devenv first"
+      fi
+    ''
+    else ''
+      mkdir -p database
+      [ -f ${sqlitePath} ] || touch ${sqlitePath}
+    '';
 in
 {
   imports = [ toolsPath ];
@@ -47,14 +107,12 @@ in
     version = "8.4";
     extensions = [
       "redis"
-      "pdo_pgsql"
-      "pgsql"
       "intl"
       "bcmath"
       "gd"
       "zip"
       "xdebug"
-    ];
+    ] ++ phpDbExtensions;
     ini = ''
       ${lib.optionalString (builtins.pathExists ./php.ini.base) (builtins.readFile ./php.ini.base)}
       xdebug.client_port = ${toString xdebugPort}
@@ -86,18 +144,11 @@ in
   processes.horizon.process-compose.depends_on.migrate.condition = "process_completed_successfully";
   processes.queue.process-compose.depends_on.migrate.condition = "process_completed_successfully";
 
-  env = {
+  env = dbEnv // {
     APP_URL = "https://${hostname}";
     APP_PORT = toString appPort;
 
     XDEBUG_PORT = toString xdebugPort;
-
-    DB_CONNECTION = "pgsql";
-    DB_HOST = "127.0.0.1";
-    DB_PORT = "5432";
-    DB_DATABASE = dbName;
-    DB_USERNAME = slug;
-    DB_PASSWORD = slug;
 
     REDIS_CLIENT = "predis";
     REDIS_HOST = "127.0.0.1";
@@ -110,24 +161,14 @@ in
   };
 
   enterShell = ''
-    echo "── ${shortName} (index=${toString index}) ──"
+    echo "── ${shortName} (index=${toString index}, db=${dbDriver}) ──"
     echo "  url   https://${hostname}"
     echo "  app   127.0.0.1:${toString appPort}"
     echo "  vite  127.0.0.1:${toString vitePort}"
     echo "  db    ${dbName}"
     echo "  redis db=${toString index}"
 
-    if PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d postgres -c '\q' &>/dev/null; then
-      if ! PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d ${dbName} -c '\q' &>/dev/null; then
-        echo "Cloning ${slug}_main → ${dbName}…"
-        PGPASSWORD=${slug} psql -h 127.0.0.1 -U ${slug} -d postgres -c \
-          "SELECT pg_terminate_backend(pid) FROM pg_stat_activity \
-           WHERE datname='${slug}_main' AND pid <> pg_backend_pid();" >/dev/null
-        PGPASSWORD=${slug} createdb -h 127.0.0.1 -U ${slug} -T ${slug}_main ${dbName}
-      fi
-    else
-      echo "⚠ shared Postgres not reachable — run \`devenv up\` from ~/.config/devenv first"
-    fi
+    ${dbBootstrap}
 
     [ ! -d vendor ]       && composer install
     [ ! -d node_modules ] && npm install

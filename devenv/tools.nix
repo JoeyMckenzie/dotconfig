@@ -13,5 +13,14 @@
     statix
     deadnix
     nixfmt-rfc-style
+
+    gopls
+    golangci-lint
+    delve
+
+    sqlite
+    pgcli
+    mycli
+    litecli
   ];
 }
