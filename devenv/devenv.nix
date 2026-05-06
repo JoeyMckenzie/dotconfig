@@ -6,27 +6,6 @@
 
   packages = with pkgs; [ postgresql_16 redis dnsmasq caddy ];
 
-  languages.php = {
-    enable = true;
-    version = "8.4";
-    extensions = [ "redis" "intl" "imagick" "pdo_mysql" "pdo_pgsql" "pdo_sqlite" ];
-    ini = ''
-      memory_limit = 512M
-      upload_max_filesize = 100M
-      post_max_size = 100M
-    '';
-  };
-
-  languages.javascript = {
-    enable = true;
-    package = pkgs.nodejs_22;
-    npm.enable = true;
-    pnpm.enable = true;
-    bun.enable = true;
-  };
-
-  languages.go.enable = true;
-
   services.postgres = {
     enable = true;
     package = pkgs.postgresql_16;
@@ -74,9 +53,6 @@
     export PATH="$HOME/.config/devenv/bin:$PATH"
     echo "── shared infra (~/.config/devenv) ──"
     echo "  https://*.test:8443       (Caddy + internal CA)"
-    echo "  php       8.4              (redis, intl, imagick)"
-    echo "  node      22               (npm, pnpm, bun)"
-    echo "  go        latest"
     echo "  postgres  127.0.0.1:5432  (per-project roles via register-project)"
     echo "  mysql     127.0.0.1:3306  (mysql 8.4)"
     echo "  redis     127.0.0.1:6379  (64 DBs)"

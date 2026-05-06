@@ -52,6 +52,7 @@ devenv/.direnv/
 devenv/.devenv.flake.nix
 devenv/sites/*.caddy
 !devenv/sites/example.caddy
+devenv/.DS_Store
 
 !nix/
 nix/nix.conf

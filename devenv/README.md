@@ -51,7 +51,7 @@ Then `https://myapp-main.test:8443` reverse-proxies to the app + Vite. Multiple 
 
 | Path                          | Role                                                    |
 | ----------------------------- | ------------------------------------------------------- |
-| `devenv.nix`                  | Shared services + languages (PHP, Node, Go)             |
+| `devenv.nix`                  | Shared services (Postgres, MySQL, Redis, Mailpit, Caddy, dnsmasq) |
 | `tools.nix`                   | Common CLI tools, imported by both shared & project     |
 | `Caddyfile`                   | Top-level Caddy config; imports `sites/*.caddy`         |
 | `bin/register-project`        | Provision DB user/role for a project (`--db` flag)      |

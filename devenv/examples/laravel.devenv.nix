@@ -10,8 +10,15 @@
 #      cd ~/.config/devenv && register-project <slug> --db mysql   # mysql
 #      cd ~/.config/devenv && register-project <slug> --db sqlite  # sqlite (no-op)
 #      cd ~/.config/devenv && register-project <slug> --db both    # both servers
-#   2. (per worktree, optional) write-site <slug> <short> <app_port> <vite_port>
-#        then reload-caddy   — exposes https://<slug>-<short>.test:8443
+#   2. (per worktree, optional) write-site <hostname> <app_port> <vite_port>
+#        then reload-caddy   — exposes https://<slug>.test:8443 (main, apex)
+#        or https://<short>.<slug>.test:8443 (worktree, subdomain)
+#
+# After copying, also align the project's .env.example with the slug:
+#   APP_URL=https://<slug>.test:8443
+#   SESSION_DOMAIN=.<slug>.test
+# Laravel's .env wins over devenv shell env, so these have to be in the dotfile
+# for the framework to honor them at runtime.
 #
 # Sibling files this template recognizes (all optional):
 #   ./.devenv-index    integer offset for port multiplexing across worktrees
@@ -37,7 +44,10 @@ let
   vitePort = 5173 + index;
   xdebugPort = 9003 + index;
   dbName = "${slug}_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] shortName;
-  hostname = "${slug}-${shortName}.test";
+  hostname =
+    if shortName == "main"
+    then "${slug}.test"
+    else "${shortName}.${slug}.test";
 
   toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
 
@@ -133,6 +143,7 @@ in
 
   processes.app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
   processes.queue.exec = "php artisan queue:listen --tries=1";
+  processes.logs.exec = "php artisan pail --timeout=0";
   processes.horizon.exec = "php artisan horizon";
   processes.vite.exec = "npm run dev -- --port ${toString vitePort} --strictPort";
 
@@ -145,8 +156,13 @@ in
   processes.queue.process-compose.depends_on.migrate.condition = "process_completed_successfully";
 
   env = dbEnv // {
-    APP_URL = "https://${hostname}";
+    APP_URL = "https://${hostname}:8443";
     APP_PORT = toString appPort;
+
+    # Cookies span all worktree subdomains (main apex + every <short>.<slug>.test).
+    # Note: Laravel's `.env` wins over shell env in practice, so this also needs
+    # to be set in `.env` / `.env.example` for the framework to honor it.
+    SESSION_DOMAIN = ".${slug}.test";
 
     XDEBUG_PORT = toString xdebugPort;
 
@@ -162,7 +178,7 @@ in
 
   enterShell = ''
     echo "── ${shortName} (index=${toString index}, db=${dbDriver}) ──"
-    echo "  url   https://${hostname}"
+    echo "  url   https://${hostname}:8443"
     echo "  app   127.0.0.1:${toString appPort}"
     echo "  vite  127.0.0.1:${toString vitePort}"
     echo "  db    ${dbName}"
