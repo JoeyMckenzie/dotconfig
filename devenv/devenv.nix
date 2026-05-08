@@ -1,4 +1,22 @@
 { pkgs, lib, config, ... }:
+# ─────────────────────────────────────────────────────────────────────
+# Per-project port band registry
+# ─────────────────────────────────────────────────────────────────────
+# Each project's devenv.nix sets `appPortBase` and `vitePortBase` from
+# the bands below. Bands are 100 wide so each project gets ~100 worktrees
+# before overlap. Keep this list in sync when onboarding a new project,
+# and update the matching `app_base` / `vite_base` in its wt.toml hook.
+#
+#   project              app          vite
+#   ─────────────        ────         ────
+#   braggadoc            8000-8099    5173-5272
+#   joeymckenzie.tech    8100-8199    5273-5372
+#   (next free)          8200-8299    5373-5472
+#
+# Convention: pick the next contiguous band; don't leave gaps unless you
+# really have to. Bands within Caddy's 8443 listener are routed by SNI,
+# so the band you pick is purely about avoiding TCP collisions on app /
+# vite ports — there's no shared-infra coupling.
 {
   imports = [ ./tools.nix ];
 

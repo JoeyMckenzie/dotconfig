@@ -209,3 +209,4 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 alias tt="taskwarrior-tui"
 
 alias devenv-orphans='ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'
+alias devenv-kill='$HOME/.config/devenv/bin/devenv-kill-orphans'

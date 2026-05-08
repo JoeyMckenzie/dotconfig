@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Kill any process holding a shared-infra port from ~/.config/devenv/devenv.nix.
+# Use when process-compose died and left orphan postgres/mysql/redis/etc behind.
+set -euo pipefail
+
+PORTS=(5432 3306 6379 1025 8025 8443 8053)
+
+killed=0
+
+for port in "${PORTS[@]}"; do
+  pids=$(lsof -ti tcp:"$port" -sTCP:LISTEN 2>/dev/null || true)
+  if [[ -n "$pids" ]]; then
+    echo "port $port → SIGTERM $(echo $pids | tr '\n' ' ')"
+    echo "$pids" | xargs kill -TERM 2>/dev/null || true
+    killed=1
+  fi
+done
+
+pc_pids=$(pgrep -f process-compose 2>/dev/null || true)
+if [[ -n "$pc_pids" ]]; then
+  echo "process-compose → SIGTERM $(echo $pc_pids | tr '\n' ' ')"
+  echo "$pc_pids" | xargs kill -TERM 2>/dev/null || true
+  killed=1
+fi
+
+if [[ $killed -eq 0 ]]; then
+  echo "no devenv orphans found"
+  exit 0
+fi
+
+sleep 1
+
+for port in "${PORTS[@]}"; do
+  pids=$(lsof -ti tcp:"$port" -sTCP:LISTEN 2>/dev/null || true)
+  if [[ -n "$pids" ]]; then
+    echo "port $port still alive → SIGKILL $(echo $pids | tr '\n' ' ')"
+    echo "$pids" | xargs kill -KILL 2>/dev/null || true
+  fi
+done
+
+echo "done"

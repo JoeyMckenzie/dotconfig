@@ -14,11 +14,15 @@
 #        then reload-caddy   — exposes https://<slug>.test:8443 (main, apex)
 #        or https://<short>.<slug>.test:8443 (worktree, subdomain)
 #
-# After copying, also align the project's .env.example with the slug:
-#   APP_URL=https://<slug>.test:8443
-#   SESSION_DOMAIN=.<slug>.test
-# Laravel's .env wins over devenv shell env, so these have to be in the dotfile
-# for the framework to honor them at runtime.
+# Env-var ownership:
+#   - Per-worktree dynamic values (APP_URL, APP_PORT, DB_DATABASE, REDIS_DB,
+#     XDEBUG_PORT) are computed below and exported via `env = { }`.
+#   - Project-static values (DB_HOST/USERNAME/PASSWORD, REDIS_HOST/PORT/CLIENT,
+#     MAIL_*, SESSION_DOMAIN, APP_NAME, APP_KEY, etc.) live in .env / .env.example.
+#   - Shell env (devenv) wins over .env (Laravel reads .env in immutable mode),
+#     so anything in both places will be served from devenv. Keep them disjoint.
+# Sibling template: laravel.env.example in this same dir — copy it to your
+# project as .env.example and find/replace `<slug>`.
 #
 # Sibling files this template recognizes (all optional):
 #   ./.devenv-index    integer offset for port multiplexing across worktrees
@@ -30,8 +34,7 @@ let
   slug = "myapp";
   dbDriver = "pgsql"; # "pgsql", "mysql", or "sqlite"
 
-  rawName = builtins.baseNameOf (toString ./.);
-  shortName = lib.removePrefix "${slug}-" rawName;
+  worktreeName = builtins.baseNameOf (toString ./.);
 
   indexFile = ./.devenv-index;
   index =
@@ -43,11 +46,11 @@ let
   appPort = 8000 + index;
   vitePort = 5173 + index;
   xdebugPort = 9003 + index;
-  dbName = "${slug}_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] shortName;
+  dbName = "${slug}_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] worktreeName;
   hostname =
-    if shortName == "main"
+    if worktreeName == "main"
     then "${slug}.test"
-    else "${shortName}.${slug}.test";
+    else "${worktreeName}.${slug}.test";
 
   toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
 
@@ -57,28 +60,6 @@ let
     if dbDriver == "pgsql" then [ "pdo_pgsql" "pgsql" ]
     else if dbDriver == "mysql" then [ "pdo_mysql" "mysqli" ]
     else [ "pdo_sqlite" ];
-
-  dbEnv =
-    if dbDriver == "pgsql" then {
-      DB_CONNECTION = "pgsql";
-      DB_HOST = "127.0.0.1";
-      DB_PORT = "5432";
-      DB_DATABASE = dbName;
-      DB_USERNAME = slug;
-      DB_PASSWORD = slug;
-    }
-    else if dbDriver == "mysql" then {
-      DB_CONNECTION = "mysql";
-      DB_HOST = "127.0.0.1";
-      DB_PORT = "3306";
-      DB_DATABASE = dbName;
-      DB_USERNAME = slug;
-      DB_PASSWORD = slug;
-    }
-    else {
-      DB_CONNECTION = "sqlite";
-      DB_DATABASE = sqlitePath;
-    };
 
   dbBootstrap =
     if dbDriver == "pgsql" then ''
@@ -155,29 +136,18 @@ in
   processes.horizon.process-compose.depends_on.migrate.condition = "process_completed_successfully";
   processes.queue.process-compose.depends_on.migrate.condition = "process_completed_successfully";
 
-  env = dbEnv // {
+  # Per-worktree dynamic env. Static config (DB_HOST, DB_USERNAME, REDIS_*,
+  # MAIL_*, SESSION_DOMAIN, etc.) lives in .env / .env.example.
+  env = {
     APP_URL = "https://${hostname}:8443";
     APP_PORT = toString appPort;
-
-    # Cookies span all worktree subdomains (main apex + every <short>.<slug>.test).
-    # Note: Laravel's `.env` wins over shell env in practice, so this also needs
-    # to be set in `.env` / `.env.example` for the framework to honor it.
-    SESSION_DOMAIN = ".${slug}.test";
-
-    XDEBUG_PORT = toString xdebugPort;
-
-    REDIS_CLIENT = "predis";
-    REDIS_HOST = "127.0.0.1";
-    REDIS_PORT = "6379";
+    DB_DATABASE = if dbDriver == "sqlite" then sqlitePath else dbName;
     REDIS_DB = toString index;
-
-    MAIL_MAILER = "smtp";
-    MAIL_HOST = "127.0.0.1";
-    MAIL_PORT = "1025";
+    XDEBUG_PORT = toString xdebugPort;
   };
 
   enterShell = ''
-    echo "── ${shortName} (index=${toString index}, db=${dbDriver}) ──"
+    echo "── ${worktreeName} (index=${toString index}, db=${dbDriver}) ──"
     echo "  url   https://${hostname}:8443"
     echo "  app   127.0.0.1:${toString appPort}"
     echo "  vite  127.0.0.1:${toString vitePort}"
