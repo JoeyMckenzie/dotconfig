@@ -3,6 +3,7 @@
 {
   imports = [
     ./nix-settings.nix
+    ./homebrew.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
