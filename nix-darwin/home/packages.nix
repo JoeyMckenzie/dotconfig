@@ -11,5 +11,10 @@
     process-compose
     gh
     broot
+    aspell
+    glow
+    mailpit
+    lazysql
+    harlequin
   ];
 }
