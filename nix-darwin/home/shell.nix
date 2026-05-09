@@ -22,25 +22,25 @@
     };
 
     shellAliases = {
-      pa  = "php artisan";
+      pa = "php artisan";
       hpa = "herd php artisan";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
-      sa   = "./vendor/bin/sail";
-      sf   = "php bin/console";
+      sa = "./vendor/bin/sail";
+      sf = "php bin/console";
 
-      wip  = "git commit -am 'chore: wip' && git push";
+      wip = "git commit -am 'chore: wip' && git push";
       yeet = "git commit -am 'chore: wip' --no-verify && git push --no-verify";
 
-      lg    = "lazygit";
-      lzd   = "lazydocker";
-      cvim  = "clear && nvim .";
-      nv    = "clear && nvim .";
+      lg = "lazygit";
+      lzd = "lazydocker";
+      cvim = "clear && nvim .";
+      nv = "clear && nvim .";
 
-      ls  = "eza --icons --git --git-ignore";
+      ls = "eza --icons --git --git-ignore";
       cat = "bat";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
-      devenv-kill    = "$HOME/.config/devenv/bin/devenv-kill-orphans";
+      devenv-kill = "$HOME/.config/devenv/bin/devenv-kill-orphans";
     };
 
     initContent = ''
