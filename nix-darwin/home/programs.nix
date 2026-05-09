@@ -1,6 +1,24 @@
 { ... }:
 
 {
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "Joey McKenzie";
+      http.postBuffer = 1048576000;
+      merge.conflictStyle = "zdiff3";
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      dark = true;
+    };
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;

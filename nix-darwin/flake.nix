@@ -48,13 +48,21 @@
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.${username} = { imports = [ ./home ] ++ extraModules; };
           }
-        ] ++ extraModules;
+        ];
       };
   in
   {
     darwinConfigurations = {
-      personal = mkSystem { hostname = "personal"; username = "jmckenzie"; };
-      work     = mkSystem { hostname = "work";     username = "joey"; };
+      personal = mkSystem {
+        hostname = "personal";
+        username = "jmckenzie";
+        extraModules = [ ./hosts/personal.nix ];
+      };
+      work = mkSystem {
+        hostname = "work";
+        username = "joey";
+        extraModules = [ ./hosts/work.nix ];
+      };
     };
   };
 }
