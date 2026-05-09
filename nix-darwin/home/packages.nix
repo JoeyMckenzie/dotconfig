@@ -14,5 +14,10 @@
     mailpit
     lazysql
     harlequin
+
+    # Nix tooling for nvim (LSP + linters)
+    nil
+    statix
+    deadnix
   ];
 }
