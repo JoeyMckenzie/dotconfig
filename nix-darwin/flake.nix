@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    claude-code.url = "github:sadjow/claude-code-nix";
 
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
@@ -20,17 +21,19 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, claude-code, ... }:
   let
     system = "aarch64-darwin";
 
@@ -39,6 +42,14 @@
         inherit system;
         specialArgs = { inherit inputs username hostname; };
         modules = [
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                claude-code =
+                  claude-code.packages.${system}.claude-code;
+              })
+            ];
+          }
           ./darwin
           home-manager.darwinModules.home-manager
           {

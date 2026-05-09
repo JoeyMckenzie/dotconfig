@@ -22,6 +22,19 @@
     };
   };
 
+  programs.claude-code = {
+    enable = true;
+    settings = {
+      hooks = {
+        PostToolUse = [{
+          matcher = "Edit|MultiEdit|Write";
+          type = "command";
+          command = "nix fmt $(jq -r '.tool_input.file_path' <<< '$CLAUDE_TOOL_INPUT')";
+        }];
+      };
+    };
+  };
+
   programs.broot = {
     enable = true;
     enableZshIntegration = true;
