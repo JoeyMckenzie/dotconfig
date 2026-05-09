@@ -49,11 +49,8 @@
         "$HOME/bin"
         "$HOME/.codeium/windsurf/bin"
         "$HOME/.opencode/bin"
-        "$HOME/.cargo/bin"
         "$HOME/go/bin"
         "$HOME/.composer/vendor/bin"
-        "$HOME/.luarocks/bin"
-        "$HOME/.bun/bin"
         "$HOME/.churn/bin"
       )
 
@@ -80,9 +77,6 @@
 
       # Worktrunk completions
       command -v wt >/dev/null 2>&1 && eval "$(command wt config shell init zsh)"
-
-      # Cargo / rustup env (kept until rustup is migrated to nix in Phase 4)
-      [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
     '';
   };
 

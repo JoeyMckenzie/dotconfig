@@ -8,6 +8,7 @@
     ./editors.nix
     ./terminal.nix
     ./tools.nix
+    ./languages.nix
   ];
 
   home.stateVersion = "24.11";
