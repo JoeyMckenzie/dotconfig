@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 {
-  home.stateVersion = "24.11";
-
   home.packages = with pkgs; [
     fd
     ripgrep
@@ -10,7 +8,8 @@
     bat
     eza
     jq
+    process-compose
+    gh
+    broot
   ];
-
-  programs.home-manager.enable = true;
 }

@@ -19,20 +19,21 @@
   let
     system = "aarch64-darwin";
 
-    mkSystem = { hostname, username }:
+    mkSystem = { hostname, username, extraModules ? [] }:
       nix-darwin.lib.darwinSystem {
         inherit system;
         specialArgs = { inherit inputs username hostname; };
         modules = [
-          ./darwin.nix
+          ./darwin
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-backup";
             home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.${username} = import ./home.nix;
+            home-manager.users.${username} = { imports = [ ./home ] ++ extraModules; };
           }
-        ];
+        ] ++ extraModules;
       };
   in
   {

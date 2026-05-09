@@ -13,7 +13,8 @@
 !zsh/**
 zsh/.zcompdump*
 zsh/.zshenv
-zsh/.zshenv
+zsh/.zshrc
+zsh/*.hm-backup
 zsh/.zsh_history
 zsh/.zsh_sessions
 
