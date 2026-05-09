@@ -69,9 +69,6 @@
         rm -f -- "$tmp"
       }
 
-      # Broot launcher (br function)
-      [ -r "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
-
       # Bun completions
       [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 

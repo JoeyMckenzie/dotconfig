@@ -10,6 +10,61 @@
     };
   };
 
+  programs.gh = {
+    enable = true;
+    settings = {
+      version = "1";
+      git_protocol = "https";
+      prompt = "enabled";
+      aliases = {
+        co = "pr checkout";
+      };
+    };
+  };
+
+  programs.broot = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      show_selection_mark = true;
+      verbs = [
+        {
+          invocation = "edit";
+          shortcut = "e";
+          key = "ctrl-e";
+          apply_to = "text_file";
+          execution = "$EDITOR {file}";
+          leave_broot = false;
+        }
+        {
+          invocation = "create {subpath}";
+          execution = "$EDITOR {directory}/{subpath}";
+          leave_broot = false;
+        }
+        {
+          invocation = "git_diff";
+          shortcut = "gd";
+          leave_broot = false;
+          execution = "git difftool -y {file}";
+        }
+        {
+          invocation = "backup {version}";
+          key = "ctrl-b";
+          leave_broot = false;
+          auto_exec = false;
+          execution = "cp -r {file} {parent}/{file-stem}-{version}{file-dot-extension}";
+        }
+        {
+          invocation = "terminal";
+          key = "ctrl-t";
+          execution = "$SHELL";
+          set_working_dir = true;
+          leave_broot = false;
+        }
+      ];
+    };
+  };
+
   programs.delta = {
     enable = true;
     enableGitIntegration = true;

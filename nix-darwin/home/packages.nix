@@ -9,8 +9,6 @@
     eza
     jq
     process-compose
-    gh
-    broot
     aspell
     glow
     mailpit
