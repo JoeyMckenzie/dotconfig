@@ -50,7 +50,7 @@
         {
           hostname,
           username,
-          extraModules ? [ ],
+          hostFile,
         }:
         nix-darwin.lib.darwinSystem {
           inherit system;
@@ -70,10 +70,9 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "hm-backup";
               home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.${username} = {
-                imports = [ ./home ] ++ extraModules;
-              };
+              home-manager.users.${username}.imports = [ ./home ];
             }
+            hostFile
           ];
         };
     in
@@ -84,12 +83,12 @@
         personal = mkSystem {
           hostname = "personal";
           username = "jmckenzie";
-          extraModules = [ ./hosts/personal.nix ];
+          hostFile = ./hosts/personal.nix;
         };
         work = mkSystem {
           hostname = "work";
           username = "joey";
-          extraModules = [ ./hosts/work.nix ];
+          hostFile = ./hosts/work.nix;
         };
       };
     };

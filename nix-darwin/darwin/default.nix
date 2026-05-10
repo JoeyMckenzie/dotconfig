@@ -10,6 +10,7 @@
     ./nix-settings.nix
     ./homebrew.nix
     ./system-defaults.nix
+    ./services.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

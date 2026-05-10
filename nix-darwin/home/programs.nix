@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   programs.git = {
@@ -107,13 +107,12 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
-    settings = { };
+    settings = lib.importTOML ./starship.toml;
   };
 
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
-    settings = { };
   };
 
   programs.zoxide = {

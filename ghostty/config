@@ -1,11 +1,1 @@
-####################
-####  Settings  ####
-####################
-
-font-family = "JetBrainsMono NFM Regular"
-background-opacity = 0.95
-theme = TokyoNight
-font-size = 12
-adjust-cell-height = 4
-window-padding-balance = true
-window-decoration = none
+/nix/store/8didwi7d10dcmf4gi63zg2rnc9hdjlql-home-manager-files/.config/ghostty/config

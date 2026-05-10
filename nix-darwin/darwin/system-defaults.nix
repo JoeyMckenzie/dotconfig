@@ -12,6 +12,8 @@
       tilesize = 48;
       expose-animation-duration = 0.1;
       orientation = "bottom";
+
+      wvous-br-corner = 2;
     };
 
     finder = {
@@ -33,6 +35,9 @@
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
       ApplePressAndHoldEnabled = false;
+
+      AppleInterfaceStyle = "Dark";
+      _HIHideMenuBar = true;
 
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;
@@ -60,6 +65,9 @@
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;
         DSDontWriteUSBStores = true;
+      };
+      "com.apple.AppleMultitouchTrackpad" = {
+        Clicking = 1;
       };
     };
   };

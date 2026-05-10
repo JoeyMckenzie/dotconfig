@@ -1,0 +1,11 @@
+####################
+####  Settings  ####
+####################
+
+font-family = "JetBrainsMono NFM Regular"
+background-opacity = 0.95
+theme = TokyoNight
+font-size = 12
+adjust-cell-height = 4
+window-padding-balance = true
+window-decoration = none

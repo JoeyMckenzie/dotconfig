@@ -14,6 +14,8 @@
     mailpit
     lazysql
     harlequin
+    claude-code
+    caddy
 
     # Nix tooling for nvim (LSP + linters)
     nil

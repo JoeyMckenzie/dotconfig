@@ -17,16 +17,13 @@
 
     sessionVariables = {
       XDG_CONFIG_HOME = "$HOME/.config";
-      STARSHIP_CONFIG = "$HOME/.config/starship/starship.toml";
       BUN_INSTALL = "$HOME/.bun";
     };
 
     shellAliases = {
       pa = "php artisan";
-      hpa = "herd php artisan";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
       sa = "./vendor/bin/sail";
-      sf = "php bin/console";
 
       wip = "git commit -am 'chore: wip' && git push";
       yeet = "git commit -am 'chore: wip' --no-verify && git push --no-verify";
@@ -38,6 +35,8 @@
 
       ls = "eza --icons --git --git-ignore";
       cat = "bat";
+
+      ccode = "claude";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
       devenv-kill = "$HOME/.config/devenv/bin/devenv-kill-orphans";
@@ -51,7 +50,6 @@
         "$HOME/.opencode/bin"
         "$HOME/go/bin"
         "$HOME/.composer/vendor/bin"
-        "$HOME/.churn/bin"
       )
 
       # Multi-arg commit functions (zsh aliases can't take positional args cleanly)
@@ -71,9 +69,6 @@
 
       # Bun completions
       [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-      # Worktrunk completions
-      command -v wt >/dev/null 2>&1 && eval "$(command wt config shell init zsh)"
     '';
   };
 
