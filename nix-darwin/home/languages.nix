@@ -7,5 +7,6 @@
     bun
     python313
     uv
+    php84
   ];
 }

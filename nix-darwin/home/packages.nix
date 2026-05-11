@@ -14,10 +14,12 @@
     mailpit
     lazysql
     harlequin
+    mysql84
+    redis
     claude-code
     caddy
+    devenv
 
-    # Nix tooling for nvim (LSP + linters)
     nil
     statix
     deadnix

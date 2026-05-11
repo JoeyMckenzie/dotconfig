@@ -124,4 +124,9 @@
     enable = true;
     enableZshIntegration = true;
   };
+
+  programs.worktrunk = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 }

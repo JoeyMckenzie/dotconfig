@@ -5,7 +5,7 @@
     ./packages.nix
     ./programs.nix
     ./shell.nix
-    ./editors.nix
+    ./neovim
     ./terminal.nix
     ./tools.nix
     ./languages.nix
