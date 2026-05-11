@@ -37,7 +37,7 @@
       ApplePressAndHoldEnabled = false;
 
       AppleInterfaceStyle = "Dark";
-      _HIHideMenuBar = true;
+      _HIHideMenuBar = false;
 
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;

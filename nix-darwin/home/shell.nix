@@ -34,6 +34,7 @@
       nv = "clear && nvim .";
 
       ls = "eza --icons --git --git-ignore";
+      ll = "eza -l --icons --git --git-ignore";
       cat = "bat";
 
       ccode = "claude";
