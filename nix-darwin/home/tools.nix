@@ -15,5 +15,6 @@
     enableZshIntegration = false;
   };
 
-  xdg.configFile."btop/btop.conf".source = ./btop.conf;
+  xdg.configFile."btop/btop.conf".source = ./config/btop.conf;
+  xdg.configFile."worktrunk/config.toml".source = ./config/worktrunk.toml;
 }

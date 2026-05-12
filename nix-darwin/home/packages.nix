@@ -10,6 +10,7 @@
     jq
     process-compose
     aspell
+    figlet
     glow
     mailpit
     lazysql
