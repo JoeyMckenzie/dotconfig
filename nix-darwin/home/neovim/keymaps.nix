@@ -153,6 +153,14 @@
       options.desc = "Format";
     }
 
+    # Lazygit (kdheepak/lazygit.nvim — needs lazygit on PATH via programs.lazygit)
+    {
+      mode = "n";
+      key = "<leader>gg";
+      action = "<cmd>LazyGit<cr>";
+      options.desc = "Lazygit";
+    }
+
     # Stay centered when scrolling
     {
       mode = "n";

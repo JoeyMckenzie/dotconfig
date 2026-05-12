@@ -14,4 +14,12 @@
       current_line_blame = false;
     };
   };
+
+  programs.nixvim.plugins.lazygit = {
+    enable = true;
+    settings = {
+      floating_window_scaling_factor = 0.95;
+      floating_window_winblend = 0;
+    };
+  };
 }
