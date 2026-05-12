@@ -49,14 +49,11 @@ in
       dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
       dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
 
-      -- Auto-load .vscode/launch.json from the project root so per-project
-      -- debug configs (Docker path mappings, multiple Xdebug ports, custom
-      -- envs) live alongside the project and are portable to VS Code.
-      pcall(function()
-        require("dap.ext.vscode").load_launchjs(nil, {
-          php = { "php" },
-        })
-      end)
+      -- .vscode/launch.json in the project root is now loaded automatically
+      -- on-demand by nvim-dap's provider system (see :h dap-providers) — no
+      -- explicit load_launchjs call needed. Per-project configs (Docker
+      -- pathMappings, multiple Xdebug ports, custom envs) drop into
+      -- .vscode/launch.json alongside the project and stay portable to VS Code.
     '';
 
     keymaps = [
