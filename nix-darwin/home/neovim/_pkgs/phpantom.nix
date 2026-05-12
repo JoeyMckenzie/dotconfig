@@ -22,11 +22,7 @@ let
 
   stubsTarball = fetchurl {
     url = "https://github.com/${owner}/${repo}/archive/${stubsLock.commit}.tar.gz";
-    hash = builtins.convertHash {
-      hash = stubsLock.sha256;
-      hashAlgo = "sha256";
-      toHashFormat = "sri";
-    };
+    sha256 = stubsLock.sha256;
   };
 
   stubsSrc = runCommand "phpstorm-stubs" { } ''
