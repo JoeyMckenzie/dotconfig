@@ -7,7 +7,11 @@
     plugins.blink-cmp = {
       enable = true;
       settings = {
-        keymap.preset = "default";
+        # "enter" maps <CR> to accept the selected item while keeping the
+        # default <C-y> accept, <C-n>/<C-p> nav, and <Tab>/<S-Tab> snippet
+        # jumps. With "default" (blink's literal default), <CR> isn't bound
+        # at all and falls through to a literal newline.
+        keymap.preset = "enter";
         completion = {
           accept.auto_brackets.enabled = true;
           documentation = {

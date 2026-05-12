@@ -6,6 +6,11 @@
       enable = true;
       settings = {
         notify_on_error = true;
+        # Prefer the project's local formatter binary (node_modules/.bin/prettier,
+        # node_modules/.bin/eslint_d, etc.) so the version pinned by the project
+        # wins over the Nix-store global. Falls back to PATH when the local
+        # binary doesn't exist.
+        prefer_local = "node_modules/.bin";
         default_format_opts = {
           lsp_format = "fallback";
         };

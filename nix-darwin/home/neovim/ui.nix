@@ -3,7 +3,7 @@
 {
   # Disable built-in netrw so it doesn't hijack directory buffers on launch —
   # otherwise `nvim .` lands in netrw's listing before our VimEnter autocmd
-  # can open mini.starter. neo-tree provides the file tree we actually want.
+  # can open mini.starter. mini.files is the explorer we actually want.
   programs.nixvim.globals = {
     loaded_netrw = 1;
     loaded_netrwPlugin = 1;
@@ -11,7 +11,9 @@
 
   # mini.starter's built-in autoopen only fires when nvim is launched with no
   # args. For `nvim .` we open it explicitly after wiping the directory buffer
-  # that nvim creates for the dir arg.
+  # that nvim creates for the dir arg. The MiniIndentscopeDisable autocmd
+  # suppresses the indent-scope guide in non-code filetypes (starter, files,
+  # help, etc.) — mirrors the old indent-blankline exclude list.
   programs.nixvim.extraConfigLua = ''
     vim.api.nvim_create_autocmd("VimEnter", {
       group = vim.api.nvim_create_augroup("StarterOnDirArg", { clear = true }),
@@ -25,76 +27,59 @@
         end)
       end,
     })
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("MiniIndentscopeDisable", { clear = true }),
+      pattern = {
+        "ministarter", "minifiles", "help", "lazy", "mason", "notify",
+        "lspinfo", "checkhealth", "man", "gitcommit",
+        "neotest-output", "neotest-output-panel", "neotest-summary", "",
+      },
+      callback = function() vim.b.miniindentscope_disable = true end,
+    })
   '';
 
   # Route vim.notify through mini.notify so LSP / plugin notifications render
-  # in floating windows. Must run after mini.notify.setup(), hence Post.
+  # in floating windows, and route vim.ui.select (used by code actions, etc.)
+  # through mini.pick. Must run after the respective setup() calls, hence Post.
+  # (The nvim-web-devicons shim is wired up via plugins.mini.mockDevIcons below.)
   programs.nixvim.extraConfigLuaPost = ''
     vim.notify = require("mini.notify").make_notify()
+    vim.ui.select = MiniPick.ui_select
   '';
 
   programs.nixvim.plugins = {
-    web-devicons.enable = true;
-
-    lualine = {
-      enable = true;
-      settings = {
-        options = {
-          theme = "tokyonight";
-          globalstatus = true;
-          section_separators = {
-            left = "";
-            right = "";
-          };
-          component_separators = {
-            left = "│";
-            right = "│";
-          };
-        };
-      };
-    };
-
-    bufferline = {
-      enable = true;
-      settings.options = {
-        diagnostics = "nvim_lsp";
-        always_show_bufferline = true;
-        show_buffer_close_icons = false;
-        show_close_icon = false;
-      };
-    };
-
-    which-key.enable = true;
-
-    neo-tree = {
-      enable = true;
-      settings = {
-        close_if_last_window = true;
-        filesystem = {
-          follow_current_file.enabled = true;
-          use_libuv_file_watcher = true;
-          hijack_netrw_behavior = "disabled";
-          filtered_items = {
-            hide_dotfiles = false;
-            hide_gitignored = true;
-          };
-        };
-        window = {
-          width = 35;
-          mappings = {
-            "<space>" = "none";
-          };
-        };
-      };
-    };
-
-    nvim-autopairs.enable = true;
-    comment.enable = true;
+    # todo-comments has no mini equivalent — highlights TODO/FIXME/HACK and
+    # provides :TodoTelescope-style listing (we use mini.pick for that now,
+    # via require("todo-comments.fzf") fallbacks aren't needed).
     todo-comments.enable = true;
 
     mini = {
       enable = true;
+      # Register mini.icons as the nvim-web-devicons provider. Keeps any
+      # plugin that still requires nvim-web-devicons happy (and prevents
+      # NixVim from auto-enabling the standalone plugins.web-devicons).
+      mockDevIcons = true;
       modules = {
+        # Icon provider. mini.tabline / mini.files / mini.pick consume it
+        # directly; anything that asks for nvim-web-devicons gets the shim
+        # via mockDevIcons.
+        icons = { };
+
+        # Miller-columns file explorer. Open with <leader>e (see keymaps.nix)
+        # or from the mini.starter "File explorer" item. Edit the buffer like
+        # text to rename/move/delete/create, then :write to sync.
+        #
+        # use_as_default_explorer = false so `nvim <dir>` doesn't hijack the
+        # directory buffer — we want mini.starter to render via the
+        # StarterOnDirArg autocmd above. Set to true if you'd rather land
+        # straight in the explorer when launching with a dir arg.
+        files = {
+          windows.preview = true;
+          mappings.go_in_plus = "<CR>";
+          options.use_as_default_explorer = false;
+        };
+
         # Floating-window notifications. vim.notify is rerouted in
         # extraConfigLuaPost so LSP / plugin messages render here instead of
         # the default :messages echo.
@@ -102,6 +87,169 @@
           lsp_progress.enable = true;
           window.winblend = 0;
         };
+
+        # Fuzzy picker (files, live grep, buffers, help, ...). Uses rg / fd /
+        # git ls-files automatically when present. vim.ui.select is rerouted
+        # to MiniPick.ui_select in extraConfigLuaPost so LSP code actions and
+        # other selection prompts go through it too.
+        pick = { };
+
+        # Extra pickers built on top of mini.pick: oldfiles, lsp (with
+        # scope=document_symbol / workspace_symbol / references / etc.),
+        # diagnostic, git_*, keymaps, marks, registers, treesitter, ...
+        # Accessed via MiniExtra.pickers.<name>().
+        extra = { };
+
+        # gcc to toggle line, gc{motion} for operator-pending. Replaces
+        # numToStr/Comment.nvim.
+        comment = { };
+
+        # Auto-insert closing brackets/quotes. Replaces nvim-autopairs.
+        pairs = { };
+
+        # sa{motion}{char} add, sd{char} delete, sr{old}{new} replace,
+        # sf/sF find, sh highlight, sn change n_lines. Operates on the
+        # `s` key prefix in normal mode (overrides built-in substitute,
+        # which is rarely used — use `cl` instead).
+        surround = { };
+
+        # Smarter text objects. Adds aq/iq (any quote), ab/ib (any
+        # bracket), af/if (function), aa/ia (argument), plus
+        # last/next variants (an(, il{, etc.).
+        ai = { };
+
+        # vim-unimpaired-style ]X / [X navigation. Provides ]b/[b
+        # (buffers), ]q/[q (quickfix), ]d/[d (diagnostics — overlaps
+        # our custom keymaps, mini's wins), ]j/[j (jumplist), ]c/[c
+        # (changelist), and ~15 more.
+        bracketed = { };
+
+        # Alt-h/j/k/l to move the current line (normal) or selection
+        # (visual). Indentation is preserved.
+        move = { };
+
+        # `:bdelete` replacement that keeps your window layout intact
+        # when deleting the last buffer in a window. Bound to <leader>bd
+        # in keymaps.nix.
+        bufremove = { };
+
+        # Replaces folke/which-key. Pops up a list of follow-up keys
+        # after a prefix. `gen_clues.*` adds nicely-labelled entries for
+        # built-in things (g-prefixed cmds, marks, registers, windows,
+        # z-folds, completion). Your own keymaps' `desc` fields show up
+        # automatically.
+        clue = {
+          triggers = [
+            {
+              mode = "n";
+              keys = "<Leader>";
+            }
+            {
+              mode = "x";
+              keys = "<Leader>";
+            }
+            {
+              mode = "i";
+              keys = "<C-x>";
+            }
+            {
+              mode = "n";
+              keys = "g";
+            }
+            {
+              mode = "x";
+              keys = "g";
+            }
+            {
+              mode = "n";
+              keys = "'";
+            }
+            {
+              mode = "n";
+              keys = "`";
+            }
+            {
+              mode = "x";
+              keys = "'";
+            }
+            {
+              mode = "x";
+              keys = "`";
+            }
+            {
+              mode = "n";
+              keys = "\"";
+            }
+            {
+              mode = "x";
+              keys = "\"";
+            }
+            {
+              mode = "i";
+              keys = "<C-r>";
+            }
+            {
+              mode = "c";
+              keys = "<C-r>";
+            }
+            {
+              mode = "n";
+              keys = "<C-w>";
+            }
+            {
+              mode = "n";
+              keys = "z";
+            }
+            {
+              mode = "x";
+              keys = "z";
+            }
+          ];
+          clues.__raw = ''
+            {
+              require("mini.clue").gen_clues.builtin_completion(),
+              require("mini.clue").gen_clues.g(),
+              require("mini.clue").gen_clues.marks(),
+              require("mini.clue").gen_clues.registers(),
+              require("mini.clue").gen_clues.windows(),
+              require("mini.clue").gen_clues.z(),
+            }
+          '';
+        };
+
+        # Replaces indent-blankline. Shows an animated guide for the
+        # *current* indent scope (not every level). Disabled for special
+        # filetypes via the MiniIndentscopeDisable autocmd in
+        # extraConfigLua above.
+        indentscope = {
+          symbol = "│";
+          options.try_as_border = true;
+        };
+
+        # Replaces akinsho/bufferline. Buffer list along the top with
+        # mini.icons-driven filetype icons.
+        tabline = { };
+
+        # Replaces nvim-lualine. Mode / git branch / diagnostics /
+        # filename / cursor pos. Plainer than lualine but coherent with
+        # the rest of mini.
+        statusline = { };
+
+        # Replaces lewis6991/gitsigns. Shows hunk signs in the gutter,
+        # provides `gh` text object + apply/reset operators, and
+        # `[h`/`]h` to jump between hunks (also via mini.bracketed).
+        diff = {
+          view.signs = {
+            add = "│";
+            change = "│";
+            delete = "_";
+          };
+        };
+
+        # Git wrapper — adds :Git command and tracks repo state for
+        # mini.statusline's branch component. Current-line blame via
+        # `MiniGit.show_at_cursor()`.
+        git = { };
 
         # Startup screen — opens automatically when nvim is launched without
         # args. Day-of-week banner + a small action menu. Navigate with arrow
@@ -191,22 +339,22 @@
                           return table.concat(lines, "\n")
                         end)
           '';
-          footer = "Have a nice day!";
+          footer = "Austin 3:16 says... I just whooped your ass!";
           items = [
             {
               name = "Find files";
-              action = "Telescope find_files";
-              section = "Telescope";
+              action = "lua MiniPick.builtin.files()";
+              section = "Pick";
             }
             {
               name = "Recent files";
-              action = "Telescope oldfiles";
-              section = "Telescope";
+              action = "lua MiniExtra.pickers.oldfiles()";
+              section = "Pick";
             }
             {
               name = "Live grep";
-              action = "Telescope live_grep";
-              section = "Telescope";
+              action = "lua MiniPick.builtin.grep_live()";
+              section = "Pick";
             }
             {
               name = "New file";
@@ -215,7 +363,7 @@
             }
             {
               name = "File explorer";
-              action = "Neotree toggle";
+              action = "lua MiniFiles.open()";
               section = "Builtin";
             }
             {
@@ -237,25 +385,6 @@
           '';
         };
       };
-    };
-
-    indent-blankline = {
-      enable = true;
-      settings.exclude.filetypes = [
-        "ministarter"
-        "neo-tree"
-        "help"
-        "lazy"
-        "mason"
-        "notify"
-        "TelescopePrompt"
-        "TelescopeResults"
-        "lspinfo"
-        "checkhealth"
-        "man"
-        "gitcommit"
-        ""
-      ];
     };
   };
 }

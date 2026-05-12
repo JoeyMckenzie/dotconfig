@@ -10,9 +10,10 @@
     ./treesitter.nix
     ./formatting.nix
     ./linting.nix
-    ./telescope.nix
     ./git.nix
     ./harpoon.nix
+    ./neotest.nix
+    ./dap.nix
   ];
 
   programs.nixvim = {

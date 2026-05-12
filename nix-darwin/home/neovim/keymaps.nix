@@ -15,53 +15,56 @@
       options.desc = "Quit";
     }
 
-    # Telescope
+    # Pick (mini.pick + mini.extra)
     {
       mode = "n";
       key = "<leader>ff";
-      action = "<cmd>Telescope find_files<cr>";
+      action = "<cmd>Pick files<cr>";
       options.desc = "Find files";
     }
     {
       mode = "n";
       key = "<leader>fF";
-      action = "<cmd>Telescope find_files hidden=true no_ignore=true<cr>";
+      # mini.pick.builtin.files has no hidden/no-ignore flags; drop to a raw
+      # rg invocation via builtin.cli that bypasses .gitignore and includes
+      # dotfiles (but still excludes .git/).
+      action = "<cmd>lua MiniPick.builtin.cli({ command = { 'rg', '--files', '--hidden', '--no-ignore', '--glob', '!.git' } }, { source = { name = 'Files (hidden + ignored)' } })<cr>";
       options.desc = "Find files (hidden + ignored)";
     }
     {
       mode = "n";
       key = "<leader>fg";
-      action = "<cmd>Telescope live_grep<cr>";
+      action = "<cmd>Pick grep_live<cr>";
       options.desc = "Live grep";
     }
     {
       mode = "n";
       key = "<leader>fb";
-      action = "<cmd>Telescope buffers<cr>";
+      action = "<cmd>Pick buffers<cr>";
       options.desc = "Buffers";
     }
     {
       mode = "n";
       key = "<leader>fr";
-      action = "<cmd>Telescope oldfiles<cr>";
+      action = "<cmd>Pick oldfiles<cr>";
       options.desc = "Recent files";
     }
     {
       mode = "n";
       key = "<leader>fh";
-      action = "<cmd>Telescope help_tags<cr>";
+      action = "<cmd>Pick help<cr>";
       options.desc = "Help tags";
     }
     {
       mode = "n";
       key = "<leader>fd";
-      action = "<cmd>Telescope diagnostics<cr>";
+      action = "<cmd>Pick diagnostic<cr>";
       options.desc = "Diagnostics";
     }
     {
       mode = "n";
       key = "<leader>fs";
-      action = "<cmd>Telescope lsp_document_symbols<cr>";
+      action = "<cmd>Pick lsp scope='document_symbol'<cr>";
       options.desc = "Document symbols";
     }
 
@@ -69,7 +72,7 @@
     {
       mode = "n";
       key = "<leader>e";
-      action = "<cmd>Neotree toggle<cr>";
+      action = "<cmd>lua if not MiniFiles.close() then MiniFiles.open() end<cr>";
       options.desc = "File explorer";
     }
 
@@ -111,7 +114,9 @@
     {
       mode = "n";
       key = "<leader>bd";
-      action = "<cmd>bdelete<cr>";
+      # MiniBufremove preserves window layout when deleting the last buffer
+      # in a window (plain :bdelete kills the window).
+      action = "<cmd>lua MiniBufremove.delete()<cr>";
       options.desc = "Delete buffer";
     }
 

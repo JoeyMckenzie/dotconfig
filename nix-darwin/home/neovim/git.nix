@@ -1,20 +1,8 @@
 { ... }:
 
 {
-  programs.nixvim.plugins.gitsigns = {
-    enable = true;
-    settings = {
-      signs = {
-        add.text = "│";
-        change.text = "│";
-        delete.text = "_";
-        topdelete.text = "‾";
-        changedelete.text = "~";
-      };
-      current_line_blame = false;
-    };
-  };
-
+  # gitsigns replaced by mini.diff (signs + hunk operators) and mini.git
+  # (status, branch info for mini.statusline) — see home/neovim/ui.nix.
   programs.nixvim.plugins.lazygit = {
     enable = true;
     settings = {
