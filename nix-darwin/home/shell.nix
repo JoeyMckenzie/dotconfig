@@ -20,6 +20,10 @@
       BUN_INSTALL = "$HOME/.bun";
     };
 
+    profileExtra = ''
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    '';
+
     shellAliases = {
       pa = "php artisan";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
