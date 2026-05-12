@@ -5,6 +5,5 @@
 
   homebrew.casks = [
     "slack"
-    "zoom"
   ];
 }
