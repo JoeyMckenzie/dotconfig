@@ -103,4 +103,23 @@ in
       StandardErrorPath = "/Users/${username}/Library/Logs/redis.err.log";
     };
   };
+
+  # Shared LaunchDarkly dev server (default port 8765). Worktrees point their
+  # SDKs at http://localhost:8765 instead of running their own copy. Auth and
+  # synced projects live in ~/.config/ldcli/config.yml — set the access token
+  # with `ldcli login` and add projects with `ldcli dev-server add-project
+  # <project-key>` before relying on this.
+  launchd.user.agents.ldcli = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.ldcli}/bin/ldcli"
+        "dev-server"
+        "start"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/ldcli.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/ldcli.err.log";
+    };
+  };
 }

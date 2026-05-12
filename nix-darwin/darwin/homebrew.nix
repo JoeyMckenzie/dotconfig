@@ -27,6 +27,11 @@
       "ghostty"
       "ngrok"
       "font-symbols-only-nerd-font"
+      "twingate"
+      "1password"
+      "notion"
+      "linear-linear"
+      "raycast"
     ];
 
     brews = [ ];

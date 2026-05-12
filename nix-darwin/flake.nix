@@ -84,6 +84,7 @@
                 rust-overlay.overlays.default
                 (final: prev: {
                   claude-code = claude-code.packages.${system}.claude-code;
+                  ldcli = final.callPackage ./home/_pkgs/ldcli.nix { };
                 })
               ];
             }
@@ -115,7 +116,7 @@
         };
         work = mkSystem {
           hostname = "work";
-          username = "joey";
+          username = "joeymckenzie";
           hostFile = ./hosts/work.nix;
         };
       };

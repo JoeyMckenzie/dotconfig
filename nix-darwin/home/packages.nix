@@ -20,8 +20,7 @@
     claude-code
     caddy
     devenv
-
-    (callPackage ./_pkgs/ldcli.nix { })
+    ldcli
 
     nil
     statix
