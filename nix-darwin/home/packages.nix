@@ -20,6 +20,8 @@
     caddy
     devenv
 
+    (callPackage ./_pkgs/ldcli.nix { })
+
     nil
     statix
     deadnix

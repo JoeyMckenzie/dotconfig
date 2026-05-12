@@ -46,7 +46,7 @@ in
 
   environment.etc."caddy/Caddyfile".text = ''
     {
-      email caddy@local
+      local_certs
     }
 
     import /Users/${username}/.config/caddy/sites/*.caddy

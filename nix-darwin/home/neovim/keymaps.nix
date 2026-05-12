@@ -153,14 +153,6 @@
       options.desc = "Format";
     }
 
-    # Lazygit (uses lazygit binary from home.packages)
-    {
-      mode = "n";
-      key = "<leader>gg";
-      action = "<cmd>terminal lazygit<cr>";
-      options.desc = "Lazygit";
-    }
-
     # Stay centered when scrolling
     {
       mode = "n";

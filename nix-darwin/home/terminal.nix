@@ -6,5 +6,5 @@
   ];
 
   xdg.configFile."zellij/config.kdl".source = ./zellij/config.kdl;
-  xdg.configFile."ghostty/config".source = ./ghostty/config;
+  home.file."Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
 }
