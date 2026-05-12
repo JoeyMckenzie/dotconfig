@@ -33,7 +33,9 @@
       pattern = {
         "ministarter", "minifiles", "help", "lazy", "mason", "notify",
         "lspinfo", "checkhealth", "man", "gitcommit",
-        "neotest-output", "neotest-output-panel", "neotest-summary", "",
+        "neotest-output", "neotest-output-panel", "neotest-summary",
+        "dap-repl", "dapui_scopes", "dapui_breakpoints", "dapui_stacks",
+        "dapui_watches", "dapui_console", "",
       },
       callback = function() vim.b.miniindentscope_disable = true end,
     })
