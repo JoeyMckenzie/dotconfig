@@ -8,17 +8,14 @@ let
 in
 {
   programs.nixvim = {
+    # nvim-dap-ui and nvim-dap-virtual-text used to live under
+    # plugins.dap.extensions.* but were promoted to top-level plugins in
+    # nixvim; they're now siblings of plugins.dap.
+    plugins.dap-ui.enable = true;
+    plugins.dap-virtual-text.enable = true;
+
     plugins.dap = {
       enable = true;
-
-      # Sidebar + REPL + scopes/watches windows that open automatically on
-      # `dap.continue()` (via the listeners registered in extraConfigLuaPost
-      # below). Inline virtual_text shows variable values next to assignments
-      # while paused.
-      extensions = {
-        dap-ui.enable = true;
-        dap-virtual-text.enable = true;
-      };
 
       adapters.executables.php = {
         command = "node";

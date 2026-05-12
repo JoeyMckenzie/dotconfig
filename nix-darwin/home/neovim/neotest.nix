@@ -6,13 +6,11 @@
       enable = true;
 
       # Adapters discover their runners automatically:
-      #   - vitest looks for ./node_modules/.bin/vitest (project-local install)
       #   - phpunit looks for ./vendor/bin/phpunit (project-local install)
-      # Both fall back to global if not present. Add more adapters here later
-      # (jest, pest, go, rspec, pytest, rust, ...) — each one is a single
-      # `.enable = true`.
+      # Falls back to global if not present. Add more adapters here later
+      # (jest, vitest, pest, go, rspec, pytest, rust, ...) — each one is a
+      # single `.enable = true`.
       adapters = {
-        vitest.enable = true;
         phpunit.enable = true;
       };
 
