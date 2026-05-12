@@ -46,7 +46,6 @@
       drs = "sudo darwin-rebuild switch --flake ~/.config/nix-darwin#personal";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
-      devenv-kill = "$HOME/.config/devenv/bin/devenv-kill-orphans";
     };
 
     initContent = ''

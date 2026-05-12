@@ -3,6 +3,7 @@
 {
   programs.git = {
     enable = true;
+    ignores = [ ".claude/settings.local.json" ];
     settings = {
       user.name = "Joey McKenzie";
       http.postBuffer = 1048576000;
@@ -97,6 +98,9 @@
     enable = true;
     nix-direnv.enable = true;
     enableZshIntegration = true;
+    stdlib = ''
+      eval "$(devenv direnvrc)"
+    '';
   };
 
   programs.fzf = {

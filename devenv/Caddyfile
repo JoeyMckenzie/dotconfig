@@ -1,5 +1,0 @@
-{
-	auto_https disable_redirects
-}
-
-import sites/*.caddy

@@ -1,27 +1,9 @@
-# Most of this directory is home-manager output: symlinks into /nix/store/
-# whose paths change on every rebuild. The source of truth lives in nix-darwin/.
-# devenv/ contains real hand-maintained files for the project devshell.
+# Everything in ~/.config/ is either home-manager output (symlinks into
+# /nix/store/, paths change every rebuild) or tool-generated runtime state.
+# The only source of truth that belongs in this repo is nix-darwin/.
 
 *
 !.gitignore
 !README.md
-!.mcp.json
-
-# Source of truth for the home-manager / nix-darwin build
 !nix-darwin/
 !nix-darwin/**
-
-# Hand-maintained devenv project source
-!devenv/
-!devenv/**
-
-# ...minus home-manager symlinks and devenv runtime state inside it
-devenv/.claude/settings.json
-devenv/.mcp.json
-devenv/.devenv/
-devenv/.direnv/
-devenv/.devenv.flake.nix
-devenv/sites/*.caddy
-!devenv/sites/example.caddy
-devenv/.DS_Store
-
