@@ -1,64 +1,27 @@
+# Most of this directory is home-manager output: symlinks into /nix/store/
+# whose paths change on every rebuild. The source of truth lives in nix-darwin/.
+# devenv/ contains real hand-maintained files for the project devshell.
+
 *
 !.gitignore
 !README.md
 !.mcp.json
 
-!tmux/
-!tmux/**
+# Source of truth for the home-manager / nix-darwin build
+!nix-darwin/
+!nix-darwin/**
 
-!nvim/
-!nvim/**
-
-!zsh/
-!zsh/**
-zsh/.zcompdump*
-zsh/.zshenv
-zsh/.zshrc
-zsh/*.hm-backup
-zsh/.zsh_history
-zsh/.zsh_sessions
-
-!ghostty/
-!ghostty/**
-
-!nushell/
-!nushell/**
-nushell/env.nu
-nushell/history.txt
-
-!starship/
-!starship/**
-
-!btop/
-!btop/**
-
-!zellij/
-!zellij/**
-
-!opencode/
-!opencode/**
-
-!worktrunk/
-!worktrunk/**
-worktrunk/approvals.toml
-worktrunk/approvals.toml.lock
-
-!lazygit/
-!lazygit/**
-
+# Hand-maintained devenv project source
 !devenv/
 !devenv/**
+# ...minus home-manager symlinks and devenv runtime state inside it
+devenv/.claude/settings.json
+devenv/.mcp.json
 devenv/.devenv/
 devenv/.direnv/
 devenv/.devenv.flake.nix
 devenv/sites/*.caddy
 !devenv/sites/example.caddy
 devenv/.DS_Store
-
-!nix/
-nix/nix.conf
-
-!nix-darwin/
-!nix-darwin/**
 
 /.worktrees
