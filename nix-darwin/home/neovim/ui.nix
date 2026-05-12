@@ -1,9 +1,16 @@
 { ... }:
 
 {
+  # Disable built-in netrw so it doesn't hijack directory buffers on launch —
+  # otherwise `nvim .` lands in netrw's listing before our VimEnter autocmd
+  # can swap in :Dashboard. neo-tree provides the file tree we actually want.
+  programs.nixvim.globals = {
+    loaded_netrw = 1;
+    loaded_netrwPlugin = 1;
+  };
+
   # Fire dashboard when nvim is launched with a directory argument (e.g. `nvim .`).
-  # Neo-tree hijacks the directory buffer on the left; we schedule :Dashboard
-  # into the right-hand window so both panes render together.
+  # Press `e` (or `<leader>e`) from the dashboard to open neo-tree as a side panel.
   programs.nixvim.extraConfigLua = ''
     vim.api.nvim_create_autocmd("VimEnter", {
       group = vim.api.nvim_create_augroup("DashboardOnDirArg", { clear = true }),
@@ -13,15 +20,7 @@
         if vim.fn.isdirectory(arg) ~= 1 then return end
 
         vim.schedule(function()
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-            if ft ~= "neo-tree" then
-              vim.api.nvim_set_current_win(win)
-              pcall(vim.cmd.Dashboard)
-              return
-            end
-          end
+          pcall(vim.cmd.Dashboard)
         end)
       end,
     })
@@ -67,6 +66,7 @@
         filesystem = {
           follow_current_file.enabled = true;
           use_libuv_file_watcher = true;
+          hijack_netrw_behavior = "disabled";
           filtered_items = {
             hide_dotfiles = false;
             hide_gitignored = true;
