@@ -30,7 +30,7 @@
       "twingate"
       "1password"
       "notion"
-      "linear-linear"
+      "linear"
       "raycast"
     ];
 

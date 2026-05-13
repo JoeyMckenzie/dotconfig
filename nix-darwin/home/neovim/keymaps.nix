@@ -165,6 +165,12 @@
       action = "<cmd>LazyGit<cr>";
       options.desc = "Lazygit";
     }
+    {
+      mode = "n";
+      key = "<leader>gb";
+      action = "<cmd>lua MiniGit.show_at_cursor()<cr>";
+      options.desc = "Git blame at cursor";
+    }
 
     # Stay centered when scrolling
     {

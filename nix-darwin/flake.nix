@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -79,6 +84,7 @@
           inherit system;
           specialArgs = { inherit inputs username hostname; };
           modules = [
+            inputs.lix-module.darwinModules.lixFromNixpkgs
             {
               nixpkgs.overlays = [
                 rust-overlay.overlays.default

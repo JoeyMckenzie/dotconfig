@@ -48,6 +48,56 @@
   programs.nixvim.extraConfigLuaPost = ''
     vim.notify = require("mini.notify").make_notify()
     vim.ui.select = MiniPick.ui_select
+
+    -- Dim gitignored entries in mini.files. Overrides `content.highlight`
+    -- (the function mini.files calls per-entry to pick a highlight group)
+    -- so ignored entries render with MiniFilesIgnored instead of fighting
+    -- mini's own name extmarks. Results are cached per directory, so we
+    -- only shell out to `git check-ignore` once per directory entered.
+    -- Swap the link target (e.g. NonText) if Comment isn't dim enough.
+    vim.api.nvim_set_hl(0, "MiniFilesIgnored", { link = "Comment", default = true })
+
+    local ignored_cache = {}
+
+    local function ignored_set(dir)
+      if ignored_cache[dir] ~= nil then return ignored_cache[dir] end
+      local ok, entries = pcall(vim.fn.readdir, dir)
+      if not ok or #entries == 0 then
+        ignored_cache[dir] = false
+        return false
+      end
+      local out = vim.fn.system(
+        { "git", "-C", dir, "check-ignore", "--stdin" },
+        table.concat(entries, "\n")
+      )
+      -- exit 0: some ignored, 1: none ignored, anything else (128) =
+      -- not a git repo / error -> bail and cache the miss.
+      if vim.v.shell_error ~= 0 and vim.v.shell_error ~= 1 then
+        ignored_cache[dir] = false
+        return false
+      end
+      local set = {}
+      for name in out:gmatch("[^\r\n]+") do set[name] = true end
+      ignored_cache[dir] = set
+      return set
+    end
+
+    MiniFiles.config.content = MiniFiles.config.content or {}
+    MiniFiles.config.content.highlight = function(fs_entry)
+      local set = ignored_set(vim.fn.fnamemodify(fs_entry.path, ":h"))
+      if set and set[fs_entry.name] then return "MiniFilesIgnored" end
+      return MiniFiles.default_highlight(fs_entry)
+    end
+
+    -- Invalidate the cache when mini.files mutates the filesystem.
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("MiniFilesGitignoreCache", { clear = true }),
+      pattern = {
+        "MiniFilesActionCreate", "MiniFilesActionDelete",
+        "MiniFilesActionRename", "MiniFilesActionMove", "MiniFilesActionCopy",
+      },
+      callback = function() ignored_cache = {} end,
+    })
   '';
 
   programs.nixvim.plugins = {

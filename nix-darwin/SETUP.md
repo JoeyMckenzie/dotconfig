@@ -99,16 +99,20 @@ ls /etc/resolver/test 2>/dev/null && \
 
 ---
 
-## Phase 3 — Install Lix
+## Phase 3 — Install Nix (bootstrap)
 
-Single command (matches the substituter the flake pins at `cache.lix.systems`):
+You need *some* Nix to evaluate the flake; the flake will swap it for Lix on
+the first switch. Use the Determinate/upstream installer — **do not** run the
+Lix installer here. nix-darwin manages `nix.package` and will overwrite a
+script-installed Lix on every rebuild, leaving you stuck on CppNix.
 
 ```bash
-curl -sSf -L https://install.lix.systems/lix | sh -s -- install
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-Accept defaults, including the multi-user daemon install. **Open a new
-terminal** so the Nix shell hooks load. Verify:
+Open a new terminal so the Nix shell hooks load. The flake pulls Lix in via
+`inputs.lix-module.darwinModules.lixFromNixpkgs`, so after Phase 4's first
+switch:
 
 ```bash
 nix --version   # → "nix (Lix, like Nix) 2.x.x"
