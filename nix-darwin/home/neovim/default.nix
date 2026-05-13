@@ -14,6 +14,7 @@
     ./harpoon.nix
     ./neotest.nix
     ./dap.nix
+    ./aerial.nix
   ];
 
   programs.nixvim = {

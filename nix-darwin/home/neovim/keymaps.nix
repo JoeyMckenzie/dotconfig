@@ -158,6 +158,26 @@
       options.desc = "Format";
     }
 
+    # Aerial symbol outline
+    {
+      mode = "n";
+      key = "<leader>cs";
+      action = "<cmd>AerialToggle!<cr>";
+      options.desc = "Symbol outline";
+    }
+    {
+      mode = "n";
+      key = "[s";
+      action = "<cmd>AerialPrev<cr>";
+      options.desc = "Prev symbol";
+    }
+    {
+      mode = "n";
+      key = "]s";
+      action = "<cmd>AerialNext<cr>";
+      options.desc = "Next symbol";
+    }
+
     # Lazygit (kdheepak/lazygit.nvim — needs lazygit on PATH via programs.lazygit)
     {
       mode = "n";
