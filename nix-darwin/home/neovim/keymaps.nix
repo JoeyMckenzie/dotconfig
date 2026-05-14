@@ -191,6 +191,15 @@
       action = "<cmd>lua MiniGit.show_at_cursor()<cr>";
       options.desc = "Git blame at cursor";
     }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
+      key = "<leader>gf";
+      action = "<cmd>lua MiniGit.show_range_history()<cr>";
+      options.desc = "Git file history";
+    }
 
     # Stay centered when scrolling
     {
