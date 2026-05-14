@@ -1,0 +1,13 @@
+layout {
+    pane split_direction="vertical" {
+        pane size="50%" command="nvim" {
+            args "."
+        }
+        pane size="50%" split_direction="horizontal" {
+            pane command="claude"
+            pane command="devenv" {
+                args "up"
+            }
+        }
+    }
+}
