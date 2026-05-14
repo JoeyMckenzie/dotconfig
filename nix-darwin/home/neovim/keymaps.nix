@@ -161,7 +161,7 @@
     # Aerial symbol outline
     {
       mode = "n";
-      key = "<leader>cs";
+      key = "<leader>co";
       action = "<cmd>AerialToggle!<cr>";
       options.desc = "Symbol outline";
     }

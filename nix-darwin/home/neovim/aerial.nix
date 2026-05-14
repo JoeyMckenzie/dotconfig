@@ -17,6 +17,8 @@
       # of opening a new one per window.
       attach_mode = "global";
 
+      autojump = false;
+
       # Close aerial when it's the only window left so `:q` from the
       # outline doesn't leave a stranded session.
       close_automatic_events = [ "unsupported" ];

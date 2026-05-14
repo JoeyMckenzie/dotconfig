@@ -43,7 +43,8 @@
 
       ccode = "claude";
 
-      drs = ''sudo darwin-rebuild switch --flake ~/.config/nix-darwin#$(scutil --get LocalHostName)'';
+      drs = "sudo darwin-rebuild switch --flake ~/.config/nix-darwin#$(scutil --get LocalHostName)";
+      dv = "devenv up";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
     };

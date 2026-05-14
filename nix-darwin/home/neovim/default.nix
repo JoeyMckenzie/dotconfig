@@ -15,6 +15,7 @@
     ./neotest.nix
     ./dap.nix
     ./aerial.nix
+    ./laravel.nix
   ];
 
   programs.nixvim = {

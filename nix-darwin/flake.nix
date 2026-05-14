@@ -32,6 +32,13 @@
       flake = false;
     };
 
+    # laravel.nvim isn't packaged in nixpkgs.vimPlugins; we build it ourselves
+    # via vimUtils.buildVimPlugin in home/neovim/_pkgs/laravel-nvim.nix.
+    laravel-nvim = {
+      url = "github:adalessa/laravel.nvim";
+      flake = false;
+    };
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";

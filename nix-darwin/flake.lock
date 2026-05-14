@@ -209,6 +209,22 @@
         "type": "github"
       }
     },
+    "laravel-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778566825,
+        "narHash": "sha256-yk7PfzocKLttQVj3cmnlbE0KbCVDqZrqqirg8KqGtfw=",
+        "owner": "adalessa",
+        "repo": "laravel.nvim",
+        "rev": "ec571a95d45a2e20ff8b38f0f2ea3f5da14c7ac5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "adalessa",
+        "repo": "laravel.nvim",
+        "type": "github"
+      }
+    },
     "lix": {
       "flake": false,
       "locked": {
@@ -376,6 +392,7 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "laravel-nvim": "laravel-nvim",
         "lix-module": "lix-module",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
