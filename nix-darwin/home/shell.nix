@@ -80,6 +80,8 @@
 
       # Bun completions
       [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+      [ -f "$HOME/.config/zsh/secrets.zsh" ] && source "$HOME/.config/zsh/secrets.zsh"
     '';
   };
 
