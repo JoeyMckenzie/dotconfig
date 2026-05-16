@@ -21,6 +21,7 @@
     caddy
     devenv
     ldcli
+    agent-browser
 
     nil
     statix

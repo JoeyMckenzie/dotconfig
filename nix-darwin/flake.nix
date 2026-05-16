@@ -98,6 +98,7 @@
                 (final: prev: {
                   claude-code = claude-code.packages.${system}.claude-code;
                   ldcli = final.callPackage ./home/_pkgs/ldcli.nix { };
+                  agent-browser = final.callPackage ./home/_pkgs/agent-browser.nix { };
                 })
               ];
             }
