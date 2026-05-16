@@ -38,11 +38,13 @@
       nv = "clear && nvim .";
 
       ls = "eza --icons --git --git-ignore";
+      la = "eza -al --icons --git --git-ignore";
       ll = "eza -l --icons --git --git-ignore";
       cat = "bat";
 
       ccode = "claude";
 
+      nds = "nh darwin switch ~/.config/nix-darwin";
       drs = "sudo darwin-rebuild switch --flake ~/.config/nix-darwin#$(scutil --get LocalHostName)";
       dv = "devenv";
       dvs = "devenv shell";

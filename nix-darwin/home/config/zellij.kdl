@@ -336,7 +336,7 @@ theme "tokyo-night-dark"
 // Default: "default"
 // (Requires restart)
 //
-// default_layout "compact"
+default_layout "worktree"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal

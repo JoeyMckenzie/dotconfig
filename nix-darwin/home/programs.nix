@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 {
   programs.git = {
@@ -132,5 +132,10 @@
   programs.worktrunk = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.nh = {
+    enable = true;
+    flake = "${config.home.homeDirectory}/.config/nix-darwin";
   };
 }
