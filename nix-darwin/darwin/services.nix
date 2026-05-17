@@ -31,6 +31,27 @@ let
       --save 60 1000 \
       --appendonly no
   '';
+
+  postgresPkg = pkgs.postgresql_17;
+  postgresDataDir = "/Users/${username}/.local/share/postgres";
+  postgresStart = pkgs.writeShellScript "postgres-start" ''
+    set -eu
+    DATADIR=${postgresDataDir}
+    mkdir -p "$DATADIR"
+    if [ ! -f "$DATADIR/PG_VERSION" ]; then
+      ${postgresPkg}/bin/initdb \
+        -D "$DATADIR" \
+        --no-locale \
+        --encoding=UTF8 \
+        -A trust \
+        -U ${username}
+    fi
+    exec ${postgresPkg}/bin/postgres \
+      -D "$DATADIR" \
+      -h 127.0.0.1 \
+      -p 5432 \
+      -k "$DATADIR"
+  '';
 in
 {
   services.dnsmasq = {
@@ -101,6 +122,16 @@ in
       KeepAlive = true;
       StandardOutPath = "/Users/${username}/Library/Logs/redis.out.log";
       StandardErrorPath = "/Users/${username}/Library/Logs/redis.err.log";
+    };
+  };
+
+  launchd.user.agents.postgres = {
+    serviceConfig = {
+      ProgramArguments = [ "${postgresStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/postgres.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/postgres.err.log";
     };
   };
 

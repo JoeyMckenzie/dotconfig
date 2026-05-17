@@ -44,8 +44,6 @@
 
       ccode = "claude";
 
-      nds = "nh darwin switch ~/.config/nix-darwin";
-      drs = "sudo darwin-rebuild switch --flake ~/.config/nix-darwin#$(scutil --get LocalHostName)";
       dv = "devenv";
       dvs = "devenv shell";
       dvu = "devenv up";
@@ -76,6 +74,51 @@
         IFS= read -r -d "" cwd < "$tmp"
         [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
         rm -f -- "$tmp"
+      }
+
+      # Post-rebuild health checks for nix-darwin launchd services
+      nix-health() {
+        local ok=$'\e[32m✓\e[0m'
+        local bad=$'\e[31m✗\e[0m'
+        local pending=$'\e[33m…\e[0m'
+
+        _nh_row() {
+          local scope=$1 label=$2 use_sudo=$3 out state pid
+          if [[ -n $use_sudo ]]; then
+            out=$(sudo -n launchctl print "$scope/$label" 2>/dev/null)
+          else
+            out=$(launchctl print "$scope/$label" 2>/dev/null)
+          fi
+          if [[ -z $out ]]; then
+            printf "  %s %-10s not loaded\n" "$bad" "$label"
+            return
+          fi
+          state=$(print -r -- "$out" | rg '^[[:space:]]+state = ' | head -1 | sed -E 's/^[[:space:]]+state = //')
+          pid=$(print -r -- "$out" | rg '^[[:space:]]+pid = ' | head -1 | awk '{print $3}')
+          [[ -z $state ]] && state=unknown
+          case $state in
+            running)               printf "  %s %-10s pid %s\n" "$ok" "$label" "$pid" ;;
+            *spawn*|waiting)       printf "  %s %-10s %s\n" "$pending" "$label" "$state" ;;
+            *)                     printf "  %s %-10s %s\n" "$bad" "$label" "$state" ;;
+          esac
+        }
+
+        print "\nservice health"
+        print "──────────────"
+        _nh_row system org.nixos.caddy sudo
+        _nh_row system org.nixos.dnsmasq sudo
+        for svc in mailpit mysql redis postgres ldcli; do
+          _nh_row "gui/$UID" "org.nixos.$svc" ""
+        done
+        print
+      }
+
+      drs() {
+        sudo darwin-rebuild switch --flake "$HOME/.config/nix-darwin#$(scutil --get LocalHostName)" && nix-health
+      }
+
+      nds() {
+        nh darwin switch "$HOME/.config/nix-darwin" && nix-health
       }
 
       # Bun completions
