@@ -76,6 +76,17 @@
         rm -f -- "$tmp"
       }
 
+      # Single source of truth for the nix-darwin launchd services we own.
+      # Passes (scope, label, use_sudo) to the callback for each service.
+      _nix_services_each() {
+        local fn=$1 svc
+        $fn system org.nixos.caddy sudo
+        $fn system org.nixos.dnsmasq sudo
+        for svc in mailpit mysql redis postgres ldcli; do
+          $fn "gui/$UID" "org.nixos.$svc" ""
+        done
+      }
+
       # Post-rebuild health checks for nix-darwin launchd services
       nix-health() {
         local ok=$'\e[32m✓\e[0m'
@@ -105,12 +116,35 @@
 
         print "\nservice health"
         print "──────────────"
-        _nh_row system org.nixos.caddy sudo
-        _nh_row system org.nixos.dnsmasq sudo
-        for svc in mailpit mysql redis postgres ldcli; do
-          _nh_row "gui/$UID" "org.nixos.$svc" ""
-        done
+        _nix_services_each _nh_row
         print
+      }
+
+      # Kickstart every managed launchd service, then show resulting health.
+      # Uses `launchctl kickstart -k` which kills the running instance (if any)
+      # and re-launches it.
+      nix-restart() {
+        local ok=$'\e[32m✓\e[0m'
+        local bad=$'\e[31m✗\e[0m'
+
+        _nr_kick() {
+          local scope=$1 label=$2 use_sudo=$3 rc
+          if [[ -n $use_sudo ]]; then
+            sudo launchctl kickstart -k "$scope/$label" >/dev/null 2>&1; rc=$?
+          else
+            launchctl kickstart -k "$scope/$label" >/dev/null 2>&1; rc=$?
+          fi
+          if (( rc == 0 )); then
+            printf "  %s %-10s restarted\n" "$ok" "$label"
+          else
+            printf "  %s %-10s kickstart failed (rc=%d)\n" "$bad" "$label" "$rc"
+          fi
+        }
+
+        print "\nrestarting services"
+        print "───────────────────"
+        _nix_services_each _nr_kick
+        nix-health
       }
 
       drs() {

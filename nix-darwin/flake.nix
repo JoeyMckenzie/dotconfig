@@ -99,6 +99,15 @@
                   claude-code = claude-code.packages.${system}.claude-code;
                   ldcli = final.callPackage ./home/_pkgs/ldcli.nix { };
                   agent-browser = final.callPackage ./home/_pkgs/agent-browser.nix { };
+                  # nixpkgs harlequin ships postgres + bigquery adapters but not
+                  # mysql, and harlequin-mysql isn't in nixpkgs at all. Build the
+                  # PyPI package locally and splice it into harlequin's deps so
+                  # `harlequin -a mysql` works after every darwin-rebuild.
+                  harlequin = prev.harlequin.overridePythonAttrs (old: {
+                    dependencies = old.dependencies ++ [
+                      (final.python3Packages.callPackage ./home/_pkgs/harlequin-mysql.nix { })
+                    ];
+                  });
                 })
               ];
             }
