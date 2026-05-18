@@ -24,6 +24,7 @@
     ldcli
     agent-browser
     prek
+    taskwarrior3
 
     nil
     statix
