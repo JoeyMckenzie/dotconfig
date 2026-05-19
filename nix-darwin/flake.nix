@@ -97,7 +97,6 @@
                 rust-overlay.overlays.default
                 (final: prev: {
                   claude-code = claude-code.packages.${system}.claude-code;
-                  ldcli = final.callPackage ./home/_pkgs/ldcli.nix { };
                   agent-browser = final.callPackage ./home/_pkgs/agent-browser.nix { };
                   # nixpkgs harlequin ships postgres + bigquery adapters but not
                   # mysql, and harlequin-mysql isn't in nixpkgs at all. Build the

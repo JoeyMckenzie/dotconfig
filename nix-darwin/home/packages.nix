@@ -21,7 +21,6 @@
     claude-code
     caddy
     devenv
-    ldcli
     agent-browser
     prek
     taskwarrior3

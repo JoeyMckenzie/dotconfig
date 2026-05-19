@@ -82,7 +82,7 @@
         local fn=$1 svc
         $fn system org.nixos.caddy sudo
         $fn system org.nixos.dnsmasq sudo
-        for svc in mailpit mysql redis postgres ldcli; do
+        for svc in mailpit mysql redis postgres; do
           $fn "gui/$UID" "org.nixos.$svc" ""
         done
       }

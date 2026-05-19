@@ -134,18 +134,4 @@ in
       StandardErrorPath = "/Users/${username}/Library/Logs/postgres.err.log";
     };
   };
-
-  launchd.user.agents.ldcli = {
-    serviceConfig = {
-      ProgramArguments = [
-        "${pkgs.ldcli}/bin/ldcli"
-        "dev-server"
-        "start"
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/ldcli.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/ldcli.err.log";
-    };
-  };
 }
