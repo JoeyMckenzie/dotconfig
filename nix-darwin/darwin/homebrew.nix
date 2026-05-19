@@ -32,6 +32,7 @@
       "notion"
       "linear"
       "raycast"
+      "zed"
     ];
 
     brews = [ ];
