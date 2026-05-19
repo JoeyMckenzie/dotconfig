@@ -147,12 +147,23 @@
         nix-health
       }
 
+      # Map $USER to the darwinConfigurations key in flake.nix.
+      # LocalHostName isn't reliable (DHCP can stamp it as MacBook-Pro-XXXX),
+      # but the flake configs are already differentiated by username.
+      _nix_host() {
+        case "$USER" in
+          jmckenzie)    print -r -- personal ;;
+          joeymckenzie) print -r -- work ;;
+          *)            print -r -- "$USER" ;;
+        esac
+      }
+
       drs() {
-        sudo darwin-rebuild switch --flake "$HOME/.config/nix-darwin#$(scutil --get LocalHostName)" && nix-health
+        sudo darwin-rebuild switch --flake "$HOME/.config/nix-darwin#$(_nix_host)" && nix-health
       }
 
       nds() {
-        nh darwin switch "$HOME/.config/nix-darwin" && nix-health
+        nh darwin switch "$HOME/.config/nix-darwin" -H "$(_nix_host)" && nix-health
       }
 
       # Bun completions

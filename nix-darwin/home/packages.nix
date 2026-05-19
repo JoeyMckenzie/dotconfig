@@ -21,7 +21,9 @@
     claude-code
     caddy
     devenv
+    (callPackage ./_pkgs/ldcli.nix { })
     agent-browser
+    graphite-cli
     prek
     taskwarrior3
 
