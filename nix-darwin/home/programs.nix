@@ -8,6 +8,7 @@
       user.name = "Joey McKenzie";
       http.postBuffer = 1048576000;
       merge.conflictStyle = "zdiff3";
+      init.defaultBranch = "main";
     };
   };
 
