@@ -22,6 +22,7 @@
     caddy
     devenv
     (callPackage ./_pkgs/ldcli.nix { })
+    (callPackage ./_pkgs/backlog.nix { })
     agent-browser
     graphite-cli
     prek
