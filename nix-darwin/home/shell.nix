@@ -82,7 +82,9 @@
         local fn=$1 svc
         $fn system org.nixos.caddy sudo
         $fn system org.nixos.dnsmasq sudo
-        for svc in mailpit mysql redis postgres minio; do
+        local svcs=(mailpit mysql redis postgres minio)
+        [[ "$(_nix_host)" == work ]] && svcs+=(opensearch)
+        for svc in "''${svcs[@]}"; do
           $fn "gui/$UID" "org.nixos.$svc" ""
         done
       }
@@ -92,6 +94,11 @@
         local ok=$'\e[32m✓\e[0m'
         local bad=$'\e[31m✗\e[0m'
         local pending=$'\e[33m…\e[0m'
+
+        # System daemons (caddy/dnsmasq) need sudo to query. Refresh the
+        # timestamp once up front so `sudo -n` inside _nh_row doesn't silently
+        # fail and falsely report them as "not loaded".
+        sudo -v
 
         _nh_row() {
           local scope=$1 label=$2 use_sudo=$3 out state pid
@@ -126,6 +133,10 @@
       nix-restart() {
         local ok=$'\e[32m✓\e[0m'
         local bad=$'\e[31m✗\e[0m'
+
+        # Refresh sudo once so kickstart prompts (if any) happen here rather
+        # than mid-output, and the trailing nix-health call doesn't re-prompt.
+        sudo -v
 
         _nr_kick() {
           local scope=$1 label=$2 use_sudo=$3 rc
