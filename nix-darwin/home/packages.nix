@@ -26,6 +26,8 @@
     graphite-cli
     prek
     taskwarrior3
+    sops
+    age
 
     nil
     statix
