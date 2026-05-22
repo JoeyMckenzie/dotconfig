@@ -5,6 +5,7 @@
     ./packages.nix
     ./programs.nix
     ./shell.nix
+    ./sops.nix
     ./neovim
     ./terminal.nix
     ./tools.nix

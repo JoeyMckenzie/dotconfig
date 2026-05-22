@@ -30,6 +30,44 @@ in
         astro.enable = true;
         marksman.enable = true;
         taplo.enable = true;
+        # Set enable = false to disable. Nixvim's module doesn't auto-discover
+        # `pkgs.intelephense` (post-nodePackages migration), so package is set
+        # explicitly. Setting any files.* clobbers intelephense's built-in
+        # `files.exclude` defaults — we MUST repeat them or it scans
+        # node_modules (~30k+ files on a Laravel project) and never finishes
+        # initial indexing.
+        intelephense = {
+          enable = true;
+          package = pkgs.intelephense;
+          settings = {
+            intelephense = {
+              files = {
+                maxSize = 5000000;
+                exclude = [
+                  "**/.git/**"
+                  "**/.svn/**"
+                  "**/.hg/**"
+                  "**/CVS/**"
+                  "**/.DS_Store/**"
+                  "**/node_modules/**"
+                  "**/bower_components/**"
+                  "**/vendor/**/{Tests,tests}/**"
+                  "**/.history/**"
+                  "**/vendor/**/vendor/**"
+                  "**/.devenv/**"
+                  "**/.direnv/**"
+                  "**/.phpstan/**"
+                ];
+              };
+              environment.includePaths = [
+                "vendor"
+                "_ide_helper.php"
+                "_ide_helper_models.php"
+                ".phpstorm.meta.php"
+              ];
+            };
+          };
+        };
       };
 
       keymaps = {
@@ -49,22 +87,23 @@ in
     extraPackages = [ phpantom ];
 
     extraConfigLua = ''
-      -- phpantom LSP (registered manually since it has no nixvim module)
-      -- Build full client capabilities so phpantom's pull-model diagnostics
-      -- (textDocument/diagnostic) are actually requested by the client.
-      local phpantom_caps = vim.lsp.protocol.make_client_capabilities()
-      local ok_blink, blink = pcall(require, 'blink.cmp')
-      if ok_blink and blink.get_lsp_capabilities then
-        phpantom_caps = blink.get_lsp_capabilities(phpantom_caps)
-      end
-
-      vim.lsp.config('phpantom', {
-        cmd = { '${phpantom}/bin/phpantom-lsp' },
-        filetypes = { 'php' },
-        root_markers = { 'composer.json', '.git' },
-        capabilities = phpantom_caps,
-      })
-      vim.lsp.enable('phpantom')
+      -- phpantom disabled: not yet ready for monorepo-sized codebases. To
+      -- switch back, uncomment the block below and set intelephense.enable
+      -- = false in the servers list above.
+      --
+      -- local phpantom_caps = vim.lsp.protocol.make_client_capabilities()
+      -- local ok_blink, blink = pcall(require, 'blink.cmp')
+      -- if ok_blink and blink.get_lsp_capabilities then
+      --   phpantom_caps = blink.get_lsp_capabilities(phpantom_caps)
+      -- end
+      --
+      -- vim.lsp.config('phpantom', {
+      --   cmd = { '${phpantom}/bin/phpantom-lsp' },
+      --   filetypes = { 'php' },
+      --   root_markers = { 'composer.json', '.git' },
+      --   capabilities = phpantom_caps,
+      -- })
+      -- vim.lsp.enable('phpantom')
 
       -- Disable inlay hints (kept from old config for PHP LSP compat)
       vim.lsp.inlay_hint.enable(false)

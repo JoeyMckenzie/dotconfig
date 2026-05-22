@@ -25,6 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # phpantom_lsp's deps need rustc 1.95+, newer than what nixpkgs ships.
     # We build it ourselves with rust-overlay providing the latest stable rustc.
     phpantom-lsp = {
@@ -93,6 +98,14 @@
           modules = [
             inputs.lix-module.darwinModules.lixFromNixpkgs
             {
+              # MinIO FOSS edition is in maintenance-only mode upstream and
+              # nixpkgs gates it on knownVulnerabilities. The listed CVEs all
+              # require internet-facing auth/replication/OIDC/LDAP — none of
+              # which apply to our 127.0.0.1-bound dev S3 instance.
+              nixpkgs.config.permittedInsecurePackages = [
+                "minio-2025-10-15T17-29-55Z"
+              ];
+
               nixpkgs.overlays = [
                 rust-overlay.overlays.default
                 (final: prev: {
@@ -120,6 +133,7 @@
               home-manager.users.${username}.imports = [
                 nixvim.homeModules.nixvim
                 inputs.worktrunk.homeModules.default
+                inputs.sops-nix.homeManagerModules.sops
                 ./home
               ];
             }

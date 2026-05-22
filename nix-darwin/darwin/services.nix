@@ -1,4 +1,10 @@
-{ pkgs, username, ... }:
+{
+  pkgs,
+  lib,
+  username,
+  hostname,
+  ...
+}:
 
 let
   mysqlPkg = pkgs.mysql84;
@@ -51,6 +57,60 @@ let
       -h 127.0.0.1 \
       -p 5432 \
       -k "$DATADIR"
+  '';
+
+  minioDataDir = "/Users/${username}/.local/share/minio";
+  minioStart = pkgs.writeShellScript "minio-start" ''
+    set -eu
+    DATADIR=${minioDataDir}
+    mkdir -p "$DATADIR"
+    export MINIO_ROOT_USER=minioadmin
+    export MINIO_ROOT_PASSWORD=minioadmin
+    exec ${pkgs.minio}/bin/minio server \
+      --address 127.0.0.1:9000 \
+      --console-address 127.0.0.1:9001 \
+      "$DATADIR"
+  '';
+
+  opensearchDataDir = "/Users/${username}/.local/share/opensearch";
+  opensearchStart = pkgs.writeShellScript "opensearch-start" ''
+    set -eu
+    DATADIR=${opensearchDataDir}
+    CONFDIR="$DATADIR/config"
+    mkdir -p "$DATADIR/data" "$DATADIR/logs"
+
+    # First-run: copy stock config tree so log4j2.properties etc exist
+    if [ ! -d "$CONFDIR" ]; then
+      cp -r ${pkgs.opensearch}/config "$CONFDIR"
+      chmod -R u+w "$CONFDIR"
+    fi
+
+    # Always overwrite opensearch.yml so dev config can't drift
+    cat > "$CONFDIR/opensearch.yml" <<EOF
+    cluster.name: dev
+    node.name: dev-node
+    network.host: 127.0.0.1
+    http.port: 9200
+    discovery.type: single-node
+    path.data: $DATADIR/data
+    path.logs: $DATADIR/logs
+    plugins.security.disabled: true
+    EOF
+
+    # The opensearch native wrapper chdir's to OPENSEARCH_HOME (read-only nix
+    # store) before launching the JVM, so the stock jvm.options' relative
+    # paths (logs/gc.log, data, logs/hs_err_pid*) fail. Regenerate from stock
+    # on every start with absolute paths under $DATADIR.
+    sed \
+      -e "s|HeapDumpPath=data|HeapDumpPath=$DATADIR/data|" \
+      -e "s|ErrorFile=logs/|ErrorFile=$DATADIR/logs/|" \
+      -e "s|file=logs/gc.log|file=$DATADIR/logs/gc.log|" \
+      -e "s|-Xloggc:logs/gc.log|-Xloggc:$DATADIR/logs/gc.log|" \
+      ${pkgs.opensearch}/config/jvm.options > "$CONFDIR/jvm.options"
+
+    export OPENSEARCH_PATH_CONF="$CONFDIR"
+    export OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx1g"
+    exec ${pkgs.opensearch}/bin/opensearch
   '';
 in
 {
@@ -132,6 +192,26 @@ in
       KeepAlive = true;
       StandardOutPath = "/Users/${username}/Library/Logs/postgres.out.log";
       StandardErrorPath = "/Users/${username}/Library/Logs/postgres.err.log";
+    };
+  };
+
+  launchd.user.agents.minio = {
+    serviceConfig = {
+      ProgramArguments = [ "${minioStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/minio.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/minio.err.log";
+    };
+  };
+
+  launchd.user.agents.opensearch = lib.mkIf (hostname == "work") {
+    serviceConfig = {
+      ProgramArguments = [ "${opensearchStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/opensearch.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/opensearch.err.log";
     };
   };
 }
