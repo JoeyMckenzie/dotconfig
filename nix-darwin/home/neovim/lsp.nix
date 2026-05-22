@@ -37,7 +37,28 @@ in
           package = pkgs.intelephense;
           settings = {
             intelephense = {
-              files.maxSize = 5000000;
+              files = {
+                maxSize = 5000000;
+                # Setting any files.* clobbers intelephense's built-in
+                # `files.exclude` defaults — we MUST repeat them or it scans
+                # node_modules (~30k+ files on a Laravel project) and never
+                # finishes initial indexing.
+                exclude = [
+                  "**/.git/**"
+                  "**/.svn/**"
+                  "**/.hg/**"
+                  "**/CVS/**"
+                  "**/.DS_Store/**"
+                  "**/node_modules/**"
+                  "**/bower_components/**"
+                  "**/vendor/**/{Tests,tests}/**"
+                  "**/.history/**"
+                  "**/vendor/**/vendor/**"
+                  "**/.devenv/**"
+                  "**/.direnv/**"
+                  "**/.phpstan/**"
+                ];
+              };
               environment.includePaths = [
                 "vendor"
                 "_ide_helper.php"
