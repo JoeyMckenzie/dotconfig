@@ -30,6 +30,23 @@ in
         astro.enable = true;
         marksman.enable = true;
         taplo.enable = true;
+        intelephense = {
+          enable = true;
+          # Nixvim's module doesn't know `pkgs.intelephense` lives at the top
+          # level (post-nodePackages migration). Point at it explicitly.
+          package = pkgs.intelephense;
+          settings = {
+            intelephense = {
+              files.maxSize = 5000000;
+              environment.includePaths = [
+                "vendor"
+                "_ide_helper.php"
+                "_ide_helper_models.php"
+                ".phpstorm.meta.php"
+              ];
+            };
+          };
+        };
       };
 
       keymaps = {
@@ -49,22 +66,23 @@ in
     extraPackages = [ phpantom ];
 
     extraConfigLua = ''
-      -- phpantom LSP (registered manually since it has no nixvim module)
-      -- Build full client capabilities so phpantom's pull-model diagnostics
-      -- (textDocument/diagnostic) are actually requested by the client.
-      local phpantom_caps = vim.lsp.protocol.make_client_capabilities()
-      local ok_blink, blink = pcall(require, 'blink.cmp')
-      if ok_blink and blink.get_lsp_capabilities then
-        phpantom_caps = blink.get_lsp_capabilities(phpantom_caps)
-      end
-
-      vim.lsp.config('phpantom', {
-        cmd = { '${phpantom}/bin/phpantom-lsp' },
-        filetypes = { 'php' },
-        root_markers = { 'composer.json', '.git' },
-        capabilities = phpantom_caps,
-      })
-      vim.lsp.enable('phpantom')
+      -- phpantom disabled: indexing latency was too high. Intelephense is
+      -- active via nixvim's LSP module above. To switch back, uncomment the
+      -- block below and disable intelephense in the servers list.
+      --
+      -- local phpantom_caps = vim.lsp.protocol.make_client_capabilities()
+      -- local ok_blink, blink = pcall(require, 'blink.cmp')
+      -- if ok_blink and blink.get_lsp_capabilities then
+      --   phpantom_caps = blink.get_lsp_capabilities(phpantom_caps)
+      -- end
+      --
+      -- vim.lsp.config('phpantom', {
+      --   cmd = { '${phpantom}/bin/phpantom-lsp' },
+      --   filetypes = { 'php' },
+      --   root_markers = { 'composer.json', '.git' },
+      --   capabilities = phpantom_caps,
+      -- })
+      -- vim.lsp.enable('phpantom')
 
       -- Disable inlay hints (kept from old config for PHP LSP compat)
       vim.lsp.inlay_hint.enable(false)
