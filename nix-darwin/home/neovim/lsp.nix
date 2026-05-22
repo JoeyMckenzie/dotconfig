@@ -30,19 +30,19 @@ in
         astro.enable = true;
         marksman.enable = true;
         taplo.enable = true;
+        # Set enable = false to disable. Nixvim's module doesn't auto-discover
+        # `pkgs.intelephense` (post-nodePackages migration), so package is set
+        # explicitly. Setting any files.* clobbers intelephense's built-in
+        # `files.exclude` defaults — we MUST repeat them or it scans
+        # node_modules (~30k+ files on a Laravel project) and never finishes
+        # initial indexing.
         intelephense = {
           enable = true;
-          # Nixvim's module doesn't know `pkgs.intelephense` lives at the top
-          # level (post-nodePackages migration). Point at it explicitly.
           package = pkgs.intelephense;
           settings = {
             intelephense = {
               files = {
                 maxSize = 5000000;
-                # Setting any files.* clobbers intelephense's built-in
-                # `files.exclude` defaults — we MUST repeat them or it scans
-                # node_modules (~30k+ files on a Laravel project) and never
-                # finishes initial indexing.
                 exclude = [
                   "**/.git/**"
                   "**/.svn/**"
@@ -87,9 +87,9 @@ in
     extraPackages = [ phpantom ];
 
     extraConfigLua = ''
-      -- phpantom disabled: indexing latency was too high. Intelephense is
-      -- active via nixvim's LSP module above. To switch back, uncomment the
-      -- block below and disable intelephense in the servers list.
+      -- phpantom disabled: not yet ready for monorepo-sized codebases. To
+      -- switch back, uncomment the block below and set intelephense.enable
+      -- = false in the servers list above.
       --
       -- local phpantom_caps = vim.lsp.protocol.make_client_capabilities()
       -- local ok_blink, blink = pcall(require, 'blink.cmp')
