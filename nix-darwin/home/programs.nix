@@ -34,7 +34,7 @@
             hooks = [
               {
                 type = "command";
-                command = ''p="$(jq -r '.tool_input.file_path')"; case "$p" in *.nix) nix fmt "$p" ;; esac'';
+                command = ''p="$(jq -r '.tool_input.file_path')"; case "$p" in *.nix) nixfmt "$p" ;; esac'';
               }
             ];
           }
