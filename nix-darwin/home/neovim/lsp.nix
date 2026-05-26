@@ -18,7 +18,11 @@ in
           installCargo = false;
           installRustc = false;
         };
-        nil_ls.enable = true;
+        # nixd over nil_ls: cross-file navigation (gd into ./imports, into
+        # nixpkgs sources, etc.) is what nil is weak at and nixd is built for.
+        # Keep `nil`, `statix`, `deadnix` in home.packages — those run as CLIs
+        # and are independent of which Nix LSP we use.
+        nixd.enable = true;
         lua_ls.enable = true;
         tailwindcss.enable = true;
         jsonls.enable = true;
