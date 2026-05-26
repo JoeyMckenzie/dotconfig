@@ -191,6 +191,11 @@ keybinds clear-defaults=true {
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
+        bind "Alt Shift l" {
+            Run "zellij" "action" "override-layout" "--apply-only-to-active-tab" "/Users/jmckenzie/.config/zellij/layouts/worktree.kdl" {
+                close_on_exit true
+            };
+        }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }

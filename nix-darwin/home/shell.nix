@@ -47,6 +47,7 @@
       dv = "devenv";
       dvs = "devenv shell";
       dvu = "devenv up";
+      dvt = "devenv test";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
     };
@@ -66,6 +67,19 @@
       gcy()  { git commit -am "$*" --no-verify; }
       gcp()  { git commit -am "$*" && git push; }
       gcpy() { git commit -am "$*" --no-verify && git push --no-verify; }
+
+      # Bootstrap a bare-clone worktree project from a git URL.
+      gcw() {
+        local url="$1" name
+        if [[ -z $url ]]; then
+          print -u2 "usage: gcw <git-clone-url>"
+          return 1
+        fi
+        name="''${url##*/}"
+        name="''${name%.git}"
+        mkdir -p "$name" && builtin cd "$name" || return 1
+        git clone --bare "$url" .git && wt switch main
+      }
 
       # Yazi with cwd-jump
       y() {

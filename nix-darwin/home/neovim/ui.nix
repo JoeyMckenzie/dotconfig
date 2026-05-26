@@ -144,7 +144,12 @@
         # git ls-files automatically when present. vim.ui.select is rerouted
         # to MiniPick.ui_select in extraConfigLuaPost so LSP code actions and
         # other selection prompts go through it too.
-        pick = { };
+        pick = {
+          mappings = {
+            move_down = "<C-j>";
+            move_up = "<C-k>";
+          };
+        };
 
         # Extra pickers built on top of mini.pick: oldfiles, lsp (with
         # scope=document_symbol / workspace_symbol / references / etc.),

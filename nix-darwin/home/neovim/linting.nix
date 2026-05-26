@@ -5,7 +5,10 @@
     plugins.lint = {
       enable = true;
       lintersByFt = {
-        php = [ "phpstan" ];
+        php = [
+          "phpstan"
+          "mago_lint"
+        ];
         javascript = [ "eslint" ];
         javascriptreact = [ "eslint" ];
         typescript = [ "eslint" ];
@@ -35,6 +38,7 @@
 
     extraPackages = with pkgs; [
       phpstan
+      mago
       eslint_d
       statix
       deadnix

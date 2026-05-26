@@ -27,6 +27,7 @@
     graphite-cli
     prek
     taskwarrior3
+    rdap
     sops
     age
 
