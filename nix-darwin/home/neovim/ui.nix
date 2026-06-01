@@ -396,7 +396,33 @@
                           return table.concat(lines, "\n")
                         end)
           '';
-          footer = "Austin 3:16 says... I just whooped your ass!";
+          footer.__raw = ''
+                        (function()
+                          math.randomseed(os.time())
+                          local quotes = {
+                            "Austin 3:16 says... I just whooped your ass! — Stone Cold",
+                            "And that's the bottom line, 'cause Stone Cold said so! — Stone Cold",
+                            "If you smell what The Rock is cookin'! — The Rock",
+                            "It doesn't matter what you think! — The Rock",
+                            "Know your role and shut your mouth! — The Rock",
+                            "Whatcha gonna do, brother, when Hulkamania runs wild on you?! — Hulk Hogan",
+                            "To be the man, you gotta beat the man! Wooo! — Ric Flair",
+                            "Oooh yeah, dig it! — Macho Man Randy Savage",
+                            "The cream rises to the top! — Macho Man Randy Savage",
+                            "Rest in peace. — The Undertaker",
+                            "Are you ready?! — Triple H",
+                            "It's time to play the game! — Triple H",
+                            "Have a nice day! — Mick Foley",
+                            "I lie, I cheat, I steal! — Eddie Guerrero",
+                            "Bah Gawd! Business is about to pick up! — Jim Ross",
+                            "The best in the world. — CM Punk",
+                            "The best there is, the best there was, and the best there ever will be. — Bret Hart",
+                            "You can't see me! — John Cena",
+                            "Nobody does it better than Mr. Perfect. — Mr. Perfect",
+                          }
+                          return quotes[math.random(#quotes)]
+                        end)
+          '';
           items = [
             {
               name = "Find files";
