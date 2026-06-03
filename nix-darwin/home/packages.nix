@@ -8,6 +8,7 @@
     bat
     eza
     jq
+    hurl
     process-compose
     aspell
     figlet
