@@ -50,6 +50,8 @@
       dvt = "devenv test";
 
       devenv-orphans = ''ps -axo pid,ppid,command | rg -v "claude|rg" | awk "\$2==1 && /vite|php artisan|redis-server|caddy|mailpit/ {print}"'';
+
+      caddy-reload = "sudo caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile";
     };
 
     initContent = ''
