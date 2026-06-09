@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   programs = {
@@ -15,6 +15,7 @@
 
     gh = {
       enable = true;
+      extensions = [ pkgs.gh-dash ];
       settings = {
         version = "1";
         git_protocol = "https";

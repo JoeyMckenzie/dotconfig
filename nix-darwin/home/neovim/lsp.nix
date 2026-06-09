@@ -34,6 +34,10 @@ in
         astro.enable = true;
         marksman.enable = true;
         taplo.enable = true;
+        cucumber_language_server = {
+          enable = true;
+          package = pkgs.callPackage ./_pkgs/cucumber-language-server.nix { };
+        };
         # Set enable = false to disable. Nixvim's module doesn't auto-discover
         # `pkgs.intelephense` (post-nodePackages migration), so package is set
         # explicitly. Setting any files.* clobbers intelephense's built-in

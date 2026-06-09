@@ -13,6 +13,8 @@
     aspell
     figlet
     glow
+    gum
+    vhs
     mailpit
     lazysql
     harlequin
@@ -21,7 +23,6 @@
     redis
     claude-code
     opencode
-    gh-dash
     caddy
     devenv
     (callPackage ./_pkgs/ldcli.nix { })
@@ -35,6 +36,7 @@
     age
 
     nil
+    nixfmt-rfc-style
     statix
     deadnix
 
