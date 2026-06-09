@@ -20,6 +20,8 @@
     postgresql_17
     redis
     claude-code
+    opencode
+    gh-dash
     caddy
     devenv
     (callPackage ./_pkgs/ldcli.nix { })

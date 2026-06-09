@@ -11,6 +11,7 @@
     ./formatting.nix
     ./linting.nix
     ./git.nix
+    ./octo.nix
     ./harpoon.nix
     ./neotest.nix
     ./dap.nix
