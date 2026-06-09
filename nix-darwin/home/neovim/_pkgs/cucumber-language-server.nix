@@ -11,7 +11,7 @@
 # correct values. Paste them back in.
 buildNpmPackage rec {
   pname = "cucumber-language-server";
-  version = "1.10.1";
+  version = "1.7.0";
 
   src = fetchFromGitHub {
     owner = "cucumber";
