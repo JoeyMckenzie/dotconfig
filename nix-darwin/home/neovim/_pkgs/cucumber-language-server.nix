@@ -17,10 +17,18 @@ buildNpmPackage rec {
     owner = "cucumber";
     repo = "language-server";
     rev = "v${version}";
-    hash = lib.fakeHash;
+    hash = "sha256-GGPajuy1pOidi7Ux+i7CfLjsRT7vsLQRj1IzTXBWPQY=";
   };
 
-  npmDepsHash = lib.fakeHash;
+  npmDepsHash = "sha256-sjoj7OLZcvFf0g/6kjhWgt/bUNKbbvYqBszNDYHxf4A=";
+
+  # tree-sitter-cli is an optional transitive dep with a postinstall that
+  # downloads a prebuilt binary from GitHub releases — blocked in the Nix
+  # sandbox. It's only used as a dev CLI for grammar work, not at LSP
+  # runtime, so skip install/rebuild scripts. The build phase still runs
+  # `npm run build` normally.
+  npmInstallFlags = [ "--ignore-scripts" ];
+  npmRebuildFlags = [ "--ignore-scripts" ];
 
   dontNpmBuild = false;
 

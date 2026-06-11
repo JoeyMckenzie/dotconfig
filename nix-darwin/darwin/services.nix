@@ -72,6 +72,43 @@ let
       "$DATADIR"
   '';
 
+  opensearchDashboardsPrefix = "/opt/homebrew/opt/opensearch-dashboards";
+  opensearchDashboardsDataDir = "/Users/${username}/.local/share/opensearch-dashboards";
+  opensearchDashboardsStart = pkgs.writeShellScript "opensearch-dashboards-start" ''
+    set -eu
+    DATADIR=${opensearchDashboardsDataDir}
+    CONFDIR="$DATADIR/config"
+    mkdir -p "$CONFDIR" "$DATADIR/data" "$DATADIR/logs"
+
+    # Always overwrite so dev config can't drift
+    cat > "$CONFDIR/opensearch_dashboards.yml" <<EOF
+    server.port: 5601
+    server.host: "127.0.0.1"
+    opensearch.hosts: ["http://127.0.0.1:9200"]
+    opensearch.ssl.verificationMode: none
+    path.data: $DATADIR/data
+    EOF
+
+    # Dashboards bundles the security plugin; our opensearch runs with security
+    # disabled, so dashboards refuses to start until the plugin is removed.
+    PLUGIN_DIR=${opensearchDashboardsPrefix}/libexec/plugins/securityDashboards
+    PLUGIN_BIN=${opensearchDashboardsPrefix}/libexec/bin/opensearch-dashboards-plugin
+    if [ -d "$PLUGIN_DIR" ] && [ -x "$PLUGIN_BIN" ]; then
+      "$PLUGIN_BIN" remove securityDashboards || true
+    fi
+
+    # Wait for opensearch to come up before launching
+    for _ in $(seq 1 60); do
+      if ${pkgs.curl}/bin/curl -sf http://127.0.0.1:9200 >/dev/null; then
+        break
+      fi
+      sleep 2
+    done
+
+    exec ${opensearchDashboardsPrefix}/bin/opensearch-dashboards \
+      --config "$CONFDIR/opensearch_dashboards.yml"
+  '';
+
   opensearchDataDir = "/Users/${username}/.local/share/opensearch";
   opensearchStart = pkgs.writeShellScript "opensearch-start" ''
     set -eu
@@ -212,6 +249,16 @@ in
       KeepAlive = true;
       StandardOutPath = "/Users/${username}/Library/Logs/opensearch.out.log";
       StandardErrorPath = "/Users/${username}/Library/Logs/opensearch.err.log";
+    };
+  };
+
+  launchd.user.agents.opensearch-dashboards = lib.mkIf (hostname == "work") {
+    serviceConfig = {
+      ProgramArguments = [ "${opensearchDashboardsStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/opensearch-dashboards.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/opensearch-dashboards.err.log";
     };
   };
 }

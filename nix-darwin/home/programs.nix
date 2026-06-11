@@ -13,6 +13,19 @@
       };
     };
 
+    difftastic = {
+      enable = true;
+      options = {
+        background = "dark";
+        display = "inline";
+        color = "always";
+      };
+      git = {
+        enable = true;
+        diffToolMode = true;
+      };
+    };
+
     gh = {
       enable = true;
       extensions = [ pkgs.gh-dash ];
@@ -85,15 +98,6 @@
             leave_broot = false;
           }
         ];
-      };
-    };
-
-    delta = {
-      enable = true;
-      enableGitIntegration = true;
-      options = {
-        navigate = true;
-        dark = true;
       };
     };
 

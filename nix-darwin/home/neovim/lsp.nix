@@ -34,9 +34,24 @@ in
         astro.enable = true;
         marksman.enable = true;
         taplo.enable = true;
+        # Default `glue` patterns only cover JS/TS — extend to PHP/Behat
+        # locations so step definitions in Laravel projects resolve. Adjust
+        # `features` / `glue` per-project via `.nvim.lua` if you stray from
+        # conventional Behat layout.
         cucumber_language_server = {
           enable = true;
           package = pkgs.callPackage ./_pkgs/cucumber-language-server.nix { };
+          settings = {
+            cucumber = {
+              features = [
+                "tests/Behat/Features/**/*.feature"
+              ];
+              glue = [
+                "tests/Behat/Contexts/**/*.php"
+                "tests/Behat/Support/**/*.php"
+              ];
+            };
+          };
         };
         # Set enable = false to disable. Nixvim's module doesn't auto-discover
         # `pkgs.intelephense` (post-nodePackages migration), so package is set
@@ -112,6 +127,14 @@ in
       --   capabilities = phpantom_caps,
       -- })
       -- vim.lsp.enable('phpantom')
+
+      -- In a monorepo, `.git` lives above the Laravel app, so the default
+      -- root resolution lands at the monorepo root and the relative
+      -- `features` / `glue` globs match nothing. Pin the cucumber server's
+      -- root to the nearest Behat/Composer project instead.
+      vim.lsp.config('cucumber_language_server', {
+        root_markers = { 'behat.yml', 'behat.yaml', 'behat.yml.dist', 'composer.json', '.git' },
+      })
 
       -- Disable inlay hints (kept from old config for PHP LSP compat)
       vim.lsp.inlay_hint.enable(false)

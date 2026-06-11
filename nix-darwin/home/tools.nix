@@ -5,7 +5,12 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      git.pagers = [ { colorArg = "always"; } ];
+      git.pagers = [
+        {
+          colorArg = "always";
+          externalDiffCommand = "difft --color=always --display=inline";
+        }
+      ];
     };
   };
   programs.lazydocker.enable = true;

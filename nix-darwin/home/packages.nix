@@ -18,6 +18,8 @@
     mailpit
     lazysql
     harlequin
+    visidata
+    csvlens
     mysql84
     postgresql_17
     redis
