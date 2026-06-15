@@ -16,5 +16,14 @@
     secrets."lazysql-config" = {
       path = "${config.home.homeDirectory}/.config/lazysql/config.toml";
     };
+
+    secrets."anthropic-api-key" = { };
+
+    templates."secrets.zsh" = {
+      path = "${config.home.homeDirectory}/.config/zsh/secrets.zsh";
+      content = ''
+        export ANTHROPIC_API_KEY=${config.sops.placeholder."anthropic-api-key"}
+      '';
+    };
   };
 }
