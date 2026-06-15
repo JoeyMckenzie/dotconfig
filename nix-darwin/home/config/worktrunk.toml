@@ -1,5 +1,24 @@
 worktree-path = "{{ repo_path }}/../{{ branch | sanitize }}"
 
+# Bootstrap the givebutter monorepo's personal nix/devenv setup into each new
+# worktree. The bundle is version-controlled in the churnix repo and excluded
+# from the monorepo's git via .git/info/exclude, so it never lands in a PR.
+# As a user hook it runs before any per-repo .config/wt.toml hooks, which is
+# what lets it materialize that wt.toml (and run direnv) on a fresh worktree.
+# Guarded by path so it only fires for givebutter-monorepo worktrees. rsync
+# overlays the bundle (no --delete) so it never touches the git checkout.
+[post-start]
+nix-bootstrap = """
+case "{{ worktree_path }}" in
+  */givebutter-monorepo/*)
+    rsync -a --exclude='.devenv/' --exclude='.direnv/' \
+      "$HOME/code/github.com/givebutter/churnix/monorepo/" \
+      "{{ worktree_path }}/"
+    ( cd "{{ worktree_path }}" && direnv allow )
+    ;;
+esac
+"""
+
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
