@@ -19,7 +19,6 @@
         background = "dark";
         display = "inline";
         color = "always";
-        context = 9999;
       };
       git = {
         enable = true;

@@ -8,7 +8,7 @@
       git.pagers = [
         {
           colorArg = "always";
-          externalDiffCommand = "difft --color=always --display=inline --context=9999";
+          externalDiffCommand = "difft --color=always --display=inline";
         }
       ];
     };
