@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 {
   # gitsigns replaced by mini.diff (signs + hunk operators) and mini.git

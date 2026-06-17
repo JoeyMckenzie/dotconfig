@@ -25,6 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -73,18 +78,27 @@
 
   outputs =
     inputs@{
-      self,
       nixpkgs,
       nix-darwin,
       home-manager,
       claude-code,
       nixvim,
       rust-overlay,
+      git-hooks,
       ...
     }:
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      preCommitCheck = git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixfmt-rfc-style.enable = true;
+          statix.enable = true;
+          deadnix.enable = true;
+        };
+      };
 
       mkSystem =
         {
@@ -143,6 +157,13 @@
     in
     {
       formatter.${system} = pkgs.nixfmt;
+
+      checks.${system}.pre-commit-check = preCommitCheck;
+
+      devShells.${system}.default = pkgs.mkShell {
+        inherit (preCommitCheck) shellHook;
+        buildInputs = preCommitCheck.enabledPackages;
+      };
 
       darwinConfigurations = {
         personal = mkSystem {

@@ -22,7 +22,7 @@ let
 
   stubsTarball = fetchurl {
     url = "https://github.com/${owner}/${repo}/archive/${stubsLock.commit}.tar.gz";
-    sha256 = stubsLock.sha256;
+    inherit (stubsLock) sha256;
   };
 
   stubsSrc = runCommand "phpstorm-stubs" { } ''
@@ -32,7 +32,7 @@ let
 in
 rustPlatform.buildRustPackage {
   pname = manifest.name;
-  version = manifest.version;
+  inherit (manifest) version;
 
   src = lib.cleanSource src;
   cargoLock.lockFile = "${src}/Cargo.lock";
