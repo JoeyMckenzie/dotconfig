@@ -109,6 +109,34 @@ let
       --config "$CONFDIR/opensearch_dashboards.yml"
   '';
 
+  ollamaHost = "127.0.0.1:11434";
+  ollamaModels = [
+    "gemma4:e4b"
+    "qwen3.5:9b"
+    "mistral:7b"
+  ];
+
+  ollamaStart = pkgs.writeShellScript "ollama-start" ''
+    set -eu
+    export OLLAMA_HOST=${ollamaHost}
+    exec ${pkgs.ollama}/bin/ollama serve
+  '';
+  # One-shot: wait for the server, then pull the example models. ollama pull
+  # is idempotent, so this is a no-op on rebuilds once the models are present.
+  ollamaPull = pkgs.writeShellScript "ollama-pull" ''
+    set -eu
+    export OLLAMA_HOST=${ollamaHost}
+    for _ in $(seq 1 60); do
+      if ${pkgs.curl}/bin/curl -sf http://${ollamaHost}/api/tags >/dev/null; then
+        break
+      fi
+      sleep 1
+    done
+    for model in ${lib.concatStringsSep " " ollamaModels}; do
+      ${pkgs.ollama}/bin/ollama pull "$model"
+    done
+  '';
+
   opensearchDataDir = "/Users/${username}/.local/share/opensearch";
   opensearchStart = pkgs.writeShellScript "opensearch-start" ''
     set -eu
@@ -239,6 +267,26 @@ in
       KeepAlive = true;
       StandardOutPath = "/Users/${username}/Library/Logs/minio.out.log";
       StandardErrorPath = "/Users/${username}/Library/Logs/minio.err.log";
+    };
+  };
+
+  launchd.user.agents.ollama = lib.mkIf (hostname == "personal") {
+    serviceConfig = {
+      ProgramArguments = [ "${ollamaStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/ollama.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/ollama.err.log";
+    };
+  };
+
+  launchd.user.agents.ollama-pull = lib.mkIf (hostname == "personal") {
+    serviceConfig = {
+      ProgramArguments = [ "${ollamaPull}" ];
+      RunAtLoad = true;
+      KeepAlive = false;
+      StandardOutPath = "/Users/${username}/Library/Logs/ollama-pull.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/ollama-pull.err.log";
     };
   };
 

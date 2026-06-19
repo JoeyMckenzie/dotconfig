@@ -1,7 +1,9 @@
 keys:
   - &joeymckenzie_work age1hshzjs8wawtzfppcuejn34t4qeyfncqpww0asawqpggn94c9j9ks4p2zr4
+  - &joeymckenzie_personal age108k8u87cv5jxzd93d53mzt20lxwsaqw0z7xn3ycuuse3y58gk5esuxspvs
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
       - age:
           - *joeymckenzie_work
+          - *joeymckenzie_personal

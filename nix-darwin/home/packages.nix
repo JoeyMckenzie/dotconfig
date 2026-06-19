@@ -23,6 +23,7 @@
     mysql84
     postgresql_17
     redis
+    ollama
     claude-code
     opencode
     caddy
