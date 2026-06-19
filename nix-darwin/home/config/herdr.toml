@@ -1,6 +1,29 @@
+[terminal]
+default_shell = "zsh"
+new_cwd = "follow"
+
 [ui]
 agent_panel_sort = "priority"
+
+[ui.toast]
+delivery = "system"
+delay_seconds = 1
+
+[session]
+resume_agents_on_restore = true
 
 [theme]
 name = "tokyo-night"
 auto_switch = false
+
+[[keys.command]]
+key = "prefix+alt+g"
+type = "pane"
+command = "lazygit"
+description = "lazygit"
+
+[[keys.command]]
+key = "prefix+alt+y"
+type = "pane"
+command = "yazi"
+description = "yazi"
