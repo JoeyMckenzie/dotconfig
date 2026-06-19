@@ -24,7 +24,9 @@
     postgresql_17
     redis
     claude-code
+    codex
     opencode
+    herdr
     caddy
     devenv
     just
