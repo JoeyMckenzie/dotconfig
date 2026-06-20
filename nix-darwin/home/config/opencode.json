@@ -8,9 +8,9 @@
         "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "llama3.2:3b": { "name": "Llama 3.2 3B" },
-        "gemma3:latest": { "name": "Gemma 3" },
-        "qwen2.5-coder:latest": { "name": "Qwen2.5 Coder" }
+        "qwen2.5-coder:latest": { "name": "Qwen2.5 Coder" },
+        "llama3.1:8b": { "name": "Llama 3.1 8B" },
+        "llama3.2:3b": { "name": "Llama 3.2 3B" }
       }
     }
   }
