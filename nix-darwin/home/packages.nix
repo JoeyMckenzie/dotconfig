@@ -25,7 +25,6 @@
     redis
     ollama
     claude-code
-    codex
     opencode
     herdr
     caddy

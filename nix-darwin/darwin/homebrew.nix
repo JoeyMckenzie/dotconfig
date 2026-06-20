@@ -24,6 +24,7 @@
     };
 
     casks = [
+      "codex"
       "ghostty"
       "ngrok"
       "font-symbols-only-nerd-font"
