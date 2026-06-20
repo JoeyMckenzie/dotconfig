@@ -58,6 +58,8 @@
     # and crane setup). Following ours risks a rustc mismatch like phpantom hit.
     worktrunk.url = "github:max-sixty/worktrunk";
 
+    herdr.url = "github:ogulcancelik/herdr";
+
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
     homebrew-core = {
@@ -122,6 +124,7 @@
 
               nixpkgs.overlays = [
                 rust-overlay.overlays.default
+                inputs.herdr.overlays.default
                 (final: prev: {
                   claude-code = claude-code.packages.${system}.claude-code;
                   agent-browser = final.callPackage ./home/_pkgs/agent-browser.nix { };

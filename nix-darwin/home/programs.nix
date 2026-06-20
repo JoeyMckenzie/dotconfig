@@ -39,25 +39,6 @@
       };
     };
 
-    claude-code = {
-      enable = true;
-      settings = {
-        hooks = {
-          PostToolUse = [
-            {
-              matcher = "Edit|MultiEdit|Write";
-              hooks = [
-                {
-                  type = "command";
-                  command = ''p="$(jq -r '.tool_input.file_path')"; case "$p" in *.nix) nixfmt "$p" ;; esac'';
-                }
-              ];
-            }
-          ];
-        };
-      };
-    };
-
     broot = {
       enable = true;
       enableZshIntegration = true;

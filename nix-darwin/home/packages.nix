@@ -25,7 +25,9 @@
     redis
     ollama
     claude-code
+    codex
     opencode
+    herdr
     caddy
     devenv
     just

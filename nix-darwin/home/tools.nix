@@ -24,4 +24,5 @@ _:
   xdg.configFile."btop/themes/tokyonight_night.theme".source = ./config/btop-tokyonight-night.theme;
   xdg.configFile."worktrunk/config.toml".source = ./config/worktrunk.toml;
   xdg.configFile."opencode/opencode.json".source = ./config/opencode.json;
+  xdg.configFile."herdr/config.toml".source = ./config/herdr.toml;
 }
