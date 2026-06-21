@@ -149,6 +149,30 @@ let
     export OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx1g"
     exec ${pkgs.opensearch}/bin/opensearch
   '';
+
+  dogstatsdDataDir = "/Users/${username}/.local/share/dogstatsd";
+  dogstatsdApiKeyFile = "/Users/${username}/.config/datadog/api-key";
+  dogstatsdStart = pkgs.writeShellScript "dogstatsd-start" ''
+    set -eu
+    CONFDIR=${dogstatsdDataDir}/config
+    mkdir -p "$CONFDIR"
+
+    if [ ! -s ${dogstatsdApiKeyFile} ]; then
+      echo "dogstatsd: missing API key at ${dogstatsdApiKeyFile} (add the datadog-api-key sops secret)" >&2
+      exit 1
+    fi
+
+    cat > "$CONFDIR/dogstatsd.yaml" <<EOF
+    api_key: $(cat ${dogstatsdApiKeyFile})
+    site: datadoghq.com
+    hostname: ${username}-local
+    bind_host: 127.0.0.1
+    dogstatsd_port: 8125
+    dogstatsd_non_local_traffic: false
+    EOF
+
+    exec ${pkgs.datadog-agent}/bin/dogstatsd start -c "$CONFDIR"
+  '';
 in
 {
   services.dnsmasq = {
@@ -259,6 +283,16 @@ in
       KeepAlive = true;
       StandardOutPath = "/Users/${username}/Library/Logs/opensearch-dashboards.out.log";
       StandardErrorPath = "/Users/${username}/Library/Logs/opensearch-dashboards.err.log";
+    };
+  };
+
+  launchd.user.agents.dogstatsd = lib.mkIf (hostname == "work") {
+    serviceConfig = {
+      ProgramArguments = [ "${dogstatsdStart}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/Users/${username}/Library/Logs/dogstatsd.out.log";
+      StandardErrorPath = "/Users/${username}/Library/Logs/dogstatsd.err.log";
     };
   };
 }

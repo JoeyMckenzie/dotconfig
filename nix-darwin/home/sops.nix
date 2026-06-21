@@ -19,6 +19,10 @@
 
     secrets."anthropic-api-key" = { };
 
+    secrets."datadog-api-key" = {
+      path = "${config.home.homeDirectory}/.config/datadog/api-key";
+    };
+
     templates."secrets.zsh" = {
       path = "${config.home.homeDirectory}/.config/zsh/secrets.zsh";
       content = ''
