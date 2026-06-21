@@ -20,10 +20,11 @@
     harlequin
     visidata
     csvlens
+    dua
+    dust
     mysql84
     postgresql_17
     redis
-    ollama
     claude-code
     opencode
     herdr
