@@ -23,10 +23,13 @@
       path = "${config.home.homeDirectory}/.config/datadog/api-key";
     };
 
+    secrets."filament-blueprint-key" = { };
+
     templates."secrets.zsh" = {
       path = "${config.home.homeDirectory}/.config/zsh/secrets.zsh";
       content = ''
         export ANTHROPIC_API_KEY=${config.sops.placeholder."anthropic-api-key"}
+        export FILAMENT_BLUEPRINT_KEY=${config.sops.placeholder."filament-blueprint-key"}
       '';
     };
   };
