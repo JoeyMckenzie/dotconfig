@@ -19,10 +19,6 @@
 
     secrets."anthropic-api-key" = { };
 
-    secrets."datadog-api-key" = {
-      path = "${config.home.homeDirectory}/.config/datadog/api-key";
-    };
-
     secrets."filament-blueprint-key" = { };
 
     templates."secrets.zsh" = {
