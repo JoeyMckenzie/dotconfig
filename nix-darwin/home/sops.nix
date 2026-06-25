@@ -17,11 +17,11 @@
       path = "${config.home.homeDirectory}/.config/lazysql/config.toml";
     };
 
-    secrets."anthropic-api-key" = { };
-
-    secrets."datadog-api-key" = {
-      path = "${config.home.homeDirectory}/.config/datadog/api-key";
+    secrets."graphite-token" = {
+      path = "${config.home.homeDirectory}/.config/graphite/user_config";
     };
+
+    secrets."anthropic-api-key" = { };
 
     secrets."filament-blueprint-key" = { };
 

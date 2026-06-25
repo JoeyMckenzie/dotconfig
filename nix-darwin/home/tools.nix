@@ -25,4 +25,5 @@ _:
   xdg.configFile."worktrunk/config.toml".source = ./config/worktrunk.toml;
   xdg.configFile."opencode/opencode.json".source = ./config/opencode.json;
   xdg.configFile."herdr/config.toml".source = ./config/herdr.toml;
+  xdg.configFile."graphite/aliases".source = ./config/graphite-aliases;
 }
