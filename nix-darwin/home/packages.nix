@@ -33,6 +33,7 @@
     just
     (callPackage ./_pkgs/ldcli.nix { })
     (callPackage ./_pkgs/backlog.nix { })
+    (callPackage ./_pkgs/codebase-memory-mcp.nix { })
     agent-browser
     graphite-cli
     prek

@@ -194,6 +194,15 @@ in
     import /Users/${username}/.config/caddy/sites/*.caddy
   '';
 
+  # Rotate caddy logs so the daemon can't get wedged into EX_CONFIG / penalty
+  # box when /var/log/caddy.err.log grows huge and SIGKILL leaves it in a state
+  # launchd can't open.
+  environment.etc."newsyslog.d/caddy.conf".text = ''
+    # logfilename                 [owner:group]  mode count size when  flags
+    /var/log/caddy.err.log        root:wheel     644  5     10240 *    GN
+    /var/log/caddy.out.log        root:wheel     644  5     10240 *    GN
+  '';
+
   launchd.daemons.caddy = {
     serviceConfig = {
       ProgramArguments = [
