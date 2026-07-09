@@ -22,7 +22,7 @@
       };
       git = {
         enable = true;
-        diffToolMode = true;
+        mode = "both";
       };
     };
 
@@ -94,6 +94,8 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      # Yield Ctrl-R to atuin, which owns shell history.
+      historyWidget.zsh.command = "";
     };
 
     starship = {

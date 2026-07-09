@@ -43,7 +43,7 @@
     age
 
     nil
-    nixfmt-rfc-style
+    nixfmt
     statix
     deadnix
 
