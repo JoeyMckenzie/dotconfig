@@ -10,6 +10,7 @@
     ./terminal.nix
     ./tools.nix
     ./languages.nix
+    ./pi.nix
   ];
 
   home.stateVersion = "24.11";
