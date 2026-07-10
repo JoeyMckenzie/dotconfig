@@ -21,14 +21,20 @@
       path = "${config.home.homeDirectory}/.config/graphite/user_config";
     };
 
-    secrets."anthropic-api-key" = { };
+    secrets."agentic-trading-key" = { };
 
     secrets."filament-blueprint-key" = { };
+
+    secrets."zai-agent-trader-api-key" = { };
+
+    secrets."zai-general-purpose-api-key" = { };
 
     templates."secrets.zsh" = {
       path = "${config.home.homeDirectory}/.config/zsh/secrets.zsh";
       content = ''
-        export ANTHROPIC_API_KEY=${config.sops.placeholder."anthropic-api-key"}
+        export AGENTIC_TRAGDING_KEY=${config.sops.placeholder."agentic-trading-key"}
+        export ZAI_AGENT_TRADER_API_KEY=${config.sops.placeholder."zai-agent-trader-api-key"}
+        export ZAI_GENERAL_PURPOSE_API_KEY=${config.sops.placeholder."zai-general-purpose-api-key"}
         export FILAMENT_BLUEPRINT_KEY=${config.sops.placeholder."filament-blueprint-key"}
       '';
     };
