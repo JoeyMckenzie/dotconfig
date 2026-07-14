@@ -13,6 +13,7 @@ _:
       ];
     };
   };
+
   programs.lazydocker.enable = true;
 
   programs.yazi = {
