@@ -36,6 +36,7 @@
       lzd = "lazydocker";
       cvim = "clear && nvim .";
       nv = "clear && nvim .";
+      bg = "backlog";
 
       ls = "eza --icons --git --git-ignore";
       la = "eza -al --icons --git --git-ignore";
