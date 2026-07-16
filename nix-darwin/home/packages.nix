@@ -18,6 +18,7 @@
     mailpit
     lazysql
     harlequin
+    (python3Packages.callPackage ./_pkgs/sqlit.nix { })
     visidata
     csvlens
     dua
