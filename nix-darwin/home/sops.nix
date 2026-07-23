@@ -17,6 +17,10 @@
       path = "${config.home.homeDirectory}/.config/lazysql/config.toml";
     };
 
+    secrets."sqlit-config" = {
+      path = "${config.home.homeDirectory}/.sqlit/connections.json";
+    };
+
     secrets."graphite-token" = {
       path = "${config.home.homeDirectory}/.config/graphite/user_config";
     };
