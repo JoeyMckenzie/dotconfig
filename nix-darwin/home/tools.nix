@@ -27,4 +27,6 @@ _:
   xdg.configFile."opencode/opencode.json".source = ./config/opencode.json;
   xdg.configFile."herdr/config.toml".source = ./config/herdr.toml;
   xdg.configFile."graphite/aliases".source = ./config/graphite-aliases;
+  xdg.configFile."superfile/config.toml".source = ./config/superfile-config.toml;
+  xdg.configFile."superfile/hotkeys.toml".source = ./config/superfile-hotkeys.toml;
 }

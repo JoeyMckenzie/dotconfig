@@ -38,6 +38,7 @@
     agent-browser
     graphite-cli
     prek
+    superfile
     taskwarrior3
     rdap
     sops
