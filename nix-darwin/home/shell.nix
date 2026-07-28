@@ -42,6 +42,7 @@
       cvim = "clear && nvim .";
       nv = "clear && nvim .";
       bl = "backlog";
+      spf = "superfile";
 
       ls = "eza --icons --git --git-ignore";
       la = "eza -al --icons --git --git-ignore";

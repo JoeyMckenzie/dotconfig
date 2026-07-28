@@ -18,11 +18,12 @@
     };
 
     secrets."sqlit-config" = {
-      path = "${config.home.homeDirectory}/.sqlit/connections.json";
+      path = "${config.home.homeDirectory}/.config/sqlit/connections.json";
     };
 
     secrets."graphite-token" = {
       path = "${config.home.homeDirectory}/.config/graphite/user_config";
+      mode = "0600";
     };
 
     secrets."agentic-trading-key" = { };

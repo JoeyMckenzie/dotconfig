@@ -4,6 +4,7 @@ let
   phpantom = pkgs.callPackage ./_pkgs/phpantom.nix {
     src = inputs.phpantom-lsp;
   };
+  laravel-lsp = pkgs.callPackage ./_pkgs/laravel-lsp.nix { };
 in
 {
   programs.nixvim = {
@@ -107,7 +108,10 @@ in
       };
     };
 
-    extraPackages = [ phpantom ];
+    extraPackages = [
+      phpantom
+      laravel-lsp
+    ];
 
     extraConfigLua = ''
       -- phpantom disabled: not yet ready for monorepo-sized codebases. To
@@ -127,6 +131,27 @@ in
       --   capabilities = phpantom_caps,
       -- })
       -- vim.lsp.enable('phpantom')
+
+      -- Laravel's official framework-aware LSP (routes, views/blade, config,
+      -- .env, translations, middleware, etc.). Runs ALONGSIDE intelephense:
+      -- intelephense handles general PHP type intelligence, laravel_lsp adds
+      -- the framework-aware layer on top. Not a nixvim-module server, so it's
+      -- registered manually like phpantom. `artisan`/`composer.json` lead the
+      -- root markers so it roots at the Laravel app, not a monorepo `.git`
+      -- above it.
+      local laravel_caps = vim.lsp.protocol.make_client_capabilities()
+      local ok_blink, blink = pcall(require, 'blink.cmp')
+      if ok_blink and blink.get_lsp_capabilities then
+        laravel_caps = blink.get_lsp_capabilities(laravel_caps)
+      end
+
+      vim.lsp.config('laravel_lsp', {
+        cmd = { '${laravel-lsp}/bin/laravel-lsp' },
+        filetypes = { 'php', 'blade' },
+        root_markers = { 'artisan', 'composer.json', '.git' },
+        capabilities = laravel_caps,
+      })
+      vim.lsp.enable('laravel_lsp')
 
       -- In a monorepo, `.git` lives above the Laravel app, so the default
       -- root resolution lands at the monorepo root and the relative
