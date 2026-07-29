@@ -49,10 +49,10 @@
     statix
     deadnix
 
-    # language servers (shared by nvim + claude code)
     typescript-language-server
     vscode-langservers-extracted
     svelte-language-server
+    vue-language-server
     yaml-language-server
     bash-language-server
     lua-language-server
