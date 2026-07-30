@@ -49,7 +49,6 @@
     rdap
     sops
     age
-    jujutsu
 
     nil
     nixfmt
