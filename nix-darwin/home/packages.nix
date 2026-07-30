@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -37,6 +41,7 @@
     (callPackage ./_pkgs/backlog.nix { })
     agent-browser
     graphite-cli
+    inputs.tuicr.packages.${pkgs.system}.default
     prek
     superfile
     taskwarrior3

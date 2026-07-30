@@ -60,6 +60,11 @@
 
     herdr.url = "github:ogulcancelik/herdr";
 
+    tuicr = {
+      url = "github:agavra/tuicr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
     homebrew-core = {
