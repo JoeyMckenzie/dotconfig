@@ -27,7 +27,6 @@
       "codex"
       "gitbutler"
       "ghostty"
-      "ngrok"
       "font-symbols-only-nerd-font"
       "twingate"
       "1password"
