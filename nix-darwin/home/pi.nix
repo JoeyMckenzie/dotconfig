@@ -1,7 +1,5 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
-  programs.pi-coding-agent = {
-    enable = true;
-  };
+  home.packages = [ (pkgs.callPackage ./_pkgs/oh-my-pi.nix { }) ];
 }
