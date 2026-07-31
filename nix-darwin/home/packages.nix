@@ -49,6 +49,7 @@
     rdap
     sops
     age
+    croc
 
     nil
     nixfmt
