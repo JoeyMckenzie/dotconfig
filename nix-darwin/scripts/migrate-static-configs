@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Run after the Home Manager declarations for these files have been removed.
+set -euo pipefail
+
+config_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
+source_root="$config_root/nix-darwin/home/config"
+
+enable_tracking() {
+  local gitignore="$config_root/.gitignore"
+
+  if grep -Fqx '!btop/btop.conf' "$gitignore"; then
+    return
+  fi
+
+  cat >>"$gitignore" <<'EOF'
+
+# User-authored tool configuration. Keep each tool's generated state ignored.
+!btop/
+btop/*
+!btop/btop.conf
+!btop/themes/
+btop/themes/*
+!btop/themes/tokyonight_night.theme
+!graphite/
+graphite/*
+!graphite/aliases
+!herdr/
+herdr/*
+!herdr/config.toml
+!opencode/
+opencode/*
+!opencode/opencode.json
+!superfile/
+superfile/*
+!superfile/config.toml
+!superfile/hotkeys.toml
+!worktrunk/
+worktrunk/*
+!worktrunk/config.toml
+!zellij/
+zellij/*
+!zellij/config.kdl
+!zellij/layouts/
+zellij/layouts/*
+!zellij/layouts/worktree.kdl
+EOF
+}
+
+migrate() {
+  local source="$source_root/$1"
+  local destination="$config_root/$2"
+
+  if [[ ! -f "$source" ]]; then
+    if [[ -f "$destination" && ! -L "$destination" ]]; then
+      printf 'Already migrated: %s\n' "$2"
+      return
+    fi
+
+    printf 'Missing migration source: %s\n' "$source" >&2
+    exit 1
+  fi
+
+  if [[ -L "$destination" ]]; then
+    local target
+    target=$(readlink "$destination")
+    case "$target" in
+      /nix/store/*-home-manager-files/*) rm "$destination" ;;
+      *)
+        printf 'Refusing to replace non-Home-Manager symlink: %s -> %s\n' \
+          "$destination" "$target" >&2
+        exit 1
+        ;;
+    esac
+  elif [[ -e "$destination" ]]; then
+    printf 'Refusing to replace existing file: %s\n' "$destination" >&2
+    exit 1
+  fi
+
+  mkdir -p "$(dirname "$destination")"
+  mv "$source" "$destination"
+  printf 'Migrated: %s\n' "$2"
+}
+
+migrate btop.conf btop/btop.conf
+migrate btop-tokyonight-night.theme btop/themes/tokyonight_night.theme
+migrate graphite-aliases graphite/aliases
+migrate herdr.toml herdr/config.toml
+migrate opencode.json opencode/opencode.json
+migrate superfile-config.toml superfile/config.toml
+migrate superfile-hotkeys.toml superfile/hotkeys.toml
+migrate worktrunk.toml worktrunk/config.toml
+migrate zellij.kdl zellij/config.kdl
+migrate zellij-new-worktree.kdl zellij/layouts/worktree.kdl
+enable_tracking

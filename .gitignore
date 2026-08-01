@@ -12,3 +12,35 @@ pi/sessions/
 pi/.pi-subagents/
 pi/node_modules
 pi/run-history.jsonl
+
+# Static config tracking is enabled by nix-darwin/scripts/migrate-static-configs.
+
+# User-authored tool configuration. Keep each tool's generated state ignored.
+!btop/
+btop/*
+!btop/btop.conf
+!btop/themes/
+btop/themes/*
+!btop/themes/tokyonight_night.theme
+!graphite/
+graphite/*
+!graphite/aliases
+!herdr/
+herdr/*
+!herdr/config.toml
+!opencode/
+opencode/*
+!opencode/opencode.json
+!superfile/
+superfile/*
+!superfile/config.toml
+!superfile/hotkeys.toml
+!worktrunk/
+worktrunk/*
+!worktrunk/config.toml
+!zellij/
+zellij/*
+!zellij/config.kdl
+!zellij/layouts/
+zellij/layouts/*
+!zellij/layouts/worktree.kdl

@@ -29,5 +29,10 @@ dead-fix:
 check:
     nix build ./nix-darwin#checks.aarch64-darwin.pre-commit-check --no-link
 
+# Release static config from Home Manager, then move it into this dotfiles repo.
+migrate-static-configs:
+    sudo darwin-rebuild switch --flake "$HOME/.config/nix-darwin#$(scutil --get LocalHostName)"
+    ./nix-darwin/scripts/migrate-static-configs
+
 # run every auto-fixer: deadnix -> statix -> nixfmt
 fix: dead-fix lint-fix fmt
