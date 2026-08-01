@@ -1,12 +1,11 @@
-# Everything in ~/.config/ is either home-manager output (symlinks into
-# /nix/store/, paths change every rebuild) or tool-generated runtime state.
-# The only source of truth that belongs in this repo is nix-darwin/.
-
 *
 !.gitignore
 !README.md
 !justfile
 !nix-darwin/
 !nix-darwin/**
-!.pi/
-!.pi/**
+!pi/
+!pi/**
+pi/auth.json
+pi/models-store.json
+pi/sessions/
