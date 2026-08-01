@@ -8,3 +8,5 @@
 !justfile
 !nix-darwin/
 !nix-darwin/**
+!.pi/
+!.pi/**
