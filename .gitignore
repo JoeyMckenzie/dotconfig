@@ -12,3 +12,4 @@ pi/sessions/
 pi/.pi-subagents/
 pi/node_modules
 pi/run-history.jsonl
+pi/mcp-cache.json
