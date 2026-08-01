@@ -38,9 +38,3 @@ superfile/*
 !worktrunk/
 worktrunk/*
 !worktrunk/config.toml
-!zellij/
-zellij/*
-!zellij/config.kdl
-!zellij/layouts/
-zellij/layouts/*
-!zellij/layouts/worktree.kdl
