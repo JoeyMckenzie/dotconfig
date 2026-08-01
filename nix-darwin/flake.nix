@@ -20,6 +20,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    pi = {
+      url = "github:lukasl-dev/pi.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -154,6 +159,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.${username}.imports = [
                 nixvim.homeModules.nixvim
+                inputs.pi.homeModules.default
                 inputs.worktrunk.homeModules.default
                 inputs.sops-nix.homeManagerModules.sops
                 ./home
