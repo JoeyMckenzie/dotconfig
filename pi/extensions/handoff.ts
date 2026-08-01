@@ -13,7 +13,8 @@
  */
 
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
-import { type Message, uuidv7 } from "@earendil-works/pi-ai";
+import { uuidv7 } from "@earendil-works/pi-ai";
+import { complete, type Message } from "@earendil-works/pi-ai/compat";
 import type {
   ExtensionAPI,
   SessionEntry,
@@ -157,7 +158,7 @@ export default function (pi: ExtensionAPI) {
               timestamp: Date.now(),
             };
 
-            const response = await ctx.modelRegistry.complete(
+            const response = await complete(
               ctx.model!,
               { systemPrompt: SYSTEM_PROMPT, messages: [userMessage] },
               {

@@ -9,3 +9,6 @@
 pi/auth.json
 pi/models-store.json
 pi/sessions/
+pi/.pi-subagents/
+pi/node_modules
+pi/run-history.jsonl
