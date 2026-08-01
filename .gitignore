@@ -38,3 +38,15 @@ superfile/*
 !worktrunk/
 worktrunk/*
 !worktrunk/config.toml
+
+# Additional user-authored tool configuration. Keep credentials and state ignored.
+!gh/
+gh/*
+!gh/config.yml
+!ghostty/
+ghostty/*
+!ghostty/config
+!lazygit/
+lazygit/*
+!lazygit/config.yml
+!starship.toml
