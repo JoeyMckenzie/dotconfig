@@ -57,6 +57,7 @@
     statix
     deadnix
 
+    intelephense
     typescript-language-server
     vscode-langservers-extracted
     svelte-language-server
