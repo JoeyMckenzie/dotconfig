@@ -7,6 +7,7 @@
 !pi/
 !pi/**
 pi/auth.json
+pi/skills/
 pi/trust.json
 pi/models-store.json
 pi/sessions/
