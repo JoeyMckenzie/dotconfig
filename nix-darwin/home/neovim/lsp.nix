@@ -35,6 +35,22 @@ in
         marksman.enable = true;
         taplo.enable = true;
 
+        harper_ls = {
+          enable = true;
+          package = pkgs.harper;
+          settings = {
+            "harper-ls" = {
+              userDictPath = "~/.config/harper/dict.txt";
+              linters = {
+                SentenceCapitalization = false;
+                SpellCheck = true;
+              };
+              codeActions.ForceStable = true;
+              markdown.IgnoreLinkTitle = false;
+            };
+          };
+        };
+
         cucumber_language_server = {
           enable = true;
           package = pkgs.callPackage ./_pkgs/cucumber-language-server.nix { };
