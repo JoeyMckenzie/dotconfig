@@ -1,8 +1,5 @@
 { ... }:
 
-# Global agent skills, managed in ./skills and linked into every agent
-# harness's expected skills directory. `recursive = true` symlinks each
-# skill individually so agent-installed skills can coexist alongside them.
 {
   home.file.".claude/skills" = {
     source = ./skills;
