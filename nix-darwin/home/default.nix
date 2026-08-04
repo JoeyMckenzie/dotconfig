@@ -11,6 +11,7 @@
     ./tools.nix
     ./languages.nix
     ./pi.nix
+    ./skills.nix
   ];
 
   home.stateVersion = "24.11";

@@ -28,7 +28,10 @@
 
     gh = {
       enable = true;
-      extensions = [ pkgs.gh-dash ];
+      extensions = [
+        pkgs.gh-dash
+        pkgs.gh-stack
+      ];
       settings = {
         version = "1";
         git_protocol = "https";
