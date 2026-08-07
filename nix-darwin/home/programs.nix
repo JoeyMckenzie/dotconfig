@@ -237,5 +237,16 @@
       enable = true;
       flake = "${config.home.homeDirectory}/.config/nix-darwin";
     };
+
+    vivaldi = {
+      enable = true;
+      package = null; # app comes from the Homebrew cask; nixpkgs vivaldi is Linux-only
+      extensions = [
+        { id = "aeblfdkhhhdcdjpifhhbdiojplfjncoa"; } # 1Password
+        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+        { id = "lodbfhdipoipcjmlebjbgmmgekckhpfb"; } # Harper grammar checker
+        { id = "cbaffpghpcbmgbnlpamegieokkpdlnih"; } # Inertia.js devtools
+      ];
+    };
   };
 }

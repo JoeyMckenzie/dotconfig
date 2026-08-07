@@ -33,6 +33,7 @@
       "notion"
       "linear"
       "raycast"
+      "vivaldi"
       "zed"
     ];
 
