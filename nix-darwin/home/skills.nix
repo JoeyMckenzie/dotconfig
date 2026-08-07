@@ -16,4 +16,9 @@
     source = ./skills;
     recursive = true;
   };
+
+  home.file.".claude/agents" = {
+    source = ./agents;
+    recursive = true;
+  };
 }
