@@ -30,8 +30,8 @@
     mysql84
     postgresql_17
     redis
-    ollama
     claude-code
+    crush
     opencode
     herdr
     caddy

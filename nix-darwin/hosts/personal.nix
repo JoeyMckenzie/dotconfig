@@ -17,5 +17,6 @@
 
   homebrew.casks = [
     "tailscale-app"
+    "lm-studio"
   ];
 }
