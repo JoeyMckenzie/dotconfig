@@ -5,10 +5,11 @@ _:
   programs.lazygit = {
     enable = true;
     settings = {
-      git.pagers = [
+      git.diffRenderers = [
         {
           colorArg = "always";
-          externalDiffCommand = "difft --color=always --display=inline";
+          type = "extDiff";
+          command = "difft --color=always --display=inline";
         }
       ];
     };

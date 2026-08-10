@@ -7,12 +7,15 @@
     "bedrock": { "disable": true }
   },
   "models": {
-    "large": { "provider": "zai", "model": "glm-4.6" },
+    "large": { "provider": "zai", "model": "glm-5.2" },
     "small": { "provider": "zai", "model": "glm-4.5-air" }
   },
   "lsp": {
     "go": { "command": "gopls" },
-    "typescript": { "command": "typescript-language-server", "args": ["--stdio"] },
+    "typescript": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"]
+    },
     "nix": { "command": "nil" },
     "php": { "command": "intelephense", "args": ["--stdio"] },
     "lua": { "command": "lua-language-server" }
