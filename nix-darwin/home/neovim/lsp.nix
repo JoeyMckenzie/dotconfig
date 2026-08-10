@@ -1,9 +1,6 @@
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 
 let
-  phpantom = pkgs.callPackage ./_pkgs/phpantom.nix {
-    src = inputs.phpantom-lsp;
-  };
   laravel-lsp = pkgs.callPackage ./_pkgs/laravel-lsp.nix { };
 in
 {
@@ -116,7 +113,6 @@ in
     };
 
     extraPackages = [
-      phpantom
       laravel-lsp
     ];
 

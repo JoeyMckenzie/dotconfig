@@ -40,13 +40,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # phpantom_lsp's deps need rustc 1.95+, newer than what nixpkgs ships.
-    # We build it ourselves with rust-overlay providing the latest stable rustc.
-    phpantom-lsp = {
-      url = "github:AJenbo/phpantom_lsp";
-      flake = false;
-    };
-
     # laravel.nvim isn't packaged in nixpkgs.vimPlugins; we build it ourselves
     # via vimUtils.buildVimPlugin in home/neovim/_pkgs/laravel-nvim.nix.
     laravel-nvim = {
@@ -60,7 +53,7 @@
     };
 
     # Don't follow nixpkgs — worktrunk pins its own (with matching rust-overlay
-    # and crane setup). Following ours risks a rustc mismatch like phpantom hit.
+    # and crane setup).
     worktrunk.url = "github:max-sixty/worktrunk";
 
     herdr.url = "github:ogulcancelik/herdr";

@@ -552,22 +552,6 @@
         "type": "github"
       }
     },
-    "phpantom-lsp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786340025,
-        "narHash": "sha256-a/E7oPdE7W7QVeIY7M5yNDrMK70sWFxRm+OnHkdoomM=",
-        "owner": "AJenbo",
-        "repo": "phpantom_lsp",
-        "rev": "671b5a02da4485e11b369186ffd76565f993e71a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AJenbo",
-        "repo": "phpantom_lsp",
-        "type": "github"
-      }
-    },
     "pi": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -606,7 +590,6 @@
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
-        "phpantom-lsp": "phpantom-lsp",
         "pi": "pi",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
