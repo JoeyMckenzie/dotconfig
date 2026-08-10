@@ -65,11 +65,6 @@
 
     herdr.url = "github:ogulcancelik/herdr";
 
-    # Don't follow nixpkgs — hermes-agent builds its Python deps via uv2nix
-    # against its own pinned nixpkgs; following ours risks interpreter/dep
-    # mismatches. Upstream calls Nix a tier-2 platform, so keep their pin.
-    hermes-agent.url = "github:NousResearch/hermes-agent";
-
     tuicr = {
       url = "github:agavra/tuicr";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -43,7 +43,6 @@
     agent-browser
     graphite-cli
     inputs.tuicr.packages.${pkgs.system}.default
-    inputs.hermes-agent.packages.${pkgs.system}.default
     (callPackage ./_pkgs/jcode.nix { })
     prek
     superfile
