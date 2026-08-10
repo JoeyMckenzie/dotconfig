@@ -181,6 +181,43 @@
         nix-health
       }
 
+      # Recover a system launchd daemon parked in launchd's throttle window
+      # (`state = spawn scheduled`, usually after a boot-time EX_CONFIG/78 exit
+      # when certs/network weren't ready). `kickstart -k` HANGS in this state;
+      # only a clean bootout+bootstrap clears the throttle. Run the two steps
+      # separately and check each — a compound `bootout; bootstrap` can leave
+      # the service fully unloaded. Defaults to caddy.
+      nix-unstick() {
+        local ok=$'\e[32m✓\e[0m'
+        local bad=$'\e[31m✗\e[0m'
+        local label="''${1:-org.nixos.caddy}"
+        local plist="/Library/LaunchDaemons/$label.plist"
+
+        if [[ ! -f $plist ]]; then
+          printf "  %s %s: no plist at %s\n" "$bad" "$label" "$plist"
+          return 1
+        fi
+
+        sudo -v
+
+        # bootout: tolerate "not loaded" (nothing to unload is fine).
+        sudo launchctl bootout "system/$label" 2>/dev/null
+        printf "  %s %-14s booted out\n" "$ok" "$label"
+
+        # bootstrap; retry once via bootout if it's still partially loaded
+        # (Input/output error / error 5).
+        if ! sudo launchctl bootstrap system "$plist" 2>/dev/null; then
+          sudo launchctl bootout "system/$label" 2>/dev/null
+          if ! sudo launchctl bootstrap system "$plist" 2>/dev/null; then
+            printf "  %s %-14s bootstrap failed\n" "$bad" "$label"
+            return 1
+          fi
+        fi
+        printf "  %s %-14s bootstrapped\n" "$ok" "$label"
+
+        nix-health
+      }
+
       # Map $USER to the darwinConfigurations key in flake.nix.
       # LocalHostName isn't reliable (DHCP can stamp it as MacBook-Pro-XXXX),
       # but the flake configs are already differentiated by username.
@@ -204,6 +241,11 @@
       [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
       [ -f "$HOME/.config/zsh/secrets.zsh" ] && source "$HOME/.config/zsh/secrets.zsh"
+
+      # Crush discovers the Z.ai provider only when ZAI_API_KEY is in the env;
+      # alias it from our general-purpose secret (crush.json's env block is
+      # applied too late to activate the provider at discovery time).
+      [ -n "$ZAI_GENERAL_PURPOSE_API_KEY" ] && export ZAI_API_KEY="$ZAI_GENERAL_PURPOSE_API_KEY"
     '';
   };
 
