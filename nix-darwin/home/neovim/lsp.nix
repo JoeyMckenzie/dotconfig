@@ -32,6 +32,16 @@ in
         marksman.enable = true;
         taplo.enable = true;
 
+        ty.enable = true;
+        basedpyright.enable = true;
+        ruff = {
+          enable = true;
+          # basedpyright already provides hover; avoid duplicate/conflicting popups.
+          onAttach.function = ''
+            client.server_capabilities.hoverProvider = false
+          '';
+        };
+
         harper_ls = {
           enable = true;
           package = pkgs.harper;

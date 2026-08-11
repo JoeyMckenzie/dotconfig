@@ -19,7 +19,6 @@
           "deadnix"
         ];
         lua = [ "luacheck" ];
-        python = [ "ruff" ];
       };
 
       autoCmd = {
@@ -43,7 +42,6 @@
       statix
       deadnix
       luaPackages.luacheck
-      ruff
     ];
   };
 }
