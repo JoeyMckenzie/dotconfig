@@ -1,0 +1,18 @@
+# Taxonomy used to classify screenshots. Edit freely — the list is injected into
+# the prompt and the model's answer is validated against it.
+#
+# Keep names short and lowercase-with-hyphens: they double as folder names for
+# `--move`. Descriptions matter — they are the only guidance a small local model
+# gets about where the boundaries between categories sit.
+
+[categories]
+code = "Source code, terminal sessions, diffs, stack traces, IDE or editor windows."
+docs = "Documentation, articles, blog posts, wikis, PDFs, long-form reading."
+design = "UI mockups, design tools, color palettes, diagrams, whiteboards."
+chat = "Messaging apps, email, Slack, Discord, SMS, comment threads."
+social = "Social media feeds, posts, profiles, memes."
+receipt = "Receipts, invoices, order confirmations, banking and payment screens."
+media = "Video players, music apps, games, photos of people or places."
+dashboard = "Metrics, charts, monitoring, analytics, admin consoles, spreadsheets."
+system = "OS settings, dialogs, installers, error popups, config panels."
+other = "Anything that does not clearly fit another category."

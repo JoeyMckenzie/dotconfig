@@ -1,0 +1,35 @@
+[project]
+name = "screenshot-classifier"
+version = "0.1.0"
+description = "Classify a folder of screenshots with a local or hosted vision model"
+readme = "README.md"
+authors = [
+    { name = "Joey McKenzie", email = "joey.mckenzie27@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "openai>=3.0.0",
+    "pillow>=12.3.0",
+]
+
+[project.scripts]
+screenshot-classifier = "screenshot_classifier.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "BLE", "SIM", "RUF"]
+
+[tool.ty.rules]
+unresolved-import = "error"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.2",
+    "ty>=0.0.70",
+]

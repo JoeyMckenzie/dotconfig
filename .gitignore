@@ -6,6 +6,8 @@
 !nix-darwin/**
 !pi/
 !pi/**
+!scripts/
+!scripts/**
 pi/auth.json
 pi/skills/
 pi/trust.json
@@ -15,3 +17,6 @@ pi/.pi-subagents/
 pi/node_modules
 pi/run-history.jsonl
 pi/mcp-cache.json
+scripts/.venv/
+scripts/.ruff_cache/
+scripts/**/__pycache__/
