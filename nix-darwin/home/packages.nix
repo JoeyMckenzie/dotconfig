@@ -51,6 +51,9 @@
     sops
     age
     croc
+    ffmpeg
+    yt-dlp
+    laravel
 
     nil
     nixfmt
