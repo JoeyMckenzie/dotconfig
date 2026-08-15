@@ -1,20 +1,30 @@
 worktree-path = "{{ repo_path }}/../{{ branch | sanitize }}"
 
 # Bootstrap the givebutter monorepo's personal nix/devenv setup into each new
-# worktree. The bundle is version-controlled in the churnix repo and excluded
-# from the monorepo's git via .git/info/exclude, so it never lands in a PR.
-# As a user hook it runs before any per-repo .config/wt.toml hooks, which is
-# what lets it materialize that wt.toml (and run direnv) on a fresh worktree.
-# Guarded by path so it only fires for givebutter-monorepo worktrees. rsync
-# overlays the bundle (no --delete) so it never touches the git checkout.
+# worktree. The scaffold lives in the `main` worktree and is excluded from the
+# monorepo's git via .git/info/exclude, so it never lands in a PR. As a user
+# hook this runs before any per-repo .config/wt.toml hooks, which is what lets
+# it materialize that wt.toml on a fresh worktree.
+#
+# Deliberately a trampoline: all the real logic lives in main/nix/bin/
+# seed-worktree so it can be edited without a darwin-rebuild. Guarded by path
+# so it only fires for givebutter-monorepo worktrees.
+#
+# --no-warm because `wt switch` cd's the shell into the new worktree while this
+# hook is still running. devenv's eval cache is a per-worktree sqlite db
+# (<worktree>/.devenv/nix-eval-cache.db) that does not tolerate two concurrent
+# evaluations — pre-warming here raced the shell's own direnv load and failed
+# it with "database is locked". The shell's load does the same work anyway.
 [post-start]
 nix-bootstrap = """
 case "{{ worktree_path }}" in
   */givebutter-monorepo/*)
-    rsync -a --exclude='.devenv/' --exclude='.direnv/' \
-      "$HOME/code/github.com/givebutter/churnix/monorepo/" \
-      "{{ worktree_path }}/"
-    ( cd "{{ worktree_path }}" && direnv allow )
+    seeder="$(git -C "{{ worktree_path }}" rev-parse --git-common-dir)/../main/nix/bin/seed-worktree"
+    if [ -x "$seeder" ]; then
+      "$seeder" "{{ worktree_path }}" --no-warm
+    else
+      echo "⚠ scaffold seeder not found at $seeder" >&2
+    fi
     ;;
 esac
 """
