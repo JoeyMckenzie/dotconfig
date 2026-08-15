@@ -31,7 +31,6 @@
     postgresql_17
     redis
     claude-code
-    crush
     opencode
     herdr
     caddy

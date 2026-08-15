@@ -241,11 +241,6 @@
       [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
       [ -f "$HOME/.config/zsh/secrets.zsh" ] && source "$HOME/.config/zsh/secrets.zsh"
-
-      # Crush discovers the Z.ai provider only when ZAI_API_KEY is in the env;
-      # alias it from our general-purpose secret (crush.json's env block is
-      # applied too late to activate the provider at discovery time).
-      [ -n "$ZAI_GENERAL_PURPOSE_API_KEY" ] && export ZAI_API_KEY="$ZAI_GENERAL_PURPOSE_API_KEY"
     '';
   };
 
