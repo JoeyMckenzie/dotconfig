@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -21,6 +21,13 @@
 
   programs.nixvim = {
     enable = true;
+
+    # We set `inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs"` in the flake, so
+    # nixvim warns that its own pinned nixpkgs was overridden. Stating the
+    # source explicitly is the documented way to acknowledge that and silence
+    # the warning; the value is what the default already resolved to.
+    nixpkgs.source = inputs.nixpkgs;
+
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;

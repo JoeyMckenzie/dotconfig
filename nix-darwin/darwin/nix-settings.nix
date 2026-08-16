@@ -1,6 +1,11 @@
 { username, ... }:
 
 {
+  # Drop nix-darwin's default `/nix/var/nix/profiles/per-user/root/channels`
+  # entry — this is a flakes-only setup, root has no channels, and every
+  # evaluation warns that the path doesn't exist.
+  nix.nixPath = [ "nixpkgs=flake:nixpkgs" ];
+
   nix.settings = {
     experimental-features = [
       "nix-command"

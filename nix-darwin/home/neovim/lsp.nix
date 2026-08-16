@@ -74,38 +74,40 @@ in
           };
         };
 
-        intelephense = {
-          enable = true;
-          package = pkgs.intelephense;
-          settings = {
-            intelephense = {
-              files = {
-                maxSize = 5000000;
-                exclude = [
-                  "**/.git/**"
-                  "**/.svn/**"
-                  "**/.hg/**"
-                  "**/CVS/**"
-                  "**/.DS_Store/**"
-                  "**/node_modules/**"
-                  "**/bower_components/**"
-                  "**/vendor/**/{Tests,tests}/**"
-                  "**/.history/**"
-                  "**/vendor/**/vendor/**"
-                  "**/.devenv/**"
-                  "**/.direnv/**"
-                  "**/.phpstan/**"
-                ];
-              };
-              environment.includePaths = [
-                "vendor"
-                "_ide_helper.php"
-                "_ide_helper_models.php"
-                ".phpstorm.meta.php"
-              ];
-            };
-          };
-        };
+        phpantom_lsp.enable = true;
+
+        # intelephense = {
+        #   enable = true;
+        #   package = pkgs.intelephense;
+        #   settings = {
+        #     intelephense = {
+        #       files = {
+        #         maxSize = 5000000;
+        #         exclude = [
+        #           "**/.git/**"
+        #           "**/.svn/**"
+        #           "**/.hg/**"
+        #           "**/CVS/**"
+        #           "**/.DS_Store/**"
+        #           "**/node_modules/**"
+        #           "**/bower_components/**"
+        #           "**/vendor/**/{Tests,tests}/**"
+        #           "**/.history/**"
+        #           "**/vendor/**/vendor/**"
+        #           "**/.devenv/**"
+        #           "**/.direnv/**"
+        #           "**/.phpstan/**"
+        #         ];
+        #       };
+        #       environment.includePaths = [
+        #         "vendor"
+        #         "_ide_helper.php"
+        #         "_ide_helper_models.php"
+        #         ".phpstorm.meta.php"
+        #       ];
+        #     };
+        #   };
+        # };
       };
 
       keymaps = {
@@ -136,7 +138,26 @@ in
       vim.lsp.config('laravel_lsp', {
         cmd = { '${laravel-lsp}/bin/laravel-lsp' },
         filetypes = { 'php', 'blade' },
-        root_markers = { 'artisan', 'composer.json', '.git' },
+        -- laravel-lsp rejects `initialize` outright ("root URI must be a
+        -- Laravel project") for any root that isn't a Laravel app, so root
+        -- detection has to be exact. `composer.json`/`.git` markers matched
+        -- every PHP repo — and in a monorepo they'd resolve to the repo root
+        -- rather than the app dir. `artisan` is the marker that actually
+        -- identifies a Laravel root.
+        --
+        -- Using the root_dir callback rather than root_markers so that not
+        -- finding `artisan` leaves the server unstarted: with root_markers,
+        -- a miss still starts it with a nil root and trips the same error.
+        root_dir = function(bufnr, on_dir)
+          local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+          if dir == nil or dir == "" then
+            return
+          end
+          local artisan = vim.fs.find('artisan', { path = dir, upward = true, type = 'file' })[1]
+          if artisan then
+            on_dir(vim.fs.dirname(artisan))
+          end
+        end,
         capabilities = laravel_caps,
       })
 

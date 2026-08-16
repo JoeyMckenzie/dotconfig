@@ -41,7 +41,7 @@
     (callPackage ./_pkgs/rustfs.nix { })
     agent-browser
     graphite-cli
-    inputs.tuicr.packages.${pkgs.system}.default
+    inputs.tuicr.packages.${pkgs.stdenv.hostPlatform.system}.default
     (callPackage ./_pkgs/jcode.nix { })
     prek
     superfile
@@ -53,6 +53,8 @@
     ffmpeg
     yt-dlp
     laravel
+    cliamp
+    terminal-notifier
 
     nil
     nixfmt
@@ -60,6 +62,7 @@
     deadnix
 
     intelephense
+    phpantom-lsp
     typescript-language-server
     vscode-langservers-extracted
     svelte-language-server

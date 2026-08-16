@@ -21,6 +21,10 @@
       path = "${config.home.homeDirectory}/.config/sqlit/connections.json";
     };
 
+    secrets."cliamp-config" = {
+      path = "${config.home.homeDirectory}/.config/cliamp/config.toml";
+    };
+
     secrets."graphite-token" = {
       path = "${config.home.homeDirectory}/.config/graphite/user_config";
       mode = "0600";
