@@ -8,6 +8,7 @@
     "npm:pi-mcp-adapter",
     "npm:pi-web-access",
     "npm:pi-subagents",
-    "npm:pi-lens"
+    "npm:pi-lens",
+    "https://github.com/cathrynlavery/diagram-design"
   ]
 }
