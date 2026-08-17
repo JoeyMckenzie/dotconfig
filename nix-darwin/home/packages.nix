@@ -55,6 +55,7 @@
     laravel
     cliamp
     terminal-notifier
+    llmfit
 
     nil
     nixfmt
