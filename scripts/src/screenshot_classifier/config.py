@@ -38,7 +38,9 @@ PROVIDERS: dict[str, Provider] = {
         base_url="http://localhost:1234/v1",
         # Naming the model explicitly lets LM Studio JIT-load it, and avoids
         # surprises when several models are loaded at once. Must be vision-capable.
-        default_model="google/gemma-4-e4b",
+        # This is the GGUF build; the MLX build of the same model is ~4x faster
+        # on Apple Silicon and registers under a different id.
+        default_model="qwen3-vl-8b-instruct",
         api_key_env="LMSTUDIO_API_KEY",
         api_key_fallback="lm-studio",
     ),

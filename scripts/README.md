@@ -20,8 +20,18 @@ OPENAI_API_KEY=... uv run screenshot-classifier ~/Desktop/screenshots --provider
 ```
 
 Requires LM Studio running with its local server enabled (`http://localhost:1234`)
-and a **vision-capable** model available. `google/gemma-4-e4b` is the default and
-runs at roughly 5s per screenshot; LM Studio JIT-loads it on first request.
+and a **vision-capable** model available. `qwen3-vl-8b-instruct` is the default;
+LM Studio JIT-loads it on first request.
+
+Measured on an M2 Pro / 16 GB over the same six screenshots:
+
+| model | id | per image |
+| --- | --- | --- |
+| Qwen3-VL 8B Instruct (GGUF) | `qwen3-vl-8b-instruct` | ~23s |
+| Gemma 4 E4B (MLX 4-bit) | `google/gemma-4-e4b` | ~5s |
+
+The gap is mostly GGUF vs MLX, not the models themselves — the MLX build of
+Qwen3-VL should close most of it. Both honor `json_schema` structured output.
 
 ## How it works
 
