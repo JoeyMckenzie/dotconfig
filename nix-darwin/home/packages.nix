@@ -56,6 +56,7 @@
     cliamp
     terminal-notifier
     llmfit
+    defuddle
 
     nil
     nixfmt
