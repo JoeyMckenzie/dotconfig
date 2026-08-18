@@ -22,6 +22,7 @@ _:
     enableZshIntegration = false;
   };
 
+  xdg.configFile."abtop/config.toml".source = ./config/abtop.toml;
   xdg.configFile."btop/btop.conf".source = ./config/btop.conf;
   xdg.configFile."btop/themes/tokyonight_night.theme".source = ./config/btop-tokyonight-night.theme;
   xdg.configFile."worktrunk/config.toml".source = ./config/worktrunk.toml;

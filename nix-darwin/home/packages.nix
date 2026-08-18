@@ -57,6 +57,7 @@
     terminal-notifier
     llmfit
     defuddle
+    abtop
 
     nil
     nixfmt
