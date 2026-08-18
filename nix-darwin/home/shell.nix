@@ -18,10 +18,7 @@
     sessionVariables = {
       XDG_CONFIG_HOME = "$HOME/.config";
       BUN_INSTALL = "$HOME/.bun";
-
-      # No-op lefthook everywhere: hook scripts exit immediately and
-      # `lefthook install` is skipped, so it can't fight devenv/prek
-      # for ownership of the monorepo's .git/hooks/.
+      OBSIDIAN_VAULTS = "$HOME/vaults";
       LEFTHOOK = "0";
     };
 

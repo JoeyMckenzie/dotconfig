@@ -40,10 +40,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # laravel.nvim isn't packaged in nixpkgs.vimPlugins; we build it ourselves
-    # via vimUtils.buildVimPlugin in home/neovim/_pkgs/laravel-nvim.nix.
     laravel-nvim = {
       url = "github:adalessa/laravel.nvim";
+      flake = false;
+    };
+
+    obsidian-skills = {
+      url = "github:kepano/obsidian-skills";
       flake = false;
     };
 

@@ -31,6 +31,7 @@
       "twingate"
       "1password"
       "notion"
+      "obsidian"
       "linear"
       "raycast"
       "vivaldi"
