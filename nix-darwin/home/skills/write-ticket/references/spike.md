@@ -1,16 +1,16 @@
-# [Spike] Add backfill process for kicking off website scrapes from IRS data
+# [Spike] Add backfill process for kicking off website scrapes from registry data
 
-> RAISE-3334 · Spike · 4 points
+> Spike · 4 points
 
 With the recent additions of the website model allowing us to offload responsibility of the `website_scrapes` table into the website domain model instead, we're in a good spot to start building out the integration code that will act as a backfill drip feeding website scrapes through the website scrape job creating records in the `website_scrapes` table, while also beginning to populate the `websites` table for accounts to claim.
 
-This is going to be a somewhat two fold process, where we will first need to check the available NPOs we've got in OpenSearch seeded via larder, then proceed to run through the scraping pipeline + backfill the website table. The process will look something like:
+This is going to be a somewhat two fold process, where we will first need to check the available orgs we've got in OpenSearch seeded via our registry ingest, then proceed to run through the scraping pipeline + backfill the website table. The process will look something like:
 
 * Whip up an `artisan` command to idempotently kick off the pipeline (can resume if we need to based on what websites we've loaded into the websites table have an associated scrape)
-* Query for NPOs in production OpenSearch IRS datasets, filtered by those with a populated website (we don't care about validity, Firecrawl will handle that)
+* Query for orgs in the production OpenSearch registry datasets, filtered by those with a populated website (we don't care about validity, CrawlKit will handle that)
 * Preseed the `websites` table with all the websites we need to fill, with `last_scraped_at` set to null so we can use it as a place marker if needed (to test in batches, etc. where we could only make sure to scrape websites we know haven't been scraped yet from the `websites` table
-* Kick off a batch of scrapes, adjusted on a queue that is sufficiently rate limited WELL below our current Firecrawl usage rate for magic campaigns and account settings (ask @joey to add you as an admin to the dashboard if needed)
-* Pull a batch of websites with no scrape, run them through the web scraping pipeline, and sync the results back to the `websites` row (@davor.minchorov has already done a lot of this plumbing to make it easy)
+* Kick off a batch of scrapes, adjusted on a queue that is sufficiently rate limited WELL below our current CrawlKit usage rate for smart drafts and account settings (ask @joey to add you as an admin to the dashboard if needed)
+* Pull a batch of websites with no scrape, run them through the web scraping pipeline, and sync the results back to the `websites` row (@sam has already done a lot of this plumbing to make it easy)
 
 I think the most important part here is figuring out how much we can drip feed scrapes through with a rate limiter. Part of this ticket is doing some quick napkin about how we much volume we can chew through with scrapes while letting active features that rely on them run unimpeded.
 
