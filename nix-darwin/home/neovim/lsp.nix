@@ -74,40 +74,40 @@ in
           };
         };
 
-        phpantom_lsp.enable = true;
+        # phpantom_lsp.enable = true;
 
-        # intelephense = {
-        #   enable = true;
-        #   package = pkgs.intelephense;
-        #   settings = {
-        #     intelephense = {
-        #       files = {
-        #         maxSize = 5000000;
-        #         exclude = [
-        #           "**/.git/**"
-        #           "**/.svn/**"
-        #           "**/.hg/**"
-        #           "**/CVS/**"
-        #           "**/.DS_Store/**"
-        #           "**/node_modules/**"
-        #           "**/bower_components/**"
-        #           "**/vendor/**/{Tests,tests}/**"
-        #           "**/.history/**"
-        #           "**/vendor/**/vendor/**"
-        #           "**/.devenv/**"
-        #           "**/.direnv/**"
-        #           "**/.phpstan/**"
-        #         ];
-        #       };
-        #       environment.includePaths = [
-        #         "vendor"
-        #         "_ide_helper.php"
-        #         "_ide_helper_models.php"
-        #         ".phpstorm.meta.php"
-        #       ];
-        #     };
-        #   };
-        # };
+        intelephense = {
+          enable = true;
+          package = pkgs.intelephense;
+          settings = {
+            intelephense = {
+              files = {
+                maxSize = 5000000;
+                exclude = [
+                  "**/.git/**"
+                  "**/.svn/**"
+                  "**/.hg/**"
+                  "**/CVS/**"
+                  "**/.DS_Store/**"
+                  "**/node_modules/**"
+                  "**/bower_components/**"
+                  "**/vendor/**/{Tests,tests}/**"
+                  "**/.history/**"
+                  "**/vendor/**/vendor/**"
+                  "**/.devenv/**"
+                  "**/.direnv/**"
+                  "**/.phpstan/**"
+                ];
+              };
+              environment.includePaths = [
+                "vendor"
+                "_ide_helper.php"
+                "_ide_helper_models.php"
+                ".phpstorm.meta.php"
+              ];
+            };
+          };
+        };
       };
 
       keymaps = {
