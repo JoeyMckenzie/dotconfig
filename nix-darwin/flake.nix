@@ -45,8 +45,35 @@
       flake = false;
     };
 
+    # Agent skills vendored from upstream repos. home/skills.nix picks the
+    # individual skill dirs out of each one; bump with `nix flake update <input>`.
+    claude-video-skills = {
+      url = "github:bradautomates/claude-video";
+      flake = false;
+    };
+
+    diagram-design-skills = {
+      url = "github:cathrynlavery/diagram-design";
+      flake = false;
+    };
+
+    gh-stack-skills = {
+      url = "github:github/gh-stack";
+      flake = false;
+    };
+
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+
     obsidian-skills = {
       url = "github:kepano/obsidian-skills";
+      flake = false;
+    };
+
+    vercel-skills = {
+      url = "github:vercel-labs/skills";
       flake = false;
     };
 

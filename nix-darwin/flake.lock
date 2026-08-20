@@ -64,6 +64,22 @@
         "type": "github"
       }
     },
+    "claude-video-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782804007,
+        "narHash": "sha256-lFYEmjWUxD4sj22KWOC5+BaeYCN4lHScepz5AOHDtdY=",
+        "owner": "bradautomates",
+        "repo": "claude-video",
+        "rev": "83da59fa78c3eee9e20f515fe75c438bb5166efd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bradautomates",
+        "repo": "claude-video",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1780099841,
@@ -76,6 +92,22 @@
       "original": {
         "owner": "ipetkov",
         "repo": "crane",
+        "type": "github"
+      }
+    },
+    "diagram-design-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787197554,
+        "narHash": "sha256-zHPRYY2sHUgjD/oCUMFKqPXGSD7vGdOFSkLBy9uInuY=",
+        "owner": "cathrynlavery",
+        "repo": "diagram-design",
+        "rev": "4b573616cbc0592c5d4d57ade0b22c3f72d36dcf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cathrynlavery",
+        "repo": "diagram-design",
         "type": "github"
       }
     },
@@ -209,6 +241,22 @@
       "original": {
         "owner": "lf-",
         "repo": "flakey-profile",
+        "type": "github"
+      }
+    },
+    "gh-stack-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786985586,
+        "narHash": "sha256-hyZbC4jEC7A7GJ9dn8coYeoC5MCk0Eei/W8EwsrSMo4=",
+        "owner": "github",
+        "repo": "gh-stack",
+        "rev": "ab00aa4a3f2dddc51aa65849c68b391a1b079311",
+        "type": "github"
+      },
+      "original": {
+        "owner": "github",
+        "repo": "gh-stack",
         "type": "github"
       }
     },
@@ -384,6 +432,22 @@
       "original": {
         "type": "tarball",
         "url": "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz"
+      }
+    },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787144958,
+        "narHash": "sha256-BAhmwFuEZPKsnSCwZ9NzPG5b7alCXa2/f/LXSMuJX7o=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "885e2ca4d842d139e9aef4e48d366c63cb1b8013",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
+        "type": "github"
       }
     },
     "naersk": {
@@ -576,6 +640,9 @@
     "root": {
       "inputs": {
         "claude-code": "claude-code",
+        "claude-video-skills": "claude-video-skills",
+        "diagram-design-skills": "diagram-design-skills",
+        "gh-stack-skills": "gh-stack-skills",
         "git-hooks": "git-hooks",
         "herdr": "herdr",
         "home-manager": "home-manager",
@@ -584,6 +651,7 @@
         "homebrew-core": "homebrew-core",
         "laravel-nvim": "laravel-nvim",
         "lix-module": "lix-module",
+        "mattpocock-skills": "mattpocock-skills",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
@@ -593,6 +661,7 @@
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "tuicr": "tuicr",
+        "vercel-skills": "vercel-skills",
         "worktrunk": "worktrunk"
       }
     },
@@ -846,6 +915,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vercel-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787084911,
+        "narHash": "sha256-qD+gGPYjgbArf1Nz5rtlJVCS/2KNTuspag/B079l014=",
+        "owner": "vercel-labs",
+        "repo": "skills",
+        "rev": "435076e78988e1e6ec40d00b0b1d76bdbbc5419a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vercel-labs",
+        "repo": "skills",
         "type": "github"
       }
     },

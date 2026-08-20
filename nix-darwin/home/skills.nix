@@ -1,10 +1,38 @@
 { pkgs, inputs, ... }:
 
 let
+  matt = "${inputs.mattpocock-skills}/skills";
+
+  # Skills vendored from upstream repos, pinned by flake.lock. Each entry picks
+  # one skill dir out of its source repo; bump one with:
+  #   nix flake update mattpocock-skills
+  upstream = pkgs.linkFarm "upstream-skills" {
+    code-review = "${matt}/engineering/code-review";
+    codebase-design = "${matt}/engineering/codebase-design";
+    diagnosing-bugs = "${matt}/engineering/diagnosing-bugs";
+    domain-modeling = "${matt}/engineering/domain-modeling";
+    grill-with-docs = "${matt}/engineering/grill-with-docs";
+    prototype = "${matt}/engineering/prototype";
+    tdd = "${matt}/engineering/tdd";
+    triage = "${matt}/engineering/triage";
+    grill-me = "${matt}/productivity/grill-me";
+    grilling = "${matt}/productivity/grilling";
+    handoff = "${matt}/productivity/handoff";
+    wait-what = "${matt}/productivity/wait-what";
+    writing-for-agents = "${matt}/productivity/writing-for-agents";
+
+    # Other skills I like to keep around
+    diagram-design = "${inputs.diagram-design-skills}/skills/diagram-design";
+    find-skills = "${inputs.vercel-skills}/skills/find-skills";
+    gh-stack = "${inputs.gh-stack-skills}/skills/gh-stack";
+    watch = "${inputs.claude-video-skills}/skills/watch";
+  };
+
   skills = pkgs.symlinkJoin {
     name = "agent-skills";
     paths = [
-      ./skills
+      upstream
+      ./skills/_local
       "${inputs.obsidian-skills}/skills"
     ];
   };
