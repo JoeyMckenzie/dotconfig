@@ -31,3 +31,7 @@ check:
 
 # run every auto-fixer: deadnix -> statix -> nixfmt
 fix: dead-fix lint-fix fmt
+
+# bump the vendored agent-skill inputs (pass names to bump only some)
+skills-update *inputs:
+    nix flake update --flake ./nix-darwin {{ if inputs == "" { "claude-video-skills diagram-design-skills gh-stack-skills mattpocock-skills obsidian-skills vercel-skills" } else { inputs } }}
