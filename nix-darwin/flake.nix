@@ -170,6 +170,19 @@
                       (final.python3Packages.callPackage ./home/_pkgs/harlequin-mysql.nix { })
                     ];
                   });
+                  # nixpkgs-unstable is parked on 391b592e (2026-08-20), 298
+                  # commits shy of NixOS/nixpkgs@9da1a5ec6 "curl-impersonate:
+                  # fix dylib install name on darwin". Until the channel moves,
+                  # curl-impersonate 2.1.0 keeps upstream's @rpath install name,
+                  # so curl-cffi's extension module records an @rpath reference
+                  # with no LC_RPATH and dies at dlopen — taking yt-dlp and the
+                  # whole home-manager generation with it. Drop this once the
+                  # channel includes that commit.
+                  curl-impersonate = prev.curl-impersonate.overrideAttrs (old: {
+                    nativeBuildInputs = old.nativeBuildInputs ++ [
+                      final.fixDarwinDylibNames
+                    ];
+                  });
                 })
               ];
             }
