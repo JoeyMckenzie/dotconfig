@@ -10,6 +10,7 @@ in
 
       servers = {
         ts_ls.enable = true;
+        eslint.enable = true;
         gopls.enable = true;
 
         rust_analyzer = {
