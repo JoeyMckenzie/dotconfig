@@ -39,6 +39,25 @@ _:
       },
       callback = function() vim.b.miniindentscope_disable = true end,
     })
+
+    -- Weather line for the mini.starter header, fetched async from wttr.in so
+    -- startup never blocks. Header reads _G.starter_weather when it draws; if
+    -- the fetch lands after the starter is already open, refresh() redraws it.
+    vim.system(
+      { "curl", "-sf", "--max-time", "3", "wttr.in/Redding?format=%c+%t+%w" },
+      { text = true },
+      function(out)
+        if out.code ~= 0 or not out.stdout then return end
+        local weather = vim.trim(out.stdout)
+        if weather == "" then return end
+        _G.starter_weather = weather
+        vim.schedule(function()
+          if vim.bo.filetype == "ministarter" then
+            pcall(require("mini.starter").refresh)
+          end
+        end)
+      end
+    )
   '';
 
   # Route vim.notify through mini.notify so LSP / plugin notifications render
@@ -393,6 +412,9 @@ _:
                           end
                           table.insert(lines, "")
                           table.insert(lines, os.date("%B %d, %Y"))
+                          if _G.starter_weather then
+                            table.insert(lines, _G.starter_weather)
+                          end
                           return table.concat(lines, "\n")
                         end)
           '';
