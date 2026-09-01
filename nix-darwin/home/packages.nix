@@ -58,6 +58,7 @@
     llmfit
     defuddle
     abtop
+    fastfetch
 
     nil
     nixfmt
