@@ -410,10 +410,14 @@ _:
                           for _, line in ipairs(raw) do
                             table.insert(lines, line .. string.rep(" ", max_w - #line))
                           end
+                          local function center(s)
+                            local pad = math.floor((max_w - vim.fn.strdisplaywidth(s)) / 2)
+                            return string.rep(" ", math.max(pad, 0)) .. s
+                          end
                           table.insert(lines, "")
-                          table.insert(lines, os.date("%B %d, %Y"))
+                          table.insert(lines, center(os.date("%B %d, %Y")))
                           if _G.starter_weather then
-                            table.insert(lines, _G.starter_weather)
+                            table.insert(lines, center(_G.starter_weather))
                           end
                           return table.concat(lines, "\n")
                         end)
