@@ -163,7 +163,6 @@
                 inputs.herdr.overlays.default
                 (final: prev: {
                   claude-code = claude-code.packages.${system}.claude-code;
-                  agent-browser = final.callPackage ./home/_pkgs/agent-browser.nix { };
                   # nixpkgs harlequin ships postgres + bigquery adapters but not
                   # mysql, and harlequin-mysql isn't in nixpkgs at all. Build the
                   # PyPI package locally and splice it into harlequin's deps so

@@ -39,7 +39,6 @@
     (callPackage ./_pkgs/ldcli.nix { })
     (callPackage ./_pkgs/backlog.nix { })
     (callPackage ./_pkgs/rustfs.nix { })
-    agent-browser
     graphite-cli
     inputs.tuicr.packages.${pkgs.stdenv.hostPlatform.system}.default
     (callPackage ./_pkgs/jcode.nix { })
