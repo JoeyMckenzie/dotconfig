@@ -7,11 +7,14 @@ _:
 
       # Adapters discover their runners automatically:
       #   - phpunit looks for ./vendor/bin/phpunit (project-local install)
+      #   - vitest shells out through npx, so it picks up the project's own
+      #     node_modules/.bin/vitest (nodejs comes from home/languages.nix)
       # Falls back to global if not present. Add more adapters here later
-      # (jest, vitest, pest, go, rspec, pytest, rust, ...) — each one is a
-      # single `.enable = true`.
+      # (jest, pest, go, rspec, pytest, rust, ...) — each one is a single
+      # `.enable = true`.
       adapters = {
         phpunit.enable = true;
+        vitest.enable = true;
       };
 
       settings = {
