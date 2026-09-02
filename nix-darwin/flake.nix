@@ -86,7 +86,10 @@
     # and crane setup).
     worktrunk.url = "github:max-sixty/worktrunk";
 
-    herdr.url = "github:ogulcancelik/herdr";
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     tuicr = {
       url = "github:agavra/tuicr";

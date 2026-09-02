@@ -6,6 +6,23 @@
   # evaluation warns that the path doesn't exist.
   nix.nixPath = [ "nixpkgs=flake:nixpkgs" ];
 
+  # /nix was sitting at 85% with 50 system generations and no collection.
+  nix.gc = {
+    automatic = true;
+    interval = [
+      {
+        Weekday = 7;
+        Hour = 3;
+        Minute = 15;
+      }
+    ];
+    options = "--delete-older-than 30d";
+  };
+
+  # nix-darwin asserts against nix.settings.auto-optimise-store (store
+  # corruption); the scheduled optimiser is the supported path.
+  nix.optimise.automatic = true;
+
   nix.settings = {
     experimental-features = [
       "nix-command"
