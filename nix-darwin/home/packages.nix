@@ -41,7 +41,6 @@
     (callPackage ./_pkgs/rustfs.nix { })
     graphite-cli
     inputs.tuicr.packages.${pkgs.stdenv.hostPlatform.system}.default
-    (callPackage ./_pkgs/jcode.nix { })
     prek
     superfile
     taskwarrior3
