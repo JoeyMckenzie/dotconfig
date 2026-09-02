@@ -11,28 +11,30 @@ in
     # nvim-dap-ui and nvim-dap-virtual-text used to live under
     # plugins.dap.extensions.* but were promoted to top-level plugins in
     # nixvim; they're now siblings of plugins.dap.
-    plugins.dap-ui.enable = true;
-    plugins.dap-virtual-text.enable = true;
+    plugins = {
+      dap-ui.enable = true;
+      dap-virtual-text.enable = true;
 
-    plugins.dap = {
-      enable = true;
+      dap = {
+        enable = true;
 
-      adapters.executables.php = {
-        command = "node";
-        args = [ phpDebugAdapter ];
+        adapters.executables.php = {
+          command = "node";
+          args = [ phpDebugAdapter ];
+        };
+
+        # Default PHP / Xdebug 3 listener. Add Docker pathMappings or
+        # additional configs per-project via .vscode/launch.json — DAP loads
+        # those automatically through dap.ext.vscode (see extraConfigLuaPost).
+        configurations.php = [
+          {
+            type = "php";
+            request = "launch";
+            name = "Listen for Xdebug";
+            port = 9003;
+          }
+        ];
       };
-
-      # Default PHP / Xdebug 3 listener. Add Docker pathMappings or
-      # additional configs per-project via .vscode/launch.json — DAP loads
-      # those automatically through dap.ext.vscode (see extraConfigLuaPost).
-      configurations.php = [
-        {
-          type = "php";
-          request = "launch";
-          name = "Listen for Xdebug";
-          port = 9003;
-        }
-      ];
     };
 
     # Project-level vscode-php-debug isn't needed at runtime — bringing the

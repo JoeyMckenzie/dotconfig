@@ -159,117 +159,123 @@ in
     };
   };
 
-  environment.etc."resolver/test".text = ''
-    nameserver 127.0.0.1
-  '';
+  environment.etc = {
+    "resolver/test".text = ''
+      nameserver 127.0.0.1
+    '';
 
-  environment.etc."caddy/Caddyfile".text = ''
-    {
-      local_certs
-    }
+    "caddy/Caddyfile".text = ''
+      {
+        local_certs
+      }
 
-    import /Users/${username}/.config/caddy/sites/*.caddy
-  '';
+      import /Users/${username}/.config/caddy/sites/*.caddy
+    '';
 
-  # Rotate caddy logs so the daemon can't get wedged into EX_CONFIG / penalty
-  # box when /var/log/caddy.err.log grows huge and SIGKILL leaves it in a state
-  # launchd can't open.
-  environment.etc."newsyslog.d/caddy.conf".text = ''
-    # logfilename                 [owner:group]  mode count size when  flags
-    /var/log/caddy.err.log        root:wheel     644  5     10240 *    GN
-    /var/log/caddy.out.log        root:wheel     644  5     10240 *    GN
-  '';
+    # Rotate caddy logs so the daemon can't get wedged into EX_CONFIG / penalty
+    # box when /var/log/caddy.err.log grows huge and SIGKILL leaves it in a state
+    # launchd can't open.
+    "newsyslog.d/caddy.conf".text = ''
+      # logfilename                 [owner:group]  mode count size when  flags
+      /var/log/caddy.err.log        root:wheel     644  5     10240 *    GN
+      /var/log/caddy.out.log        root:wheel     644  5     10240 *    GN
+    '';
 
-  launchd.daemons.caddy = {
-    serviceConfig = {
-      ProgramArguments = [
-        "${pkgs.caddy}/bin/caddy"
-        "run"
-        "--config"
-        "/etc/caddy/Caddyfile"
-        "--adapter"
-        "caddyfile"
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      EnvironmentVariables = {
-        HOME = "/var/root";
-        XDG_CONFIG_HOME = "/var/root/.config";
-        XDG_DATA_HOME = "/var/root/.local/share";
+  };
+
+  launchd = {
+    daemons.caddy = {
+      serviceConfig = {
+        ProgramArguments = [
+          "${pkgs.caddy}/bin/caddy"
+          "run"
+          "--config"
+          "/etc/caddy/Caddyfile"
+          "--adapter"
+          "caddyfile"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        EnvironmentVariables = {
+          HOME = "/var/root";
+          XDG_CONFIG_HOME = "/var/root/.config";
+          XDG_DATA_HOME = "/var/root/.local/share";
+        };
+        StandardOutPath = "/var/log/caddy.out.log";
+        StandardErrorPath = "/var/log/caddy.err.log";
       };
-      StandardOutPath = "/var/log/caddy.out.log";
-      StandardErrorPath = "/var/log/caddy.err.log";
+    };
+
+    user.agents = {
+      mailpit = {
+        serviceConfig = {
+          ProgramArguments = [ "${pkgs.mailpit}/bin/mailpit" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/mailpit.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/mailpit.err.log";
+        };
+      };
+
+      mysql = {
+        serviceConfig = {
+          ProgramArguments = [ "${mysqlStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/mysql.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/mysql.err.log";
+        };
+      };
+
+      redis = {
+        serviceConfig = {
+          ProgramArguments = [ "${redisStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/redis.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/redis.err.log";
+        };
+      };
+
+      postgres = {
+        serviceConfig = {
+          ProgramArguments = [ "${postgresStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/postgres.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/postgres.err.log";
+        };
+      };
+
+      minio = {
+        serviceConfig = {
+          ProgramArguments = [ "${minioStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/minio.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/minio.err.log";
+        };
+      };
+
+      opensearch = lib.mkIf (hostname == "work") {
+        serviceConfig = {
+          ProgramArguments = [ "${opensearchStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/opensearch.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/opensearch.err.log";
+        };
+      };
+
+      opensearch-dashboards = lib.mkIf (hostname == "work") {
+        serviceConfig = {
+          ProgramArguments = [ "${opensearchDashboardsStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/opensearch-dashboards.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/opensearch-dashboards.err.log";
+        };
+      };
     };
   };
-
-  launchd.user.agents.mailpit = {
-    serviceConfig = {
-      ProgramArguments = [ "${pkgs.mailpit}/bin/mailpit" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/mailpit.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/mailpit.err.log";
-    };
-  };
-
-  launchd.user.agents.mysql = {
-    serviceConfig = {
-      ProgramArguments = [ "${mysqlStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/mysql.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/mysql.err.log";
-    };
-  };
-
-  launchd.user.agents.redis = {
-    serviceConfig = {
-      ProgramArguments = [ "${redisStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/redis.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/redis.err.log";
-    };
-  };
-
-  launchd.user.agents.postgres = {
-    serviceConfig = {
-      ProgramArguments = [ "${postgresStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/postgres.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/postgres.err.log";
-    };
-  };
-
-  launchd.user.agents.minio = {
-    serviceConfig = {
-      ProgramArguments = [ "${minioStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/minio.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/minio.err.log";
-    };
-  };
-
-  launchd.user.agents.opensearch = lib.mkIf (hostname == "work") {
-    serviceConfig = {
-      ProgramArguments = [ "${opensearchStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/opensearch.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/opensearch.err.log";
-    };
-  };
-
-  launchd.user.agents.opensearch-dashboards = lib.mkIf (hostname == "work") {
-    serviceConfig = {
-      ProgramArguments = [ "${opensearchDashboardsStart}" ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/Users/${username}/Library/Logs/opensearch-dashboards.out.log";
-      StandardErrorPath = "/Users/${username}/Library/Logs/opensearch-dashboards.err.log";
-    };
-  };
-
 }

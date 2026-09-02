@@ -192,17 +192,19 @@
             ./darwin
             home-manager.darwinModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "hm-backup";
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.${username}.imports = [
-                nixvim.homeModules.nixvim
-                inputs.pi.homeModules.default
-                inputs.worktrunk.homeModules.default
-                inputs.sops-nix.homeManagerModules.sops
-                ./home
-              ];
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "hm-backup";
+                extraSpecialArgs = { inherit inputs; };
+                users.${username}.imports = [
+                  nixvim.homeModules.nixvim
+                  inputs.pi.homeModules.default
+                  inputs.worktrunk.homeModules.default
+                  inputs.sops-nix.homeManagerModules.sops
+                  ./home
+                ];
+              };
             }
             hostFile
           ];

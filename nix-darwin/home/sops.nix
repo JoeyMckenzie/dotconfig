@@ -5,38 +5,42 @@
     defaultSopsFile = ../secrets/secrets.yaml;
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
-    secrets."intelephense-licence" = {
-      path = "${config.home.homeDirectory}/intelephense/licence.txt";
+    secrets = {
+
+      "intelephense-licence" = {
+        path = "${config.home.homeDirectory}/intelephense/licence.txt";
+      };
+
+      "harlequin-config" = {
+        path = "${config.home.homeDirectory}/.harlequin.toml";
+      };
+
+      "lazysql-config" = {
+        path = "${config.home.homeDirectory}/.config/lazysql/config.toml";
+      };
+
+      "sqlit-config" = {
+        path = "${config.home.homeDirectory}/.config/sqlit/connections.json";
+      };
+
+      "cliamp-config" = {
+        path = "${config.home.homeDirectory}/.config/cliamp/config.toml";
+      };
+
+      "graphite-token" = {
+        path = "${config.home.homeDirectory}/.config/graphite/user_config";
+        mode = "0600";
+      };
+
+      "agentic-trading-key" = { };
+
+      "filament-blueprint-key" = { };
+
+      "zai-agent-trader-api-key" = { };
+
+      "zai-general-purpose-api-key" = { };
+
     };
-
-    secrets."harlequin-config" = {
-      path = "${config.home.homeDirectory}/.harlequin.toml";
-    };
-
-    secrets."lazysql-config" = {
-      path = "${config.home.homeDirectory}/.config/lazysql/config.toml";
-    };
-
-    secrets."sqlit-config" = {
-      path = "${config.home.homeDirectory}/.config/sqlit/connections.json";
-    };
-
-    secrets."cliamp-config" = {
-      path = "${config.home.homeDirectory}/.config/cliamp/config.toml";
-    };
-
-    secrets."graphite-token" = {
-      path = "${config.home.homeDirectory}/.config/graphite/user_config";
-      mode = "0600";
-    };
-
-    secrets."agentic-trading-key" = { };
-
-    secrets."filament-blueprint-key" = { };
-
-    secrets."zai-agent-trader-api-key" = { };
-
-    secrets."zai-general-purpose-api-key" = { };
 
     templates."secrets.zsh" = {
       path = "${config.home.homeDirectory}/.config/zsh/secrets.zsh";
