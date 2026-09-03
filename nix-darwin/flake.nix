@@ -182,6 +182,20 @@
                   # mysql, and harlequin-mysql isn't in nixpkgs at all. Build the
                   # PyPI package locally and splice it into harlequin's deps so
                   # `harlequin -a mysql` works after every darwin-rebuild.
+                  # sqlit's MySQL and MariaDB adapters both import pymysql,
+                  # but nixpkgs only wires up mysql-connector-python — which
+                  # sqlit treats as the deprecated connector, not a substitute.
+                  # Without this every MySQL connection dies on the
+                  # "Driver import failed / Package: PyMySQL" dialog.
+                  sqlit-tui = prev.sqlit-tui.overridePythonAttrs (old: {
+                    dependencies = old.dependencies ++ [ final.python3Packages.pymysql ];
+                    # With pymysql present the foreign-key integration tests stop
+                    # self-skipping and try to reach a live MySQL/Postgres, which
+                    # the darwin build sandbox can actually see.
+                    disabledTestPaths = old.disabledTestPaths ++ [
+                      "tests/integration/test_foreign_keys.py"
+                    ];
+                  });
                   harlequin = prev.harlequin.overridePythonAttrs (old: {
                     dependencies = old.dependencies ++ [
                       (final.python3Packages.callPackage ./home/_pkgs/harlequin-mysql.nix { })
