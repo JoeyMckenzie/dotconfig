@@ -22,9 +22,11 @@ let
     writing-for-agents = "${matt}/productivity/writing-for-agents";
 
     # Other skills I like to keep around
+    caveman = "${inputs.caveman-skills}/skills/caveman";
     diagram-design = "${inputs.diagram-design-skills}/skills/diagram-design";
     find-skills = "${inputs.vercel-skills}/skills/find-skills";
     gh-stack = "${inputs.gh-stack-skills}/skills/gh-stack";
+    ponytail = "${inputs.ponytail-skills}/skills/ponytail";
     watch = "${inputs.claude-video-skills}/skills/watch";
   };
 

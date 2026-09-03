@@ -34,4 +34,4 @@ fix: dead-fix lint-fix fmt
 
 # bump the vendored agent-skill inputs (pass names to bump only some)
 skills-update *inputs:
-    nix flake update --flake ./nix-darwin {{ if inputs == "" { "claude-video-skills diagram-design-skills gh-stack-skills mattpocock-skills obsidian-skills vercel-skills" } else { inputs } }}
+    nix flake update --flake ./nix-darwin {{ if inputs == "" { "caveman-skills claude-video-skills diagram-design-skills gh-stack-skills mattpocock-skills obsidian-skills ponytail-skills vercel-skills" } else { inputs } }}

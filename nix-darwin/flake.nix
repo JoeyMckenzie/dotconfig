@@ -47,6 +47,11 @@
 
     # Agent skills vendored from upstream repos. home/skills.nix picks the
     # individual skill dirs out of each one; bump with `nix flake update <input>`.
+    caveman-skills = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
+
     claude-video-skills = {
       url = "github:bradautomates/claude-video";
       flake = false;
@@ -69,6 +74,11 @@
 
     obsidian-skills = {
       url = "github:kepano/obsidian-skills";
+      flake = false;
+    };
+
+    ponytail-skills = {
+      url = "github:DietrichGebert/ponytail";
       flake = false;
     };
 

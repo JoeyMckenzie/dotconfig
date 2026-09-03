@@ -45,6 +45,22 @@
         "type": "github"
       }
     },
+    "caveman-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788356929,
+        "narHash": "sha256-ovnxzvmLxg+kS2nog6MLVLKD76+SVlqyBs54V3jGmLo=",
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
+        "rev": "3b74643f4d910f496babd4e634b1ba7168816f14",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
+        "type": "github"
+      }
+    },
     "claude-code": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -623,8 +639,25 @@
         "type": "github"
       }
     },
+    "ponytail-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786139041,
+        "narHash": "sha256-bGdXvzhWPwGdz3T2Yh2h6lf+3PBRFAfdBxP5pESmCHI=",
+        "owner": "DietrichGebert",
+        "repo": "ponytail",
+        "rev": "2ed6c52c9d7e5e56942508591085fd45dea277d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DietrichGebert",
+        "repo": "ponytail",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "caveman-skills": "caveman-skills",
         "claude-code": "claude-code",
         "claude-video-skills": "claude-video-skills",
         "diagram-design-skills": "diagram-design-skills",
@@ -644,6 +677,7 @@
         "nixvim": "nixvim",
         "obsidian-skills": "obsidian-skills",
         "pi": "pi",
+        "ponytail-skills": "ponytail-skills",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "tuicr": "tuicr",
