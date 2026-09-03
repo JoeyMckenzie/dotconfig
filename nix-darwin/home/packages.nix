@@ -22,7 +22,7 @@
     mailpit
     lazysql
     harlequin
-    (python3Packages.callPackage ./_pkgs/sqlit.nix { })
+    sqlit-tui
     visidata
     csvlens
     dua
@@ -38,7 +38,7 @@
     just
     (callPackage ./_pkgs/ldcli.nix { })
     (callPackage ./_pkgs/backlog.nix { })
-    (callPackage ./_pkgs/rustfs.nix { })
+    rustfs
     graphite-cli
     inputs.tuicr.packages.${pkgs.stdenv.hostPlatform.system}.default
     prek

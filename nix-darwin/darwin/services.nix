@@ -72,6 +72,20 @@ let
       "$DATADIR"
   '';
 
+  rustfsDataDir = "/Users/${username}/.local/share/rustfs";
+  rustfsStart = pkgs.writeShellScript "rustfs-start" ''
+    set -eu
+    DATADIR=${rustfsDataDir}
+    mkdir -p "$DATADIR"
+    exec ${pkgs.rustfs}/bin/rustfs server \
+      --address 127.0.0.1:9010 \
+      --console-enable \
+      --console-address 127.0.0.1:9011 \
+      --access-key rustfsadmin \
+      --secret-key rustfsadmin \
+      "$DATADIR"
+  '';
+
   opensearchDashboardsPrefix = "/opt/homebrew/opt/opensearch-dashboards";
   opensearchDashboardsDataDir = "/Users/${username}/.local/share/opensearch-dashboards";
   opensearchDashboardsStart = pkgs.writeShellScript "opensearch-dashboards-start" ''
@@ -254,6 +268,16 @@ in
           KeepAlive = true;
           StandardOutPath = "/Users/${username}/Library/Logs/minio.out.log";
           StandardErrorPath = "/Users/${username}/Library/Logs/minio.err.log";
+        };
+      };
+
+      rustfs = {
+        serviceConfig = {
+          ProgramArguments = [ "${rustfsStart}" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/Users/${username}/Library/Logs/rustfs.out.log";
+          StandardErrorPath = "/Users/${username}/Library/Logs/rustfs.err.log";
         };
       };
 

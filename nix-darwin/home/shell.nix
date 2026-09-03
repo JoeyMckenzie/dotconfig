@@ -104,7 +104,7 @@
         local fn=$1 svc
         $fn system org.nixos.caddy sudo
         $fn system org.nixos.dnsmasq sudo
-        local svcs=(mailpit mysql redis postgres minio)
+        local svcs=(mailpit mysql redis postgres minio rustfs)
         [[ "$(_nix_host)" == work ]] && svcs+=(opensearch)
         for svc in "''${svcs[@]}"; do
           $fn "gui/$UID" "org.nixos.$svc" ""

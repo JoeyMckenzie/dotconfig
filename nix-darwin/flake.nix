@@ -67,6 +67,11 @@
       flake = false;
     };
 
+    launchdarkly-skills = {
+      url = "github:launchdarkly/ai-tooling";
+      flake = false;
+    };
+
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;

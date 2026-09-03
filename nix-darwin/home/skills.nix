@@ -2,6 +2,15 @@
 
 let
   matt = "${inputs.mattpocock-skills}/skills";
+  ld = "${inputs.launchdarkly-skills}/skills";
+
+  # Upstream names this one just "onboarding", too generic for a global skills
+  # dir. Rename the dir and keep the frontmatter name in sync so both agree.
+  ldOnboarding = pkgs.runCommand "launchdarkly-onboarding" { } ''
+    cp -r ${ld}/onboarding $out
+    chmod u+w $out $out/SKILL.md
+    substituteInPlace $out/SKILL.md --replace-fail "name: onboarding" "name: launchdarkly-onboarding"
+  '';
 
   # Skills vendored from upstream repos, pinned by flake.lock. Each entry picks
   # one skill dir out of its source repo; bump one with:
@@ -28,6 +37,23 @@ let
     gh-stack = "${inputs.gh-stack-skills}/skills/gh-stack";
     ponytail = "${inputs.ponytail-skills}/skills/ponytail";
     watch = "${inputs.claude-video-skills}/skills/watch";
+
+    flag-and-release-change = "${ld}/feature-flags/flag-and-release-change";
+    flag-release = "${ld}/feature-flags/flag-release";
+    launchdarkly-flag-cleanup = "${ld}/feature-flags/launchdarkly-flag-cleanup";
+    launchdarkly-flag-command = "${ld}/feature-flags/launchdarkly-flag-command";
+    launchdarkly-flag-create = "${ld}/feature-flags/launchdarkly-flag-create";
+    launchdarkly-flag-discovery = "${ld}/feature-flags/launchdarkly-flag-discovery";
+    launchdarkly-flag-drift = "${ld}/feature-flags/launchdarkly-flag-drift";
+    launchdarkly-flag-qualitative-feedback-setup = "${ld}/feature-flags/launchdarkly-flag-qualitative-feedback-setup";
+    launchdarkly-flag-targeting = "${ld}/feature-flags/launchdarkly-flag-targeting";
+    launchdarkly-guarded-rollout = "${ld}/feature-flags/launchdarkly-guarded-rollout";
+    should-flag-change = "${ld}/feature-flags/should-flag-change";
+    launchdarkly-metric-choose = "${ld}/metrics/launchdarkly-metric-choose";
+    launchdarkly-metric-create = "${ld}/metrics/launchdarkly-metric-create";
+    launchdarkly-metric-instrument = "${ld}/metrics/launchdarkly-metric-instrument";
+    launchdarkly-experiment-setup = "${ld}/experiments/launchdarkly-experiment-setup";
+    launchdarkly-onboarding = ldOnboarding;
   };
 
   skills = pkgs.symlinkJoin {
