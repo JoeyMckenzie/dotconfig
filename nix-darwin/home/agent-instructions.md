@@ -42,7 +42,15 @@ When your changes create orphans:
 
 The test: Every changed line should trace directly to the user's request.
 
-## 4. Goal-Driven Execution
+## 4. Scope Before Building
+
+**When the work is ambiguous, cross-cutting, or outlives its ticket, invoke the `think-like-a-staff-engineer` skill before implementing.**
+
+Triggers: an under-specified problem, scoping or decomposing a project, a decision that sets a boundary or a dependency direction, making the case for foundational work, or a request that would otherwise get absorbed silently.
+
+It is a framing pass, not a process. It ends with a written plan naming the acceptance criterion, the blast radius, the seams, and who owns each slice.
+
+## 5. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
 
