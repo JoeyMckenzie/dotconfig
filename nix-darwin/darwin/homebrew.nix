@@ -34,7 +34,7 @@
       "obsidian"
       "linear"
       "raycast"
-      "vivaldi"
+      "google-chrome"
       "zed"
     ];
 
