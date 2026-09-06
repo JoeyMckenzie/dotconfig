@@ -214,6 +214,15 @@
                       final.fixDarwinDylibNames
                     ];
                   });
+                  # visidata's checkPhase runs the built `vd`, which on darwin
+                  # resolves its config dir to $HOME/Library/Application Support
+                  # and mkdir -p's it at startup. The sandbox HOME is the
+                  # read-only /homeless-shelter, so vd dies in reloadMacros()
+                  # before any test runs and all 168 of them "fail" for the same
+                  # reason. pythonImportsCheck still covers the package.
+                  visidata = prev.visidata.overridePythonAttrs (_: {
+                    doCheck = false;
+                  });
                 })
               ];
             }

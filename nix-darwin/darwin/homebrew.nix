@@ -35,6 +35,7 @@
       "linear"
       "raycast"
       "google-chrome"
+      "vivaldi"
       "zed"
     ];
 
